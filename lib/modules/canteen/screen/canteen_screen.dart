@@ -12,7 +12,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:staff_ics/configs/const/app_colors.dart';
-import 'package:staff_ics/modules/can_een/controllers/canteen_controller.dart';
+import 'package:staff_ics/modules/canteen/controllers/canteen_controller.dart';
 
 
 class CanteenScreen extends StatefulWidget {
@@ -39,7 +39,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body:Obx(()=> !_controller. isLoading.value
-        ?const CircularProgressIndicator()
+        ? _loading()
         : SizedBox(
             height: 100.h,
             child: Stack(
@@ -49,7 +49,6 @@ class _CanteenScreenState extends State<CanteenScreen> {
                   children: [_buildHeader, _buildBodyListExtend],
                 ),
                 _buildMainBalance,
-         
                 Positioned(
                   left: 20,
                   top: 40,
@@ -69,34 +68,31 @@ class _CanteenScreenState extends State<CanteenScreen> {
   }
 
   _loading() {
-    return Container(
-      // color: Colors.grey,
-      child: Stack(
-        children: [
-          Column(
-            children: [
-              Container(
-                height: 30.h,
-                color: const Color(0xff1d1a56),
-                margin: EdgeInsets.only(bottom: 2.h),
-              ),
-              const Center(child: CircularProgressIndicator()),
-            ],
-          ),
-          Positioned(
-            left: 20,
-            top: 40,
-            child: InkWell(
-              onTap: () => Navigator.of(context).pop(),
-              child: Icon(
-                !Platform.isAndroid  ? Icons.arrow_back_ios : Icons.arrow_back,
-                size: 25,
-                color: Colors.white,
-              ),
+    return Stack(
+      children: [
+        Column(
+          children: [
+            Container(
+              height: 30.h,
+              color: const Color(0xff1d1a56),
+              margin: EdgeInsets.only(bottom: 2.h),
             ),
-          )
-        ],
-      ),
+             Center(child: CircularProgressIndicator(color: AppColor.primaryColor,)),
+          ],
+        ),
+        Positioned(
+          left: 20,
+          top: 40,
+          child: InkWell(
+            onTap: () => Navigator.of(context).pop(),
+            child: Icon(
+              !Platform.isAndroid  ? Icons.arrow_back_ios : Icons.arrow_back,
+              size: 25,
+              color: Colors.white,
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -108,7 +104,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _buildUrlImages( storage.read('isPhoto') ?? ''),
+          _buildUrlImages(storage.read('isPhoto') ?? ''),
           SizedBox(
             width: 2.w,
           ),
@@ -168,7 +164,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
                                 height: 2,
                               )
                             ],
-                          )),
+                          ),),
                 ],
               ),
             ),

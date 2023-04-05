@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:staff_ics/modules/can_een/models/canteen_model.dart';
-import 'package:staff_ics/modules/can_een/models/pos_user_model.dart';
+import 'package:staff_ics/modules/canteen/models/canteen_model.dart';
+import 'package:staff_ics/modules/canteen/models/pos_user_model.dart';
 import 'fetch_pos.dart';
 class CanteenController extends GetxController{
   List<Canteen> menuCanteenList = [

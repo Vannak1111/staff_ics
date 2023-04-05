@@ -33,9 +33,7 @@ Future fetchPos({String route = "products"}) async {
   }
 
   try {
-    print("fetchPos");
-    // String fullUrl = "http://202.62.45.129:8069/ics_canteen";
-    
+  
     var response = await Dio(BaseOptions(headers: {
       "Accept": "application/json",
       "Content-Type": "application/json"
@@ -81,7 +79,6 @@ class DioExceptions implements Exception {
         message = "Receive timeout in connection with API server";
         break;
       case DioErrorType.response:
-        print("DioErrorType.response");
         message =
             _handleError(dioError.response!.statusCode, dioError.response!.data);
         break;
@@ -97,7 +94,6 @@ class DioExceptions implements Exception {
   String? message;
 
   String _handleError(int? statusCode, dynamic error) {
-    print('statusCode=$error');
     switch (statusCode) {
       case 400:
         return 'Bad request';
