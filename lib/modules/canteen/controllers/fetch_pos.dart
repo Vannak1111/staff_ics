@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:global_configuration/global_configuration.dart';
 import '../models/pos_db_model.dart';
 import '../models/pos_order_history_db.dart';
 import '../models/pos_user_db_model.dart';
@@ -37,7 +38,7 @@ Future fetchPos({String route = "products"}) async {
     var response = await Dio(BaseOptions(headers: {
       "Accept": "application/json",
       "Content-Type": "application/json"
-    })).post("http://202.62.45.129:8069/ics_canteen", data: data);
+    })).post(GlobalConfiguration().get("baseUrl_school"), data: data);
    
     if (route == "products") {
       posDb = PosDb.fromMap(response.data);

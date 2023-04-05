@@ -72,12 +72,12 @@ class _CanteenScreenState extends State<CanteenScreen> {
       children: [
         Column(
           children: [
-            Container(
+          Container(
               height: 30.h,
               color: const Color(0xff1d1a56),
               margin: EdgeInsets.only(bottom: 2.h),
             ),
-             Center(child: CircularProgressIndicator(color: AppColor.primaryColor,)),
+          Center(child: CircularProgressIndicator(color: AppColor.primaryColor,)),
           ],
         ),
         Positioned(
