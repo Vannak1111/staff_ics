@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.staff_ics">
+    package="com.kh.ics.staff">
    <application
         android:label="staff_ics"
         android:name="${applicationName}"

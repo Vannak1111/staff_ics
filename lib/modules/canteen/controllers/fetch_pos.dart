@@ -21,7 +21,7 @@ Future fetchPos({String route = "products"}) async {
     };
   } else if (route == "user") {
     data = {
-      "params": {"route": "user", "student_id": "IS202323"}
+      "params": {"route": "user", "student_id": storage.read("isActive")}
     };
   } else if (route == "order_history") {
     data = {

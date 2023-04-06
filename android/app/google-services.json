@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "668038595527",
+    "project_id": "ics-staff-140a6",
+    "storage_bucket": "ics-staff-140a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:668038595527:android:6ad56805c2b77c691a8fe2",
+        "android_client_info": {
+          "package_name": "com.kh.ics.staff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "668038595527-r6n57skvdjokenbb0kcrl7j45lsvr6la.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKtUwpnN8dbQjX17STkl6G4ItrmkCNmHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "668038595527-r6n57skvdjokenbb0kcrl7j45lsvr6la.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

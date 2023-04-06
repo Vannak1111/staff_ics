@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
+import 'package:staff_ics/core/login/controller/login_controller.dart';
 
-import '../controller/login_controller.dart';
+import '../../../utils/widgets/custom_buttom.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,228 +14,101 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final loginController = Get.put(LoginController());
   final storage = GetStorage();
-  late String? _route;
-  bool _hide = true;
-  late bool _isDisableButton;
-
-  @override
-  void initState() {
-    _route = Get.arguments.toString();
-    print("_route=$_route");
-    _isDisableButton = false;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        body: _buildBody,
+        body: Obx(
+          () => SingleChildScrollView(
+            child: Column(
+              children: [
+                Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Image.asset(
+                      SizerUtil.deviceType == DeviceType.tablet
+                          ? "assets/image/login/background.png"
+                          : "assets/image/login/background.png",
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                    Positioned(
+                      child: Container(
+                        height: 45.h,
+                        alignment: Alignment.center,
+                        child: Image.asset(
+                            "assets/image/login/ics_International_school.png",
+                            width: SizerUtil.deviceType == DeviceType.tablet
+                                ? 45.w
+                                : 60.w,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                // Text('USER LOGIN', style: Theme.of(context).textTheme.titleSmall),
+                Container(
+                  margin: const EdgeInsets.only(left: 20, right: 20),
+                  child: Column(children: [
+                    Container(
+                      alignment: Alignment.center,
+                      child: TextField(
+                        autocorrect: false,
+                        textInputAction: TextInputAction.next,
+                        controller: loginController.emailController.value,
+                        decoration: const InputDecoration(
+                          labelText: "Username",
+                          prefixIcon: Icon(Icons.person),
+                        ),
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      child: TextField(
+                        onSubmitted: (value) {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                        },
+                        controller: loginController.passwordController.value,
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          prefixIcon: const Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              loginController.hidePasswork.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.blue,
+                            ),
+                            onPressed: () {
+                              loginController.hidePasswork.value =
+                                  !loginController.hidePasswork.value;
+                            },
+                          ),
+                        ),
+                        style: Theme.of(context).textTheme.bodySmall,
+                        obscureText: loginController.hidePasswork.value,
+                      ),
+                    ),
+                    SizedBox(height: 3.h),
+                    CustomButtom(
+                      ontap: () {
+                        debugPrint("nice to meet you ");
+                        loginController.login();
+                      },
+                      title: "LOGIN",
+                      isDisable: loginController.isDisableButton.value,
+                    ),
+                  ]),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
-  }
-
-  get _buildBody{
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Image.asset(
-                  SizerUtil.deviceType == DeviceType.tablet ? "assets/image/login/background.png" : "assets/image/login/background.png",
-                  width: double.infinity, fit: BoxFit.cover),
-              Positioned(child: Container(
-                height: 50.h,
-                alignment: Alignment.center,
-                // color: Colors.red,
-                child: Image.asset(
-                    "assets/image/login/ics_International_school.png",
-                    width: SizerUtil.deviceType == DeviceType.tablet
-                        ? 45.w
-                        : 60.w,
-                    color: Colors.white),
-                 ),
-              ),
-            ],
-          ),
-
-          Container(
-            child: Text(
-              'USER LOGIN',
-              style: TextStyle(fontSize: SizerUtil.deviceType == DeviceType.tablet ? 14.sp : 18.sp, fontWeight: FontWeight.bold, color: const Color(0xff1a0785)),
-            ),
-          ),
-
-          Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.symmetric(horizontal: SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40),
-            child: TextField(
-              autocorrect: false,
-              textInputAction: TextInputAction.next,
-              controller: emailController,
-              decoration: const InputDecoration(labelText: "Username", prefixIcon: Icon(Icons.person)),
-              style: TextStyle(fontSize: SizerUtil.deviceType == DeviceType.tablet ? 18 : 14, color: const Color(0xff1a0785)),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.symmetric(horizontal: SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40),
-            child: TextField(
-              onSubmitted: (value) {
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              controller: passwordController,
-              decoration: InputDecoration(
-                labelText: "Password",
-                prefixIcon: const Icon(Icons.lock),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _hide ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.blue,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _hide = !_hide;
-                    });
-                  },
-                ),
-              ),
-              style: TextStyle(fontSize: SizerUtil.deviceType == DeviceType.tablet ? 18 : 14, color: const Color(0xff1a0785)),
-              obscureText: _hide,
-            ),
-          ),
-
-          SizedBox(height: 3.h),
-
-          Container(
-            alignment: Alignment.centerRight,
-            margin: EdgeInsets.symmetric(horizontal: SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40, vertical: 10),
-            child: ElevatedButton(
-              onPressed: () {
-                if(_isDisableButton == false){
-                  setState(() {
-                    _isDisableButton = true;
-                  });
-                  _login();
-                }
-              },
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(0)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                      // side: BorderSide(color: Colors.red)
-                    )
-                ),
-              ),
-              // shape: RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.circular(15.0)),
-              // textColor: Colors.white,
-              // padding: const EdgeInsets.all(0),
-              child: Container(
-                alignment: Alignment.center,
-                height: SizerUtil.deviceType == DeviceType.tablet ? 60.0 : 50.0,
-                width: 100.w,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    gradient: const LinearGradient(
-                      colors: [Color(0xff1a237e), Colors.lightBlueAccent],
-                    )),
-                padding: const EdgeInsets.all(0),
-                child: Text(
-                  "LOGIN",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: SizerUtil.deviceType == DeviceType.tablet ? 18 : 14),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _login() {
-    // EasyLoading.show(status: 'Loading');
-    userLogin(emailController.text.trim(), passwordController.text.trim(), storage.read('device_token'))
-        .then((value) {
-      try {
-        print('Success=${value.status}');
-        storage.write('user_token', value.data.token);
-        storage.write('isActive', value.data.studentId);
-        // storage.write('isUsername', emailController.text.trim());
-        storage.write('isPassword', passwordController.text.trim());
-        // EasyLoading.showSuccess('Logged in successfully!');
-        // EasyLoading.dismiss();
-        // Navigator.pop(context);
-        Get.back(result: true);
-        if (_route == 'no route') {
-          // print("no route");
-        } else if (_route == 'dashboard') {
-          Get.offAllNamed(_route!);
-        } else {
-          Get.toNamed(_route!);
-        }
-      } catch (err) {
-        // EasyLoading.dismiss();
-        setState(() {
-          _isDisableButton = false;
-        });
-        value = value == 'Unauthorized'
-            ? 'Username/Password is incorrect!'
-            : value;
-        Get.defaultDialog(
-          title: "Error",
-          middleText: "$value",
-          barrierDismissible: false,
-          confirm: reloadBtn(),
-        );
-      }
-    });
-  }
-
-  // Future<void> _displayTextInputDialog(BuildContext context) async {
-  //   return showDialog(
-  //     barrierDismissible: false,
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         title: Text('Passcode'),
-  //         content: TextField(
-  //           controller: _passcodeController,
-  //           decoration: InputDecoration(hintText: "Enter your passcode"),
-  //         ),
-  //         actions: <Widget>[
-  //           FlatButton(
-  //             child: Text('CANCEL'),
-  //             onPressed: () {
-  //               Navigator.pop(context);
-  //             },
-  //           ),
-  //           FlatButton(
-  //             child: Text('SUBMIT', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),),
-  //             onPressed: () {
-  //               // print(_passcodeController.text);
-  //               Navigator.pop(context);
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
-  Widget reloadBtn() {
-    return ElevatedButton(
-        onPressed: () {
-          Get.back();
-        },
-        child: const Text("OK"));
   }
 }

@@ -2,8 +2,6 @@
 
 import 'dart:io';
 
-import 'package:animated_icon/animate_icon.dart';
-import 'package:animated_icon/animate_icons.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:staff_ics/modules/canteen/controllers/canteen_controller.dart';
-
+import 'package:staff_ics/utils/widgets/custom_appbar.dart';
 
 class CanteenScreen extends StatefulWidget {
   const CanteenScreen({Key? key}) : super(key: key);
@@ -30,41 +28,27 @@ class _CanteenScreenState extends State<CanteenScreen> {
   void initState() {
     super.initState();
     _controller.fetchPosUser();
-    // phoneSize = SizerUtil.deviceType == DeviceType.tablet
-    //     ? PhoneSize.ipad
-    //     : PhoneSize.iphone;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Obx(()=> !_controller. isLoading.value
-        ? _loading()
-        : SizedBox(
-            height: 100.h,
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Column(
-                  children: [_buildHeader, _buildBodyListExtend],
-                ),
-                _buildMainBalance,
-                Positioned(
-                  left: 20,
-                  top: 40,
-                  child: InkWell(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: Icon(
-                      !Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
-                      size: 25,
-                      color: Colors.white,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ))
-    );  
+        appBar: CustomAppBar(
+          title: "Canteen",
+          onTap: () {
+            Get.back();
+          },
+        ),
+        body: Obx(() => !_controller.isLoading.value
+            ? _loading()
+            : Container(
+              
+              child: Column(
+                children: [
+                   _buildMainBalance,
+                   _buildBodyListExtend],
+              ),
+            )));
   }
 
   _loading() {
@@ -72,12 +56,15 @@ class _CanteenScreenState extends State<CanteenScreen> {
       children: [
         Column(
           children: [
-          Container(
+            Container(
               height: 30.h,
               color: const Color(0xff1d1a56),
               margin: EdgeInsets.only(bottom: 2.h),
             ),
-          Center(child: CircularProgressIndicator(color: AppColor.primaryColor,)),
+            Center(
+                child: CircularProgressIndicator(
+              color: AppColor.primaryColor,
+            )),
           ],
         ),
         Positioned(
@@ -86,7 +73,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
           child: InkWell(
             onTap: () => Navigator.of(context).pop(),
             child: Icon(
-              !Platform.isAndroid  ? Icons.arrow_back_ios : Icons.arrow_back,
+              !Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
               size: 25,
               color: Colors.white,
             ),
@@ -97,46 +84,52 @@ class _CanteenScreenState extends State<CanteenScreen> {
   }
 
   get _buildHeader {
-    return _controller.recPosUserData[0].name != "" ? Container(
-      padding: const EdgeInsets.all(8.0),
-      height: 30.h,
-      color: AppColor.primaryColor,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          _buildUrlImages(storage.read('isPhoto') ?? ''),
-          SizedBox(
-            width: 2.w,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 5, bottom: 5),
-                child: Text(_controller.recPosUserData[0].name,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: SizerUtil.deviceType == DeviceType.tablet
-                            ? 14.sp
-                            : 18.sp)),
-              ),
-              Text('${storage.read('isActive')?? 'No'} ',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: SizerUtil.deviceType == DeviceType.tablet
-                          ? 10.sp
-                          : 11.sp)),
-            ],
-          ),
-        ],
-      ),
-    ) : Container(padding: const EdgeInsets.all(8.0),
-      height: 30.h,
-      color: AppColor.primaryColor,);
+    return _controller.recPosUserData[0].name != ""
+        ? Container(
+            padding: const EdgeInsets.all(8.0),
+            height: 30.h,
+            color: AppColor.primaryColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildUrlImages(storage.read('isPhoto') ?? ''),
+                SizedBox(
+                  width: 2.w,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5, bottom: 5),
+                      child: Text(_controller.recPosUserData[0].name,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize:
+                                  SizerUtil.deviceType == DeviceType.tablet
+                                      ? 14.sp
+                                      : 18.sp)),
+                    ),
+                    Text('${storage.read('isActive') ?? 'No'} ',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: SizerUtil.deviceType == DeviceType.tablet
+                                ? 10.sp
+                                : 11.sp)),
+                  ],
+                ),
+              ],
+            ),
+          )
+        : Container(
+            padding: const EdgeInsets.all(8.0),
+            height: 30.h,
+            color: AppColor.primaryColor,
+          );
   }
+
   get _buildBodyListExtend {
     return _controller.recPosUserData[0].cardId != ""
         ? Expanded(
@@ -147,35 +140,37 @@ class _CanteenScreenState extends State<CanteenScreen> {
                     height: 5.h,
                   ),
                   ListView.builder(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: _controller.menuCanteenList.length,
-                      itemBuilder: (context, index) => Column(
-                            children: [
-                              index == 0
-                                  ?  Divider(
-                                      color: AppColor.primaryColor,
-                                      height: 2,
-                                    )
-                                  : const SizedBox(),
-                              _buildItem(index),
-                               Divider(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _controller.menuCanteenList.length,
+                    itemBuilder: (context, index) => Column(
+                      children: [
+                        index == 0
+                            ? Divider(
                                 color: AppColor.primaryColor,
                                 height: 2,
                               )
-                            ],
-                          ),),
+                            : const SizedBox(),
+                        _buildItem(index),
+                        Divider(
+                          color: AppColor.primaryColor,
+                          height: 2,
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
           )
         : const SizedBox();
   }
+
   _buildItem(int index) {
-    return InkWell(
+    return GestureDetector(
       child: Container(
           alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.only(left: 8, right: 8),
+          margin: const EdgeInsets.only(left: 25, right: 25),
           height: 8.h,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -183,10 +178,10 @@ class _CanteenScreenState extends State<CanteenScreen> {
               Row(
                 children: [
                   SizedBox(
-                      height: 10.w,
-                      child: const Icon(Icons.home),
-                      // child: Image.asset(_controller.menuCanteenList[index].img),
-                      ),
+                    height: 10.w,
+                    child: const Icon(Icons.home),
+                    // child: Image.asset(_controller.menuCanteenList[index].img),
+                  ),
                   SizedBox(
                     width: 5.w,
                   ),
@@ -194,27 +189,31 @@ class _CanteenScreenState extends State<CanteenScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(_controller.menuCanteenList[index].title,
-                         ),
-                      SizedBox(height: 0.5.h,),
+                      Text(
+                        _controller.menuCanteenList[index].title,
+                      ),
+                      SizedBox(
+                        height: 0.5.h,
+                      ),
                       SizedBox(
                         width: 70.w,
-                        child: AutoSizeText(_controller.menuCanteenList[index].subtitle,
-                            style: TextStyle(
-                                fontSize:
-                                    SizerUtil.deviceType == DeviceType.tablet
-                                        ? 15
-                                        : 12), minFontSize: 10, maxLines: 2,
-                          overflow: TextOverflow.ellipsis,),
+                        child: AutoSizeText(
+                          _controller.menuCanteenList[index].subtitle,
+                          style: TextStyle(
+                              fontSize:
+                                  SizerUtil.deviceType == DeviceType.tablet
+                                      ? 15
+                                      : 12),
+                          minFontSize: 10,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   )
                 ],
               ),
-               Icon(
-                Icons.arrow_forward_ios,
-                color: AppColor.primaryColor),
-          
+              // Icon(Icons.arrow_forward_ios, color: AppColor.primaryColor),
             ],
           )),
       onTap: () {
@@ -222,17 +221,19 @@ class _CanteenScreenState extends State<CanteenScreen> {
             _controller.posSessionOrderId.value != 0 &&
             index == 0)) {
           handleReturnData(
-              route: _controller.menuCanteenList[index].route, arg: _controller.productCount.value);
-       
+              route: _controller.menuCanteenList[index].route,
+              arg: _controller.productCount.value);
         } else if ((_controller.recPosUserData[0].cardId != "" &&
             _controller.posSessionTopUpId.value != 0 &&
             index == 1)) {
           handleReturnData(
-              route: _controller.menuCanteenList[index].route, arg: _controller.productCount.value);
+              route: _controller.menuCanteenList[index].route,
+              arg: _controller.productCount.value);
         } else if ((_controller.recPosUserData[0].cardId != "" &&
             (index == 2 || index == 3))) {
           handleReturnData(
-              route: _controller.menuCanteenList[index].route, arg: _controller.productCount.value);
+              route: _controller.menuCanteenList[index].route,
+              arg: _controller.productCount.value);
         } else if (_controller.recPosUserData[0].cardId == "") {
           title = 'CARD';
           body = 'UNREGISTER';
@@ -247,77 +248,63 @@ class _CanteenScreenState extends State<CanteenScreen> {
           message(title: title, body: body);
         } else if (index == 4) {
           handleReturnData(
-              route: _controller.menuCanteenList[index].route, arg: _controller.productCount.value);
+              route: _controller.menuCanteenList[index].route,
+              arg: _controller.productCount.value);
         }
       },
     );
   }
 
   get _buildMainBalance {
-    return Positioned(
-        top: 23.h,
-        child: Container(
-          padding: const EdgeInsets.all(8.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow:  [
-              BoxShadow(color: Colors.grey.withOpacity(0.2), blurRadius: 0.2, offset: const Offset(2, 3))
-            ],
-          ),
-          width: 90.w,
-          height: 13.h,
-          child: _controller.recPosUserData[0].cardId != "" ? Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+     color: Color(0xff002962),
+        border: Border.all(color: AppColor.primaryColor,width: 0.8)
+       
+      ),
+      
+      height: 15.h,
+      child: _controller.recPosUserData[0].cardId != ""
+          ? Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SizedBox(
-                width: 10.w,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text("Available Balance",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: SizerUtil.deviceType == DeviceType.tablet
+              Spacer(),
+              Text("Available Balance",
+                  style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      color: Colors.grey.withOpacity(0.6),
+                      fontSize:
+                          SizerUtil.deviceType == DeviceType.tablet
                               ? 10.sp
                               : 12.sp)),
-                  Text("\$${_controller.f.format(_controller.balance.value)}",
-                      style: TextStyle(
-                          color: const Color(0xff1d1a56),
-                          fontWeight: FontWeight.bold,
-                          fontSize: SizerUtil.deviceType == DeviceType.tablet
+              SizedBox(height: 5,),
+              Text(
+                  "\$${_controller.f.format(_controller.balance.value)}",
+                  style: TextStyle(
+                      color:Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize:
+                          SizerUtil.deviceType == DeviceType.tablet
                               ? 16.sp
-                              : 18.sp))
-                ],
-              ),
-              Container(
-                  alignment: Alignment.topRight,
-                  width: 10.w,
-                  height: 100.w,
-                  child: AnimateIcon(
-                    key: UniqueKey(),
-                    onTap: () {
-                     _controller. fetchPosUser();
-                    },
-                    iconType: IconType.animatedOnTap,
-                    width: 8.w,
-                    color: Colors.blue,
-                    animateIcon: AnimateIcons.refresh,
-                  )),
+                              : 18.sp)),
+                                Spacer(),
             ],
-          ) : Container(
-            alignment: Alignment.center,
-            child: AutoSizeText("${storage.read("unregistered")}",
-                style: TextStyle(
-                    color: const Color(0xff1d1a56),
-                    fontWeight: FontWeight.bold,
-                    fontSize: SizerUtil.deviceType == DeviceType.tablet
-                        ? 16.sp
-                        : 18.sp), minFontSize: 10, maxLines: 2,
-                overflow: TextOverflow.ellipsis),
-          ),
-        ));
+          )
+          : Container(
+              alignment: Alignment.center,
+              child: AutoSizeText("${storage.read("unregistered")}",
+                  style: TextStyle(
+                      color: const Color(0xff1d1a56),
+                      fontWeight: FontWeight.bold,
+                      fontSize: SizerUtil.deviceType == DeviceType.tablet
+                          ? 16.sp
+                          : 18.sp),
+                  minFontSize: 10,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis),
+            ),
+    );
   }
 
   handleReturnData({required String route, required int arg}) async {
@@ -350,8 +337,6 @@ class _CanteenScreenState extends State<CanteenScreen> {
           Image.asset("assets/icons/login_icon/logo_no_background.png"),
     );
   }
-
-  
 
   bool timeCheck() {
     bool diff = true;
@@ -404,8 +389,9 @@ class _CanteenScreenState extends State<CanteenScreen> {
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(body,
-                            ),
+                        child: Text(
+                          body,
+                        ),
                       ),
                     ),
                     Positioned(
@@ -437,4 +423,3 @@ class _CanteenScreenState extends State<CanteenScreen> {
         });
   }
 }
-
