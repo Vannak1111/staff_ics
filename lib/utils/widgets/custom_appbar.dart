@@ -8,10 +8,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool isBack;
   CustomAppBar({this.onTap, required this.title,this.isBack=true});
-
-  @override
   Size get preferredSize => Size.fromHeight(80);
-
+  
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -27,7 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   SizedBox(width: 25,),
                   Text("$title",
-                          style: Theme.of(context).textTheme.titleMedium),
+                          style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 19)),
                 ],
               ):
               Row(
@@ -47,7 +45,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                   SizedBox(width: 10,),
                   Text("$title",
-                      style: Theme.of(context).textTheme.titleMedium),
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 19,),),
                 ],
               ),
             ],

@@ -226,14 +226,17 @@ class _CanteenScreenState extends State<CanteenScreen> {
         } else if ((_controller.recPosUserData[0].cardId != "" &&
             _controller.posSessionTopUpId.value != 0 &&
             index == 1)) {
-          handleReturnData(
-              route: _controller.menuCanteenList[index].route,
-              arg: _controller.productCount.value);
+              debugPrint("ncie to meet you bro");
+          Get.toNamed('top-up');
+          // handleReturnData(
+          //     route: _controller.menuCanteenList[index].route,
+          //     arg: _controller.productCount.value);
         } else if ((_controller.recPosUserData[0].cardId != "" &&
             (index == 2 || index == 3))) {
-          handleReturnData(
-              route: _controller.menuCanteenList[index].route,
-              arg: _controller.productCount.value);
+              Get.toNamed('iwallet',arguments: 1);
+          // handleReturnData(
+          //     route: _controller.menuCanteenList[index].route,
+          //     arg: _controller.productCount.value);
         } else if (_controller.recPosUserData[0].cardId == "") {
           title = 'CARD';
           body = 'UNREGISTER';

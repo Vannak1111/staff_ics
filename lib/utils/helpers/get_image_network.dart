@@ -1,0 +1,17 @@
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
+
+Future getImageNetwork({ImageSource imageSource = ImageSource.gallery}) async{
+  late File _file;
+  //final picker = ImagePicker();
+  final picker = ImagePicker();
+  final pickedImage = await picker.getImage(source: imageSource);
+  // print("pickedImage=${pickedImage!.path}");
+  if(pickedImage != null){
+    _file = File(pickedImage.path);
+    return _file;
+  }else{
+    print("No Image selected");
+  }
+}

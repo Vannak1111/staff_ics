@@ -28,7 +28,7 @@ class CustomButtom extends StatelessWidget {
               MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(0)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(10.0),
             // side: BorderSide(color: Colors.red)
           )),
         ),
@@ -37,10 +37,12 @@ class CustomButtom extends StatelessWidget {
           height: SizerUtil.deviceType == DeviceType.tablet ? 60.0 : 50.0,
           width: 100.w,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.0),
-              gradient: LinearGradient(
-                colors: [AppColor.primaryColor, Colors.lightBlueAccent],
-              )),
+            // borderRadius: BorderRadius.circular(15.0),
+            color: AppColor.primaryColor
+            // gradient: LinearGradient(
+            //   colors: [AppColor.primaryColor, Colors.lightBlueAccent],
+            // ),
+          ),
           padding: const EdgeInsets.all(0),
           child: Text(
             title,

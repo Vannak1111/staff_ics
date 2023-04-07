@@ -2,8 +2,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:staff_ics/core/login/models/login_model.dart';
 import '../../../modules/canteen/controllers/fetch_pos.dart';
-import '../models/login_model.dart';
 
 class LoginController extends GetxController{
 Dio _dio = Dio();
@@ -21,6 +21,8 @@ void login() {
       try {
         storage.write('user_token', value.data.token);
         storage.write('isActive', value.data.studentId);
+        // storage.write('isName', value.data.name);
+        // debugPrint("khmer sl khmer ");
         Get.toNamed('canteen');
       } catch (err) {
           isDisableButton.value = false;
@@ -28,6 +30,7 @@ void login() {
             value == 'Unauthorized' ? 'Username/Password is incorrect!' : value;
         Get.defaultDialog(
           title: "Error",
+          titleStyle: TextStyle(color: Colors.black),
           middleText: "$value",
           barrierDismissible: false,
           confirm: reloadBtn(),
@@ -36,20 +39,22 @@ void login() {
     });
   }
 Future userLogin(String email, String password,String firebaseToken) async {
+  
     // 'email': 'IS202323',
     // 'password': '123456',
   try{
+    debugPrint("dfdfdfdfdf");
     String fullUrl = "http://schooldemo.ics.edu.kh:88/api/login";
-    var response = await _dio.post(fullUrl, data: {
-    'email': email,
-    'password': password,
+    var response = await _dio.post("http://schooldemo.ics.edu.kh:88/api/login",data: {
+    'email': 'IS202323',
+    'password': '123456',
     'firebase_token': firebaseToken,
   });
     LoginDb loginDb = LoginDb.fromMap(response.data);
     debugPrint("token ${loginDb.data.token}");
     return loginDb;
   } on DioError catch (e) {
-    debugPrint("you have been catch");
+    debugPrint("you have been catch 4444");
     final errorMessage = DioExceptions.fromDioError(e).toString();
     return errorMessage;
   }

@@ -49,6 +49,11 @@ dependencies:
   firebase_messaging: ^14.4.0
   flutter_local_notifications: ^13.0.0
   device_info_plus: ^8.1.0
+  flutter_html: ^3.0.0-alpha.3
+  image_picker: ^0.8.7+1
+  url_launcher: ^6.1.10
+  flutter_image_compress: ^1.1.3
+  flutter_easyloading: ^3.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -77,6 +82,7 @@ flutter:
     - assets/cfg/
     - assets/image/utils/
     - assets/image/login/
+    - assets/image/canteen/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
