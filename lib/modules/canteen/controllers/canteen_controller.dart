@@ -23,6 +23,11 @@ List<Canteen> menuCanteenList = [
   final posUserMessage=false.obs;
   final balance = 0.0.obs;
   final productCount=0.obs;
+  // limit purchase screen 
+  final purchaseLimit=0.0.obs;
+  // iwallet screen 
+  final availableBalance=''.obs;
+final cardNo =''.obs;
   var f = NumberFormat("##0.00", "en_US");
 Future<void> fetchPosUser() async {
     await fetchPos(route: "user").then((value) {
@@ -46,12 +51,12 @@ Future<void> fetchPosUser() async {
             }
           balance.value = value.response[0].balanceCard;
           storage.write("campus", value.response[0].campus);
-          storage.write("available_balance", f.format(balance.value));
+          availableBalance.value=f.format(balance.value);
           storage.write("term_condition", value.termCondition);
           storage.write("instruction", value.instruction);
           storage.write("pre_order_instruction", value.preOrderInstruction);
-          storage.write("purchase_limit", value.response[0].purchaseLimit);
-          storage.write("card_no", value.response[0].cardNo);
+          purchaseLimit.value=value.response[0].purchaseLimit;
+          cardNo.value = value.response[0].cardNo;
           storage.write("pick_up", value.pickUp);
           storage.write("product_id", value.productId);
           storage.write(

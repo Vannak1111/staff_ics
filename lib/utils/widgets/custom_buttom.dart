@@ -37,11 +37,8 @@ class CustomButtom extends StatelessWidget {
           height: SizerUtil.deviceType == DeviceType.tablet ? 60.0 : 50.0,
           width: 100.w,
           decoration: BoxDecoration(
-            // borderRadius: BorderRadius.circular(15.0),
-            color: AppColor.primaryColor
-            // gradient: LinearGradient(
-            //   colors: [AppColor.primaryColor, Colors.lightBlueAccent],
-            // ),
+            color: isDisable==true?Colors.grey: AppColor.primaryColor
+           
           ),
           padding: const EdgeInsets.all(0),
           child: Text(

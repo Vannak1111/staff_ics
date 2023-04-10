@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 import 'package:staff_ics/configs/const/app_colors.dart';
+import 'package:staff_ics/modules/canteen/controllers/canteen_controller.dart';
 import 'package:staff_ics/modules/canteen/screen/iWallet/screens/topup_history.dart';
 
 import 'order_history.dart';
@@ -19,21 +20,13 @@ class IWalletScreen extends StatefulWidget {
 }
 
 class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateMixin {
-  late String device;
+  final _canteenController = Get.put(CanteenController());
   final storage = GetStorage();
   double _fontSize = 0;
-  var changeTitle = 0.0 ;
   late TabController _tabController;
-
   @override
   void initState() {
     super.initState();
-  
-    if (Platform.isAndroid)
-      device = 'Android';
-    else
-      device = 'iOS';
-
     _tabController = TabController(length: 2, vsync: this);
     _tabController.animateTo(0);
     _tabController = TabController(length: 2, vsync: this);
@@ -148,7 +141,7 @@ class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateM
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
-            child: Text("${storage.read("card_no")}",
+            child: Text("${_canteenController.cardNo.value}",
                 style: TextStyle(
                     color: Color(0xff1d1a56),
                     fontWeight: FontWeight.w700,
@@ -201,7 +194,7 @@ class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateM
                           fontSize: SizerUtil.deviceType == DeviceType.tablet
                               ? 12.sp
                               : 13.sp)),
-                  Text("\$${storage.read("available_balance")}",
+                  Text("\$${_canteenController.availableBalance.value}",
                       style: TextStyle(
                           color: Colors.deepOrangeAccent,
                           fontWeight: FontWeight.w900,

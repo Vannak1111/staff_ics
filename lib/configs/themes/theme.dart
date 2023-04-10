@@ -4,8 +4,7 @@ import 'package:staff_ics/configs/const/app_colors.dart';
 
 ThemeData theme() {
   return ThemeData(
-    primaryColor: AppColor.backgroundColor,
-    brightness: Brightness.light,
+    primaryColor: AppColor.primaryColor,
     textTheme: TextTheme(
       titleLarge: const TextStyle(
           color: Colors.white,

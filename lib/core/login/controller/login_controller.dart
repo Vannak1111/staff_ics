@@ -11,6 +11,8 @@ final emailController=TextEditingController().obs;
 final passwordController = TextEditingController().obs;
 final isDisableButton = false.obs;
 final hidePasswork =false.obs;
+final isName=''.obs;
+final isActive = ''.obs;
 void login() {
     debugPrint("value ${storage.read('device_token')}");
     debugPrint("value ${emailController.value.text.trim()}");
@@ -20,9 +22,8 @@ void login() {
         .then((value) {
       try {
         storage.write('user_token', value.data.token);
-        storage.write('isActive', value.data.studentId);
-        // storage.write('isName', value.data.name);
-        // debugPrint("khmer sl khmer ");
+        isActive.value=value.data.studentId;
+        isName.value= value.data.name;
         Get.toNamed('canteen');
       } catch (err) {
           isDisableButton.value = false;

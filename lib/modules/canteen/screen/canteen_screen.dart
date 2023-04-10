@@ -68,69 +68,10 @@ class _CanteenScreenState extends State<CanteenScreen> {
             )),
           ],
         ),
-        // Positioned(
-        //   left: 20,
-        //   top: 40,
-        //   child: InkWell(
-        //     onTap: () => Navigator.of(context).pop(),
-        //     child: Icon(
-        //       !Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
-        //       size: 25,
-        //       color: Colors.white,
-        //     ),
-        //   ),
-        // )
+       
       ],
     );
   }
-
-  get _buildHeader {
-    return _controller.recPosUserData[0].name != ""
-        ? Container(
-            padding: const EdgeInsets.all(8.0),
-            height: 30.h,
-            color: AppColor.primaryColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _buildUrlImages(storage.read('isPhoto') ?? ''),
-                SizedBox(
-                  width: 2.w,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Text(_controller.recPosUserData[0].name,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                                  SizerUtil.deviceType == DeviceType.tablet
-                                      ? 14.sp
-                                      : 18.sp)),
-                    ),
-                    Text('${storage.read('isActive') ?? 'No'} ',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: SizerUtil.deviceType == DeviceType.tablet
-                                ? 10.sp
-                                : 11.sp)),
-                  ],
-                ),
-              ],
-            ),
-          )
-        : Container(
-            padding: const EdgeInsets.all(8.0),
-            height: 30.h,
-            color: AppColor.primaryColor,
-          );
-  }
-
   get _buildBodyListExtend {
     return _controller.recPosUserData[0].cardId != ""
         ? Expanded(
@@ -229,18 +170,14 @@ class _CanteenScreenState extends State<CanteenScreen> {
         } else if ((_controller.recPosUserData[0].cardId != "" &&
             _controller.posSessionTopUpId.value != 0 &&
             index == 1)) {
-              debugPrint("ncie to meet you bro");
           Get.toNamed('top-up');
-          // handleReturnData(
-          //     route: _controller.menuCanteenList[index].route,
-          //     arg: _controller.productCount.value);
         } else if ((_controller.recPosUserData[0].cardId != "" &&
-            (index == 2 || index == 3))) {
-              Get.toNamed('iwallet',arguments: 0);
-          // handleReturnData(
-          //     route: _controller.menuCanteenList[index].route,
-          //     arg: _controller.productCount.value);
-        } else if (_controller.recPosUserData[0].cardId == "") {
+            (index == 2 ))) {
+          Get.toNamed('iwallet',arguments: 0);
+        } else if ((_controller.recPosUserData[0].cardId != "" &&
+            (index == 3 ))) {
+          Get.toNamed('purchase-limit');
+        }else if (_controller.recPosUserData[0].cardId == "") {
           title = 'CARD';
           body = 'UNREGISTER';
           message(title: title, body: body);
@@ -253,9 +190,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
           body = storage.read("message_top_up_closed");
           message(title: title, body: body);
         } else if (index == 4) {
-          handleReturnData(
-              route: _controller.menuCanteenList[index].route,
-              arg: _controller.productCount.value);
+          Get.toNamed('terms-conditlions');
         }
       },
     );
