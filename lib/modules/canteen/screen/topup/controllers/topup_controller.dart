@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:dio/dio.dart';
+import 'package:staff_ics/utils/widgets/catch_dialog.dart';
 import '../../../../../configs/const/ulr.dart';
 import '../../../controllers/fetch_pos.dart';
 import '../models/aba_qr_db.dart';
@@ -35,16 +36,8 @@ class TopUpController extends GetxController {
         }
       } catch (err) {
         print("err=$err");
-        Get.defaultDialog(
-            title: "Oops!",
-            middleText: "Something went wrong.\nPlease try again later.",
-            barrierDismissible: false,
-            confirm: ElevatedButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: Text("OK"),
-            ));
+        CatchDialog(messageError: "Something went wrong.\nPlease try again later.", title: "Oops!");
+       
       }
     });
   }
@@ -134,16 +127,8 @@ class TopUpController extends GetxController {
           isDisableButton.value = false;
 
           EasyLoading.dismiss();
-          Get.defaultDialog(
-            title: "Error",
-            middleText: "$value",
-            barrierDismissible: true,
-            confirm: ElevatedButton(
-                onPressed: () {
-                  Get.back();
-                },
-                child: Text("OK")),
-          );
+          CatchDialog(messageError: "$value", title: "Error");
+         
         }
       });
     }

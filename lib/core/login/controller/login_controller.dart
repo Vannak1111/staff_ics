@@ -3,9 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:staff_ics/core/login/models/login_model.dart';
+import 'package:staff_ics/utils/widgets/catch_dialog.dart';
 import '../../../modules/canteen/controllers/fetch_pos.dart';
+import '../../../modules/home_screen/controllers/home_screen_controller.dart';
 
 class LoginController extends GetxController{
+      final homeController = Get.put(HomeScreenController());
+
 Dio _dio = Dio();
 final emailController=TextEditingController().obs;
 final passwordController = TextEditingController().obs;
@@ -14,7 +18,7 @@ final hidePasswork =false.obs;
 final isName=''.obs;
 final isActive = ''.obs;
 void login() {
-    debugPrint("value ${storage.read('device_token')}");
+    debugPrint("value device token ${storage.read('device_token')}");
     debugPrint("value ${emailController.value.text.trim()}");
     debugPrint("value ${passwordController.value.text.trim()}");
     userLogin(emailController.value.text.trim(), passwordController.value.text.trim(),
@@ -22,33 +26,35 @@ void login() {
         .then((value) {
       try {
         storage.write('user_token', value.data.token);
+        debugPrint("password ${passwordController.value.text.trim()}");
+        storage.write('isPassword',"${passwordController.value.text.trim()}");
+        storage.write('isActive', value.data.studentId);
+
         isActive.value=value.data.studentId;
-        isName.value= value.data.name;
-        Get.toNamed('canteen');
+        homeController.currentIndex.value=0;
+        emailController.value.text='';
+        passwordController.value.text='';
+        // isName.value= value.data.name;
+        Get.toNamed('home');
+
       } catch (err) {
+
+        debugPrint("you have been catch ");
           isDisableButton.value = false;
         value =
             value == 'Unauthorized' ? 'Username/Password is incorrect!' : value;
-        Get.defaultDialog(
-          title: "Error",
-          titleStyle: TextStyle(color: Colors.black),
-          middleText: "$value",
-          barrierDismissible: false,
-          confirm: reloadBtn(),
-        );
+            CatchDialog( messageError: '${value}', title: 'Error');
       }
     });
   }
 Future userLogin(String email, String password,String firebaseToken) async {
   
     // 'email': 'IS202323',
-    // 'password': '123456',
+    // 'password': '111111',
   try{
-    debugPrint("dfdfdfdfdf");
-    String fullUrl = "http://schooldemo.ics.edu.kh:88/api/login";
     var response = await _dio.post("http://schooldemo.ics.edu.kh:88/api/login",data: {
-    'email': 'IS202323',
-    'password': '123456',
+    'email': '${email}',
+    'password': '${password}',
     'firebase_token': firebaseToken,
   });
     LoginDb loginDb = LoginDb.fromMap(response.data);
@@ -60,13 +66,6 @@ Future userLogin(String email, String password,String firebaseToken) async {
     return errorMessage;
   }
 }
- Widget reloadBtn() {
-    return ElevatedButton(
-        onPressed: () {
-          Get.back();
-        },
-        child: const Text("OK"));
-  }
 }
 
 

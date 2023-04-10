@@ -154,9 +154,9 @@ class _PosHistoryState extends State<PosHistory> {
     fetchPos(route: "order_history").then((value) {
       setState(() {
         try {
-          // print("value123=${value.status}");
+     
           _recPosOrderHistoryData.addAll(value.response);
-          // print("_recPosOrderHistoryData.length=${_recPosOrderHistoryData.length}");
+        
           isLoading = true;
         } catch (err) {
           print("err=$err");
@@ -174,7 +174,6 @@ class _PosHistoryState extends State<PosHistory> {
   Widget reloadBtn() {
     return ElevatedButton(
         onPressed: () {
-          // Get.back();
           Navigator.of(context).pop();
           _fetchPosOrderHistory();
         },

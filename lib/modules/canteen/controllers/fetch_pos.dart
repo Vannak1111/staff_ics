@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:global_configuration/global_configuration.dart';
+import '../../../configs/const/ulr.dart';
 import '../models/pos_db_model.dart';
 import '../models/pos_order_history_db.dart';
 import '../models/pos_user_db_model.dart';
@@ -20,6 +20,7 @@ Future fetchPos({String route = "products"}) async {
       "params": {"route": "products", "campus": storage.read("campus")}
     };
   } else if (route == "user") {
+    debugPrint("nice to meet yu brother ${storage.read('isActive')}");
     data = {
       "params": {"route": "user", "student_id": storage.read("isActive")}
     };
@@ -38,12 +39,14 @@ Future fetchPos({String route = "products"}) async {
     var response = await Dio(BaseOptions(headers: {
       "Accept": "application/json",
       "Content-Type": "application/json"
-    })).post(GlobalConfiguration().get("baseUrl_school"), data: data);
+    })).post(baseUrl_odoo, data: data);
    
     if (route == "products") {
       posDb = PosDb.fromMap(response.data);
       return posDb;
     } else if (route == "user") {
+      debugPrint("KSKSKSKKSKSKS");
+      // debugPrint("data response : ${posUserDb}");
       posUserDb = PosUserDb.fromMap(response.data);
       return posUserDb;
     } else if (route == "order_history") {

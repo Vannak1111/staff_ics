@@ -74,7 +74,6 @@ class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateM
                     return FlexibleSpaceBar(
                         centerTitle: true,
                         background: _buildBalanceCard,
-                        // background: Container(height: 30,color: Colors.green,)
                         );
                   },
                 ),

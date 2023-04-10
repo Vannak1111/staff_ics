@@ -14,6 +14,7 @@ import 'package:staff_ics/modules/canteen/screen/team_conditions/screens/team_co
 import 'package:staff_ics/modules/canteen/screen/topup/screens/topup_screen.dart';
 import 'package:staff_ics/modules/home_screen/screen/home_screen.dart';
 import 'package:staff_ics/core/slash_screen/screens/slash_screen.dart';
+import 'package:staff_ics/modules/profile/screens/profile_screen.dart';
 
 import 'configs/themes/theme.dart';
 
@@ -40,14 +41,15 @@ class MyApp extends StatelessWidget {
         routes: {
           'login': (context) => const LoginScreen(),
           'home': (context) => const HomeScreen(),
+          'profile': (context) => const ProfileScreen(),
           'canteen': (context) => const CanteenScreen(),
           'top-up': (context) => const TopUpScreen(),
-          'iwallet': (context) => const IWalletScreen(index: 0,),
+          'iwallet': (context) => const IWalletScreen(
+                index: 0,
+              ),
           'pre-order': (context) => const PreOrderScreen(),
           'purchase-limit': (context) => const PurchaseLimitScreen(),
-                    'terms-conditlions': (context) => const TermsAndConditionsScreen(),
-
-
+          'terms-conditlions': (context) => const TermsAndConditionsScreen(),
         },
         builder: EasyLoading.init(),
       ),

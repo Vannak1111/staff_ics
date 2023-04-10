@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:staff_ics/utils/widgets/catch_dialog.dart';
 
 import '../../../controllers/fetch_pos.dart';
 import '../../../models/topup_history_db.dart';
@@ -127,12 +128,7 @@ class _TopUpHistoryState extends State<TopUpHistory> {
           isLoading = true;
         } catch (err) {
           print("err=$err");
-          Get.defaultDialog(
-            title: "Oops!",
-            middleText: "Something went wrong.\nPlease try again later.",
-            barrierDismissible: false,
-            confirm: reloadBtn(),
-          );
+          CatchDialog(messageError: "Something went wrong.\nPlease try again later.", title: 'Oops!');
         }
       });
     });
@@ -145,13 +141,5 @@ class _TopUpHistoryState extends State<TopUpHistory> {
     }
   }
 
-  Widget reloadBtn() {
-    return ElevatedButton(
-        onPressed: () {
-          Get.back();
-          Navigator.of(context).pop();
-          // _fetchPos();
-        },
-        child: Text("OK"));
-  }
+  
 }

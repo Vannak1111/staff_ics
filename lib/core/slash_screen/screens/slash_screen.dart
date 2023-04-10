@@ -18,7 +18,8 @@ class _SlashScreenState extends State<SlashScreen> {
   @override
   void initState() {
     super.initState();
-    if (storage.read('user_token') == '') {
+    controller.registerNotification();
+    if (storage.read('user_token') == null) {
       Future.delayed(const Duration(milliseconds: 1000), () {
         Get.toNamed('login');
       });

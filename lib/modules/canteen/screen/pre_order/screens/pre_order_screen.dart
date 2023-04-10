@@ -25,7 +25,6 @@ class PreOrderScreen extends StatefulWidget {
 class _PreOrderScreenState extends State<PreOrderScreen>
     with TickerProviderStateMixin {
   final _proOrderController = Get.put(PreOrderController());
-  final itemKey = GlobalKey();
   final ItemScrollController itemScrollController = ItemScrollController();
   DefaultCacheManager manager = new DefaultCacheManager();
   late TabController _tabController;

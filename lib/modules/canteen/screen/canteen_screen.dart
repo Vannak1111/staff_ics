@@ -28,19 +28,22 @@ class _CanteenScreenState extends State<CanteenScreen> {
   @override
   void initState() {
     super.initState();
-    _controller.fetchPosUser();
+    _controller.fetchPosUser().then((value) {
+          debugPrint("data from api ${_controller.recPosUserData[0].cardId}");
+
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx(() => Scaffold(
         appBar: CustomAppBar(
           title: "Canteen",
           onTap: () {
             Get.back();
           },
         ),
-        body: Obx(() => !_controller.isLoading.value
+        body:  !_controller.isLoading.value
             ? _loading()
             : Container(
               
@@ -204,7 +207,6 @@ class _CanteenScreenState extends State<CanteenScreen> {
         border: Border.all(color: AppColor.primaryColor,width: 0.8)
        
       ),
-      
       height: 15.h,
       child: _controller.recPosUserData[0].cardId != ""
           ? Column(
@@ -258,26 +260,6 @@ class _CanteenScreenState extends State<CanteenScreen> {
     }
   }
 
-  _buildUrlImages(String urlImage) {
-    return CachedNetworkImage(
-      height: 10.h,
-      width: 10.h,
-      imageUrl: urlImage,
-      imageBuilder: (context, imageProvider) => Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(
-            alignment: Alignment.topCenter,
-            image: imageProvider,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-      placeholder: (context, url) => const CircularProgressIndicator(),
-      errorWidget: (context, url, error) =>
-          Image.asset("assets/icons/login_icon/logo_no_background.png"),
-    );
-  }
 
   bool timeCheck() {
     bool diff = true;

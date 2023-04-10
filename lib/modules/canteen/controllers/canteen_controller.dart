@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:staff_ics/modules/canteen/models/canteen_model.dart';
 import 'package:staff_ics/modules/canteen/models/pos_user_model.dart';
+import 'package:staff_ics/utils/widgets/catch_dialog.dart';
 import 'fetch_pos.dart';
 class CanteenController extends GetxController{
 List<Canteen> menuCanteenList = [
@@ -32,6 +33,7 @@ final cardNo =''.obs;
 Future<void> fetchPosUser() async {
     await fetchPos(route: "user").then((value) {
       try {
+        debugPrint("data response ${value.canteenMenu[0].title}");
         if(isFirstLoading.value){
             for(int i=0;i<value.canteenMenu.length;++i){
                 recCanteenMenu.add(CanteenMenu(title: value.canteenMenu[i].title, subtitle:value.canteenMenu[i].subtitle));
@@ -49,6 +51,7 @@ Future<void> fetchPosUser() async {
           for(int i=0;i<value.response.length;++i){
                 recPosUserData.add(PosUserData(balanceCard: value.response[i].balanceCard, campus: value.response[i].campus, cardId: value.response[i].cardId, cardNo: "1", id: value.response[i].id, name: value.response[i].name, purchaseLimit: value.response[i].purchaseLimit));
             }
+          debugPrint("lethchhhkd ${value.response}");
           balance.value = value.response[0].balanceCard;
           storage.write("campus", value.response[0].campus);
           availableBalance.value=f.format(balance.value);
@@ -70,13 +73,9 @@ Future<void> fetchPosUser() async {
           isLoading.value = true;
       
       } catch (err) {
+        CatchDialog(messageError: "Something went wrong.\nPlease try again later.", title: 'Oops!',);
         debugPrint("you have been catched ");
-        Get.defaultDialog(
-          title: "Oops!",
-          middleText: "Something went wrong.\nPlease try again later.",
-          barrierDismissible: false,
-          // confirm: reloadBtn(),
-        );
+       
       }
     });
   }

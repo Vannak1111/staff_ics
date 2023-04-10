@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:staff_ics/modules/canteen/controllers/canteen_controller.dart';
 import 'package:staff_ics/modules/canteen/screen/purchase_limit/controllers/purchase_controller.dart';
+import 'package:staff_ics/utils/widgets/catch_dialog.dart';
 import 'package:staff_ics/utils/widgets/custom_appbar.dart';
 import 'package:staff_ics/utils/widgets/custom_buttom.dart';
 
@@ -170,21 +171,11 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
         _purchaseController.isDisableButton.value = false;
 
         EasyLoading.dismiss();
-        Get.defaultDialog(
-          title: "Error",
-          middleText: "$value",
-          barrierDismissible: true,
-          confirm: reloadBtn(),
-        );
+        CatchDialog(messageError: "${value}", title: "Error");
+     
       }
     });
   }
 
-  Widget reloadBtn() {
-    return ElevatedButton(
-        onPressed: () {
-          Get.back();
-        },
-        child: Text("OK"));
-  }
+
 }

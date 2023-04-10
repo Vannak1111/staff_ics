@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:staff_ics/modules/canteen/screen/pre_order/controllers/pre_order_controller.dart';
+import 'package:staff_ics/utils/widgets/catch_dialog.dart';
 
 import '../../../controllers/fetch_pos.dart';
 
@@ -59,17 +60,8 @@ class ComfirmController extends GetxController{
           isDisableButton.value = false;
     
         EasyLoading.dismiss();
-        Get.defaultDialog(
-          title: "Error",
-          middleText: "$value",
-          barrierDismissible: true,
-          confirm: ElevatedButton(
-        onPressed: () {
-          Get.back();
+        CatchDialog(messageError: "${value.message}", title: "Error");
         
-        },
-        child: Text("OK",style: TextStyle(color: Colors.black))),
-        );
       }
     });
   }
