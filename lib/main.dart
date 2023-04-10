@@ -8,6 +8,7 @@ import 'package:sizer/sizer.dart';
 import 'package:staff_ics/core/login/screen/login_screen.dart';
 import 'package:staff_ics/modules/canteen/screen/canteen_screen.dart';
 import 'package:staff_ics/modules/canteen/screen/iWallet/screens/iwallet_screen.dart';
+import 'package:staff_ics/modules/canteen/screen/pre_order/screens/pre_order_screen.dart';
 import 'package:staff_ics/modules/canteen/screen/topup/screens/topup_screen.dart';
 import 'package:staff_ics/modules/home_screen/screen/home_screen.dart';
 import 'package:staff_ics/core/slash_screen/screens/slash_screen.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           'canteen': (context) => const CanteenScreen(),
           'top-up': (context) => const TopUpScreen(),
           'iwallet': (context) => const IWalletScreen(index: 0,),
+          'pre-order': (context) => const PreOrderScreen(),
         },
         builder: EasyLoading.init(),
       ),

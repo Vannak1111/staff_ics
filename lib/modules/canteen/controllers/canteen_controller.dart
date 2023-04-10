@@ -6,12 +6,12 @@ import 'package:staff_ics/modules/canteen/models/canteen_model.dart';
 import 'package:staff_ics/modules/canteen/models/pos_user_model.dart';
 import 'fetch_pos.dart';
 class CanteenController extends GetxController{
-  List<Canteen> menuCanteenList = [
-  Canteen(img: 'assets/icons/canteen/foods_drinks.png', title: 'Pre-Order (For Lunch Only)', subtitle: 'Please make pre-orders before 10:00AM', route: 'pos_order'),
-  Canteen(img: 'assets/icons/canteen/top_up.png', title: 'Top Up', subtitle: 'The amount will be transferred to your iWallet within 1 working day', route: 'top_up'),
-  Canteen(img: 'assets/icons/canteen/iwallet_card.png', title: 'iWallet', subtitle: 'History of pre-oders and top ups', route: 'i_wallet'),
-  Canteen(img: 'assets/icons/canteen/limit_purchase.png', title: 'Purchase Limit', subtitle: 'Set a daily purchase limit', route: 'limit_purchase'),
-  Canteen(img: 'assets/icons/canteen/term_condition.png', title: 'Terms & Conditions', subtitle: 'Rules and Guidelines', route: 'terms_conditions'),
+List<Canteen> menuCanteenList = [
+  Canteen(img: 'assets/image/canteen/foods_drinks.png', title: 'Pre-Order (For Lunch Only)', subtitle: 'Please make pre-orders before 10:00AM', route: 'pos_order'),
+  Canteen(img: 'assets/image/canteen/top_up.png', title: 'Top Up', subtitle: 'The amount will be transferred to your iWallet within 1 working day', route: 'top_up'),
+  Canteen(img: 'assets/image/canteen/iwallet_card.png', title: 'iWallet', subtitle: 'History of pre-oders and top ups', route: 'i_wallet'),
+  Canteen(img: 'assets/image/canteen/limit_purchase.png', title: 'Purchase Limit', subtitle: 'Set a daily purchase limit', route: 'limit_purchase'),
+  Canteen(img: 'assets/image/canteen/term_condition.png', title: 'Terms & Conditions', subtitle: 'Rules and Guidelines', route: 'terms_conditions'),
 ];
   final recPosUserData = <PosUserData>[].obs;
   final recCanteenMenu =<CanteenMenu>[].obs;

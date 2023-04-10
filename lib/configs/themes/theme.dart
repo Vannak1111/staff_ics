@@ -21,9 +21,15 @@ ThemeData theme() {
           fontSize: SizerUtil.deviceType == DeviceType.tablet ? 9.sp : 11.sp,
           fontWeight: FontWeight.bold,
           color: AppColor.primaryColor,),
+          bodyLarge:  TextStyle(
+                  fontSize: SizerUtil.deviceType == DeviceType.tablet ? 20 : 16,
+                  color:  AppColor.primaryColor
+                  ,),
           bodyMedium: TextStyle(
                   fontSize: SizerUtil.deviceType == DeviceType.tablet ? 18 : 14,
-                  color:  Colors.black,),
+                  color:  Colors.black,fontWeight: FontWeight.bold
+                  ,),
+                
       bodySmall:  TextStyle(
                   fontSize: SizerUtil.deviceType == DeviceType.tablet ? 18 : 14,
                   color: const Color(0xff1a0785),

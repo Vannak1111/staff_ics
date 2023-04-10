@@ -1,6 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:staff_ics/modules/canteen/controllers/canteen_controller.dart';
+import 'package:staff_ics/modules/canteen/screen/pre_order/controllers/pre_order_controller.dart';
 import 'package:staff_ics/utils/widgets/custom_appbar.dart';
 
 class CanteenScreen extends StatefulWidget {
@@ -23,6 +23,7 @@ class CanteenScreen extends StatefulWidget {
 class _CanteenScreenState extends State<CanteenScreen> {
   final storage = GetStorage();
   final _controller = Get.put(CanteenController());
+  final _proOrderController = Get.put(PreOrderController());
   late String title, body;
   @override
   void initState() {
@@ -67,18 +68,18 @@ class _CanteenScreenState extends State<CanteenScreen> {
             )),
           ],
         ),
-        Positioned(
-          left: 20,
-          top: 40,
-          child: InkWell(
-            onTap: () => Navigator.of(context).pop(),
-            child: Icon(
-              !Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
-              size: 25,
-              color: Colors.white,
-            ),
-          ),
-        )
+        // Positioned(
+        //   left: 20,
+        //   top: 40,
+        //   child: InkWell(
+        //     onTap: () => Navigator.of(context).pop(),
+        //     child: Icon(
+        //       !Platform.isAndroid ? Icons.arrow_back_ios : Icons.arrow_back,
+        //       size: 25,
+        //       color: Colors.white,
+        //     ),
+        //   ),
+        // )
       ],
     );
   }
@@ -179,8 +180,8 @@ class _CanteenScreenState extends State<CanteenScreen> {
                 children: [
                   SizedBox(
                     height: 10.w,
-                    child: const Icon(Icons.home),
-                    // child: Image.asset(_controller.menuCanteenList[index].img),
+                    // child: const Icon(Icons.home),
+                    child: Image.asset(_controller.menuCanteenList[index].img),
                   ),
                   SizedBox(
                     width: 5.w,
@@ -220,9 +221,11 @@ class _CanteenScreenState extends State<CanteenScreen> {
         if ((_controller.recPosUserData[0].cardId != "" &&
             _controller.posSessionOrderId.value != 0 &&
             index == 0)) {
-          handleReturnData(
-              route: _controller.menuCanteenList[index].route,
-              arg: _controller.productCount.value);
+              _proOrderController.item.value=0;
+              _proOrderController.isLoading.value=false;
+             _proOrderController.recPosData.value=[];
+             _proOrderController.subTotal.value=0;
+              Get.toNamed('pre-order',arguments: _controller.productCount.value);
         } else if ((_controller.recPosUserData[0].cardId != "" &&
             _controller.posSessionTopUpId.value != 0 &&
             index == 1)) {
@@ -233,7 +236,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
           //     arg: _controller.productCount.value);
         } else if ((_controller.recPosUserData[0].cardId != "" &&
             (index == 2 || index == 3))) {
-              Get.toNamed('iwallet',arguments: 1);
+              Get.toNamed('iwallet',arguments: 0);
           // handleReturnData(
           //     route: _controller.menuCanteenList[index].route,
           //     arg: _controller.productCount.value);

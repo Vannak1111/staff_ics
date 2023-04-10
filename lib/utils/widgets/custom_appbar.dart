@@ -7,6 +7,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final GestureTapCallback? onTap;
   final String title;
   final bool isBack;
+  
   CustomAppBar({this.onTap, required this.title,this.isBack=true});
   Size get preferredSize => Size.fromHeight(80);
   

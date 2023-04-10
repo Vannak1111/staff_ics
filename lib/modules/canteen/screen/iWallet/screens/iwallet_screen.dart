@@ -12,7 +12,7 @@ import 'order_history.dart';
 
 class IWalletScreen extends StatefulWidget {
   final int index;
-  const IWalletScreen({Key? key, required this.index}) : super(key: key);
+  const IWalletScreen({Key? key,  this.index=0}) : super(key: key);
 
   @override
   _IWalletScreenState createState() => _IWalletScreenState();
@@ -22,7 +22,7 @@ class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateM
   late String device;
   final storage = GetStorage();
   double _fontSize = 0;
-  var changeTitle = 0.0, low = 0.0;
+  var changeTitle = 0.0 ;
   late TabController _tabController;
 
   @override
@@ -35,17 +35,15 @@ class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateM
       device = 'iOS';
 
     _tabController = TabController(length: 2, vsync: this);
-    _tabController.animateTo(1);
-    // _tabController = TabController(length: 2, vsync: this);
+    _tabController.animateTo(0);
+    _tabController = TabController(length: 2, vsync: this);
     _fontSize = SizerUtil.deviceType == DeviceType.tablet ? 9.sp : 11.sp;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: CustomAppBar(title: "I Wallet History",onTap: (){
-      //   Get.back();
-      // },),
+     
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
@@ -139,17 +137,16 @@ class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateM
       padding: EdgeInsets.only(left: 10, right: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        // borderRadius: BorderRadius.circular(10),
-        // image: DecorationImage(
-        //   image: AssetImage("assets/image/canteen/iwallet_card.png"),
-        //   fit: BoxFit.cover,
-        // ),
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(
+          image: AssetImage("assets/image/canteen/iWallet.png"),
+          fit: BoxFit.cover,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text(''),
           Container(
             child: Text("${storage.read("card_no")}",
                 style: TextStyle(
@@ -178,7 +175,7 @@ class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateM
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("${storage.read('isName')} 333",
+                  Text("${storage.read('isName')}",
                       style: TextStyle(
                           color: Color(0xff1d1a56),
                           fontWeight: FontWeight.bold,
