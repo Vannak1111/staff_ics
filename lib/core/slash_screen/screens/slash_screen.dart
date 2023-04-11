@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:staff_ics/core/slash_screen/controllers/slash_screen_controller.dart';
-
 class SlashScreen extends StatefulWidget {
   const SlashScreen({super.key});
 
@@ -24,6 +23,7 @@ class _SlashScreenState extends State<SlashScreen> {
         Get.toNamed('login');
       });
     } else {
+      
       Future.delayed(const Duration(milliseconds: 1000), () {
         Get.toNamed('home');
       });

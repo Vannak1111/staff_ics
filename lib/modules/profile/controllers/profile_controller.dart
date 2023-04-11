@@ -1,6 +1,7 @@
 import 'dart:async';
 // import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:path/path.dart';
@@ -17,7 +18,14 @@ import '../models/profile_model.dart';
 
 class ProfileController extends GetxController {
   final storage = GetStorage();
+    final isLoading = false.obs;
 
+  final emailController = TextEditingController().obs;
+    final passwordController = TextEditingController().obs;
+
+  final currentPasswordController = TextEditingController().obs;
+  final newPasswordController = TextEditingController().obs;
+  final confirmPasswordController = TextEditingController().obs;
   Future fetchProfile({required String apiKey}) async {
   try {
     String fullUrl = baseUrl_school + getProfile;
@@ -25,7 +33,7 @@ class ProfileController extends GetxController {
       "Accept": "application/json",
       "Authorization": "Bearer $apiKey"
     })).get(fullUrl);
-    print("response.data= ksk ${response.data}");
+    print("response.data=  ${response.data}");
     ProfileDb profileDb = ProfileDb.fromMap(response.data);
     return profileDb;
   } on DioError catch (e) {

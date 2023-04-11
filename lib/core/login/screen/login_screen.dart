@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
+import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:staff_ics/core/login/controller/login_controller.dart';
 
 import '../../../utils/widgets/custom_buttom.dart';
@@ -28,12 +29,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 Stack(
                   alignment: Alignment.topCenter,
                   children: [
-                    Image.asset(
-                      SizerUtil.deviceType == DeviceType.tablet
-                          ? "assets/image/login/background.png"
-                          : "assets/image/login/background.png",
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+                    CustomPaint(
+                      size: Size(
+                          100.w,
+                          (100.h * 0.5)
+                              .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                      painter: RPSCustomPainter(),
                     ),
                     Positioned(
                       child: Container(
@@ -49,7 +50,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-                // Text('USER LOGIN', style: Theme.of(context).textTheme.titleSmall),
                 Container(
                   margin: const EdgeInsets.only(left: 20, right: 20),
                   child: Column(children: [
@@ -96,11 +96,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 3.h),
                     CustomButtom(
                       ontap: () {
-                        debugPrint("nice to meet you ");
                         loginController.login();
                       },
                       title: "LOGIN",
                       isDisable: loginController.isDisableButton.value,
+                      radius: 30,
                     ),
                   ]),
                 ),
@@ -113,3 +113,25 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
+class RPSCustomPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint0 = Paint()
+      ..color = AppColor.primaryColor
+      ..style = PaintingStyle.fill
+      ..strokeWidth = 1;
+    Path path0 = Path();
+    path0.moveTo(0, 0);
+    path0.lineTo(size.width, 0);
+    path0.lineTo(size.width, size.height * 0.5740000);
+    path0.lineTo(0, size.height);
+    path0.lineTo(0, 0);
+    path0.close();
+    canvas.drawPath(path0, paint0);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -416,231 +418,7 @@ class _PreOrderScreenState extends State<PreOrderScreen>
     return tabs;
   }
 
-  get _buildBody {
-    return ScrollablePositionedList.builder(
-        itemScrollController: itemScrollController,
-        itemPositionsListener: _itemPositionsListener,
-        itemCount: _proOrderController.recPosData.length,
-        itemBuilder: (context, index) {
-          return StickyHeader(
-            header: Container(
-              height: 8.h,
-              color: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '${_proOrderController.recPosData[index].group}',
-              ),
-            ),
-            content: Container(
-              child: ListView.builder(
-                  controller: _proOrderController.scrollController.value,
-                  physics: PageScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: _proOrderController.recPosData[index].list.length,
-                  itemBuilder: (context, index2) => Container(
-                        child: InkWell(
-                          child: Card(
-                            color: _proOrderController.recPosData[index]
-                                        .list[index2].amount !=
-                                    0
-                                ? Colors.grey.shade200
-                                : null,
-                            elevation: 5,
-                            child: Column(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(8),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 12.h,
-                                        height: 12.h,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10.0)),
-                                            image: DecorationImage(
-                                              image: imageFromBase64String(
-                                                  jsonDecode(_proOrderController
-                                                      .recPosData[index]
-                                                      .list[index2]
-                                                      .image)),
-                                              fit: BoxFit.cover,
-                                            )),
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          height: 12.h,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Container(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    "${_proOrderController.recPosData[index].list[index2].name}",
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.left,
-                                                  )),
-                                              Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  "\$${f.format(_proOrderController.recPosData[index].list[index2].lstPrice)}",
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      _proOrderController.recPosData[index]
-                                                  .list[index2].amount !=
-                                              0
-                                          ? Container(
-                                              height: 5.h,
-                                              width: 22.w,
-                                              decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.5),
-                                                      spreadRadius: 1,
-                                                      blurRadius: 7,
-                                                      offset: Offset(0,
-                                                          3), // changes position of shadow
-                                                    ),
-                                                  ],
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    InkWell(
-                                                      child: Icon(
-                                                        Icons.remove,
-                                                        color: Colors.black,
-                                                      ),
-                                                      onTap: () {
-                                                        debugPrint(
-                                                            "nice to meet you getx ");
-                                                        _proOrderController
-                                                                .recPosData[index]
-                                                                .list[index2]
-                                                                .amount =
-                                                            _proOrderController
-                                                                    .recPosData[
-                                                                        index]
-                                                                    .list[
-                                                                        index2]
-                                                                    .amount -
-                                                                1;
-                                                        _proOrderController
-                                                                .subTotal
-                                                                .value =
-                                                            _proOrderController
-                                                                    .subTotal
-                                                                    .value -
-                                                                _proOrderController
-                                                                    .recPosData[
-                                                                        index]
-                                                                    .list[
-                                                                        index2]
-                                                                    .lstPrice;
-                                                        _proOrderController
-                                                            .item.value--;
-                                                      },
-                                                    ),
-                                                    Text(
-                                                        '${_proOrderController.recPosData[index].list[index2].amount}'),
-                                                    InkWell(
-                                                      child: Icon(
-                                                        Icons.add,
-                                                        color: Colors.blue,
-                                                      ),
-                                                      onTap: () {
-                                                        debugPrint(
-                                                            "ncie to meet you hhhhhh");
-                                                        _proOrderController
-                                                                .recPosData[index]
-                                                                .list[index2]
-                                                                .amount =
-                                                            _proOrderController
-                                                                    .recPosData[
-                                                                        index]
-                                                                    .list[
-                                                                        index2]
-                                                                    .amount +
-                                                                1;
-                                                        _proOrderController
-                                                            .item.value++;
-                                                        _proOrderController
-                                                                .subTotal
-                                                                .value =
-                                                            _proOrderController
-                                                                    .subTotal
-                                                                    .value +
-                                                                _proOrderController
-                                                                    .recPosData[
-                                                                        index]
-                                                                    .list[
-                                                                        index2]
-                                                                    .lstPrice;
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                          : ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                elevation: 8.0,
-                                                backgroundColor: Colors.white,
-                                                shape: CircleBorder(),
-                                              ),
-                                              onPressed: () {
-                                                debugPrint("khmer sl khmer ");
-                                                _proOrderController
-                                                    .recPosData[index]
-                                                    .list[index2]
-                                                    .amount = 1;
-                                                _proOrderController
-                                                    .item.value++;
-                                                _proOrderController.subTotal
-                                                    .value = _proOrderController
-                                                        .subTotal.value +
-                                                    _proOrderController
-                                                        .recPosData[index]
-                                                        .list[index2]
-                                                        .lstPrice;
-                                              },
-                                              child: Icon(
-                                                Icons.add,
-                                                color: Color(0xff1d1a56),
-                                              )),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )),
-            ),
-          );
-        });
-  }
+ 
 
   void scrollTo(int index) {
     itemScrollController.scrollTo(
@@ -776,3 +554,228 @@ class _PreOrderScreenState extends State<PreOrderScreen>
     return MemoryImage(base64Decode(base64String));
   }
 }
+ // get _buildBody {
+  //   return ScrollablePositionedList.builder(
+  //       itemScrollController: itemScrollController,
+  //       itemPositionsListener: _itemPositionsListener,
+  //       itemCount: _proOrderController.recPosData.length,
+  //       itemBuilder: (context, index) {
+  //         return StickyHeader(
+  //           header: Container(
+  //             height: 8.h,
+  //             color: Colors.white,
+  //             padding: const EdgeInsets.symmetric(horizontal: 8.0),
+  //             alignment: Alignment.centerLeft,
+  //             child: Text(
+  //               '${_proOrderController.recPosData[index].group}',
+  //             ),
+  //           ),
+  //           content: Container(
+  //             child: ListView.builder(
+  //                 controller: _proOrderController.scrollController.value,
+  //                 physics: PageScrollPhysics(),
+  //                 shrinkWrap: true,
+  //                 itemCount: _proOrderController.recPosData[index].list.length,
+  //                 itemBuilder: (context, index2) => Container(
+  //                       child: InkWell(
+  //                         child: Card(
+  //                           color: _proOrderController.recPosData[index]
+  //                                       .list[index2].amount !=
+  //                                   0
+  //                               ? Colors.grey.shade200
+  //                               : null,
+  //                           elevation: 5,
+  //                           child: Column(
+  //                             children: [
+  //                               Container(
+  //                                 padding: EdgeInsets.all(8),
+  //                                 child: Row(
+  //                                   children: [
+  //                                     Container(
+  //                                       width: 12.h,
+  //                                       height: 12.h,
+  //                                       decoration: BoxDecoration(
+  //                                           color: Colors.white,
+  //                                           borderRadius: BorderRadius.all(
+  //                                               Radius.circular(10.0)),
+  //                                           image: DecorationImage(
+  //                                             image: imageFromBase64String(
+  //                                                 jsonDecode(_proOrderController
+  //                                                     .recPosData[index]
+  //                                                     .list[index2]
+  //                                                     .image)),
+  //                                             fit: BoxFit.cover,
+  //                                           )),
+  //                                     ),
+  //                                     SizedBox(
+  //                                       width: 8,
+  //                                     ),
+  //                                     Expanded(
+  //                                       child: Container(
+  //                                         height: 12.h,
+  //                                         child: Column(
+  //                                           mainAxisAlignment:
+  //                                               MainAxisAlignment.spaceEvenly,
+  //                                           children: [
+  //                                             Container(
+  //                                                 alignment:
+  //                                                     Alignment.centerLeft,
+  //                                                 child: Text(
+  //                                                   "${_proOrderController.recPosData[index].list[index2].name}",
+  //                                                   maxLines: 1,
+  //                                                   overflow:
+  //                                                       TextOverflow.ellipsis,
+  //                                                   textAlign: TextAlign.left,
+  //                                                 )),
+  //                                             Align(
+  //                                               alignment: Alignment.centerLeft,
+  //                                               child: Text(
+  //                                                 "\$${f.format(_proOrderController.recPosData[index].list[index2].lstPrice)}",
+  //                                               ),
+  //                                             ),
+  //                                           ],
+  //                                         ),
+  //                                       ),
+  //                                     ),
+  //                                     _proOrderController.recPosData[index]
+  //                                                 .list[index2].amount !=
+  //                                             0
+  //                                         ? Container(
+  //                                             height: 5.h,
+  //                                             width: 22.w,
+  //                                             decoration: BoxDecoration(
+  //                                                 boxShadow: [
+  //                                                   BoxShadow(
+  //                                                     color: Colors.grey
+  //                                                         .withOpacity(0.5),
+  //                                                     spreadRadius: 1,
+  //                                                     blurRadius: 7,
+  //                                                     offset: Offset(0,
+  //                                                         3), // changes position of shadow
+  //                                                   ),
+  //                                                 ],
+  //                                                 color: Colors.white,
+  //                                                 borderRadius:
+  //                                                     BorderRadius.circular(5)),
+  //                                             child: Padding(
+  //                                               padding:
+  //                                                   const EdgeInsets.all(4.0),
+  //                                               child: Row(
+  //                                                 mainAxisAlignment:
+  //                                                     MainAxisAlignment
+  //                                                         .spaceBetween,
+  //                                                 children: [
+  //                                                   InkWell(
+  //                                                     child: Icon(
+  //                                                       Icons.remove,
+  //                                                       color: Colors.black,
+  //                                                     ),
+  //                                                     onTap: () {
+  //                                                       debugPrint(
+  //                                                           "nice to meet you getx ");
+  //                                                       _proOrderController
+  //                                                               .recPosData[index]
+  //                                                               .list[index2]
+  //                                                               .amount =
+  //                                                           _proOrderController
+  //                                                                   .recPosData[
+  //                                                                       index]
+  //                                                                   .list[
+  //                                                                       index2]
+  //                                                                   .amount -
+  //                                                               1;
+  //                                                       _proOrderController
+  //                                                               .subTotal
+  //                                                               .value =
+  //                                                           _proOrderController
+  //                                                                   .subTotal
+  //                                                                   .value -
+  //                                                               _proOrderController
+  //                                                                   .recPosData[
+  //                                                                       index]
+  //                                                                   .list[
+  //                                                                       index2]
+  //                                                                   .lstPrice;
+  //                                                       _proOrderController
+  //                                                           .item.value--;
+  //                                                     },
+  //                                                   ),
+  //                                                   Text(
+  //                                                       '${_proOrderController.recPosData[index].list[index2].amount}'),
+  //                                                   InkWell(
+  //                                                     child: Icon(
+  //                                                       Icons.add,
+  //                                                       color: Colors.blue,
+  //                                                     ),
+  //                                                     onTap: () {
+  //                                                       debugPrint(
+  //                                                           "ncie to meet you hhhhhh");
+  //                                                       _proOrderController
+  //                                                               .recPosData[index]
+  //                                                               .list[index2]
+  //                                                               .amount =
+  //                                                           _proOrderController
+  //                                                                   .recPosData[
+  //                                                                       index]
+  //                                                                   .list[
+  //                                                                       index2]
+  //                                                                   .amount +
+  //                                                               1;
+  //                                                       _proOrderController
+  //                                                           .item.value++;
+  //                                                       _proOrderController
+  //                                                               .subTotal
+  //                                                               .value =
+  //                                                           _proOrderController
+  //                                                                   .subTotal
+  //                                                                   .value +
+  //                                                               _proOrderController
+  //                                                                   .recPosData[
+  //                                                                       index]
+  //                                                                   .list[
+  //                                                                       index2]
+  //                                                                   .lstPrice;
+  //                                                     },
+  //                                                   ),
+  //                                                 ],
+  //                                               ),
+  //                                             ),
+  //                                           )
+  //                                         : ElevatedButton(
+  //                                             style: ElevatedButton.styleFrom(
+  //                                               elevation: 8.0,
+  //                                               backgroundColor: Colors.white,
+  //                                               shape: CircleBorder(),
+  //                                             ),
+  //                                             onPressed: () {
+  //                                               debugPrint("khmer sl khmer ");
+  //                                               _proOrderController
+  //                                                   .recPosData[index]
+  //                                                   .list[index2]
+  //                                                   .amount = 1;
+  //                                               _proOrderController
+  //                                                   .item.value++;
+  //                                               _proOrderController.subTotal
+  //                                                   .value = _proOrderController
+  //                                                       .subTotal.value +
+  //                                                   _proOrderController
+  //                                                       .recPosData[index]
+  //                                                       .list[index2]
+  //                                                       .lstPrice;
+  //                                             },
+  //                                             child: Icon(
+  //                                               Icons.add,
+  //                                               color: Color(0xff1d1a56),
+  //                                             )),
+  //                                   ],
+  //                                 ),
+  //                               ),
+  //                             ],
+  //                           ),
+  //                         ),
+  //                       ),
+  //                     )),
+  //           ),
+  //         );
+  //       });
+  // }

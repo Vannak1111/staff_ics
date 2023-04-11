@@ -2,7 +2,6 @@
 
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -50,7 +49,8 @@ class _CanteenScreenState extends State<CanteenScreen> {
               child: Column(
                 children: [
                    _buildMainBalance,
-                   _buildBodyListExtend],
+                   _buildBodyListExtend,
+                   ],
               ),
             )));
   }
@@ -61,8 +61,8 @@ class _CanteenScreenState extends State<CanteenScreen> {
         Column(
           children: [
             Container(
-              height: 30.h,
-              color: const Color(0xff1d1a56),
+              height: 15.h,
+              color: const Color(0xff001845),
               margin: EdgeInsets.only(bottom: 2.h),
             ),
             Center(
@@ -82,7 +82,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 5.h,
+                    height: 2.h,
                   ),
                   ListView.builder(
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -114,6 +114,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
   _buildItem(int index) {
     return GestureDetector(
       child: Container(
+      
           alignment: Alignment.centerLeft,
           margin: const EdgeInsets.only(left: 25, right: 25),
           height: 8.h,
@@ -124,7 +125,6 @@ class _CanteenScreenState extends State<CanteenScreen> {
                 children: [
                   SizedBox(
                     height: 10.w,
-                    // child: const Icon(Icons.home),
                     child: Image.asset(_controller.menuCanteenList[index].img),
                   ),
                   SizedBox(
@@ -203,14 +203,14 @@ class _CanteenScreenState extends State<CanteenScreen> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-     color: Color(0xff002962),
+     color: Color(0xff001845),
         border: Border.all(color: AppColor.primaryColor,width: 0.8)
        
       ),
       height: 15.h,
       child: _controller.recPosUserData[0].cardId != ""
           ? Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            
             children: [
               Spacer(),
               Text("Available Balance",
@@ -234,11 +234,12 @@ class _CanteenScreenState extends State<CanteenScreen> {
                                 Spacer(),
             ],
           )
-          : Container(
+          : 
+          Container(
               alignment: Alignment.center,
               child: AutoSizeText("${storage.read("unregistered")}",
                   style: TextStyle(
-                      color: const Color(0xff1d1a56),
+                      color: const Color(0xff001845),
                       fontWeight: FontWeight.bold,
                       fontSize: SizerUtil.deviceType == DeviceType.tablet
                           ? 16.sp

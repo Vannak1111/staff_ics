@@ -17,9 +17,7 @@ class _PosHistoryState extends State<PosHistory> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
     _fetchPosOrderHistory();
   }
 

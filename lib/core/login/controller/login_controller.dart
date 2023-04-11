@@ -29,7 +29,6 @@ void login() {
         debugPrint("password ${passwordController.value.text.trim()}");
         storage.write('isPassword',"${passwordController.value.text.trim()}");
         storage.write('isActive', value.data.studentId);
-
         isActive.value=value.data.studentId;
         homeController.currentIndex.value=0;
         emailController.value.text='';
@@ -48,7 +47,6 @@ void login() {
     });
   }
 Future userLogin(String email, String password,String firebaseToken) async {
-  
     // 'email': 'IS202323',
     // 'password': '111111',
   try{
@@ -58,10 +56,10 @@ Future userLogin(String email, String password,String firebaseToken) async {
     'firebase_token': firebaseToken,
   });
     LoginDb loginDb = LoginDb.fromMap(response.data);
-    debugPrint("token ${loginDb.data.token}");
+    // debugPrint("token ${loginDb.data.token}");
     return loginDb;
   } on DioError catch (e) {
-    debugPrint("you have been catch 4444");
+    debugPrint("you have been catch ");
     final errorMessage = DioExceptions.fromDioError(e).toString();
     return errorMessage;
   }

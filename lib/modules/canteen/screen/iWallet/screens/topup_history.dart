@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
+import 'package:flutter/material.dart';import 'package:sizer/sizer.dart';
 import 'package:staff_ics/utils/widgets/catch_dialog.dart';
 
 import '../../../controllers/fetch_pos.dart';
@@ -19,10 +17,7 @@ class _TopUpHistoryState extends State<TopUpHistory> {
 
   @override
   void initState() {
-    
     super.initState();
-   
-
     _fetchTopUpHistory();
   }
 

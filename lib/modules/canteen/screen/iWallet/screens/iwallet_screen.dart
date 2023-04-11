@@ -14,7 +14,6 @@ import 'order_history.dart';
 class IWalletScreen extends StatefulWidget {
   final int index;
   const IWalletScreen({Key? key,  this.index=0}) : super(key: key);
-
   @override
   _IWalletScreenState createState() => _IWalletScreenState();
 }

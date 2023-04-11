@@ -13,30 +13,26 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../../modules/canteen/controllers/fetch_pos.dart';
 import '../models/notification_list_db.dart';
-import '../models/push_notification_model.dart';
 import '../models/register_device_token_db_model.dart';
 
 class SlashScreenController extends GetxController{
   Dio _dio = Dio();
-  late final FirebaseMessaging _messaging;
   final notificationRoute=''.obs;
   final notificationId=''.obs;
   final notificationUserId=''.obs;
-  PushNotification? _notificationInfo;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
     static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
   Map<String, dynamic> _deviceData = <String, dynamic>{};
 
-  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
-  } 
+  // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // print("Handling a background message: ${message.messageId}");
+  // } 
 
   void registerNotification() async {
     await initPlatformState();
     await Firebase.initializeApp();
-    _messaging = FirebaseMessaging.instance;
     // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     // NotificationSettings settings = await _messaging.requestPermission(
     //   alert: true,
@@ -158,17 +154,17 @@ Future fetchRegisterDeviceToken(String firebaseToken, String model,String osType
       'utsname.machine:': data.utsname.machine,
     };
   }
-  void _fetchNotificationCount() {
-    fetchNotification(read: '2').then((value) {
-      try {
+  // void _fetchNotificationCount() {
+  //   fetchNotification(read: '2').then((value) {
+  //     try {
        
-          storage.write('notification_badge', value.data.total);
+  //         storage.write('notification_badge', value.data.total);
         
-      } catch (err) {
-        print("err=$err");
-      }
-    });
-  }
+  //     } catch (err) {
+  //       print("err=$err");
+  //     }
+  //   });
+  // }
   final storage = GetStorage();
  String getNotificationList = 'api/getnotificationlist';
 

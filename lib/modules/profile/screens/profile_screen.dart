@@ -1,13 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:staff_ics/modules/profile/controllers/profile_controller.dart';
-import 'package:staff_ics/modules/profile/screens/pdf_view_screen.dart';
 import 'package:staff_ics/utils/widgets/catch_dialog.dart';
 import 'package:staff_ics/utils/widgets/custom_buttom.dart';
 
@@ -23,21 +20,12 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final _profileController = Get.put(ProfileController());
   double _fontSize = SizerUtil.deviceType == DeviceType.tablet ? 18 : 14;
-  bool _hide = true,
-      _hideOldPWD = true,
+  bool _hideOldPWD = true,
       _hideNewPWD = true,
       _hideConfirmPWD = true;
-  final picker = ImagePicker();
   final storage = GetStorage();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final currentPasswordController = TextEditingController();
-  final newPasswordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
   late List<Datum1> _profile = [];
-  bool isLoading = false;
   late bool _isDisableButton;
-  late Map<String, dynamic> _mapUser, _mapAllUser;
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -56,14 +44,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Focus.of(context).unfocus();
       },
       child: Scaffold(
-        body: storage.read('user_token') != null ? _buildBody : _loginPage,
+        body: _buildBody,
       ),
     );
   }
 
-  void openPDF(BuildContext context, File file) => Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => PDFViewerPage(file: file)),
-      );
+  // void openPDF(BuildContext context, File file) => Navigator.of(context).push(
+  //       MaterialPageRoute(builder: (context) =>Container()),
+  //     );
 
   get _buildBody {
     return Container(
@@ -106,16 +94,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   get _headerImage {
     if (_profile.isEmpty) {
-      isLoading = false;
+      _profileController .isLoading.value = false;
     } else {
-      isLoading = true;
+      _profileController .isLoading.value = true;
     }
 
     return Container(
       color: AppColor.primaryColor,
       width: 100.w,
       height: 180,
-      child: !isLoading
+      child: !_profileController .isLoading.value
           ? Center(
               child: Container(
                 height: 120,
@@ -154,11 +142,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
   get _studentProfile {
     if (_profile.isEmpty) {
-      isLoading = false;
+      _profileController .isLoading.value = false;
     } else {
-      isLoading = true;
+      _profileController .isLoading.value = true;
     }
-    return !isLoading
+    return !_profileController .isLoading.value
         ? Center(child: CircularProgressIndicator(color: AppColor.primaryColor,))
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,217 +239,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  get _loginPage {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    Image.asset(
-                        SizerUtil.deviceType == DeviceType.tablet
-                            ? "assets/icons/login_icon/iPad.png"
-                            : "assets/icons/login_icon/iPhone.png",
-                        width: double.infinity,
-                        fit: BoxFit.cover),
-                    Positioned(
-                      child: Container(
-                        height: 50.h,
-                        alignment: Alignment.center,
-                        child: Image.asset(
-                            "assets/icons/home_screen_icon_one_color/ICS_International_School.png",
-                            width: SizerUtil.deviceType == DeviceType.tablet
-                                ? 45.w
-                                : 60.w,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                child: Text(
-                  'USER LOGIN',
-                  style: TextStyle(
-                      fontSize: SizerUtil.deviceType == DeviceType.tablet
-                          ? 14.sp
-                          : 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff1a0785)),
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(
-                    horizontal:
-                        SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40),
-                child: TextField(
-                  autocorrect: false,
-                  textInputAction: TextInputAction.next,
-                  controller: emailController,
-                  decoration: InputDecoration(
-                      labelText: "Username", prefixIcon: Icon(Icons.person)),
-                  style: TextStyle(
-                      fontSize:
-                          SizerUtil.deviceType == DeviceType.tablet ? 18 : 14,
-                      color: Color(0xff1a0785)),
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(
-                    horizontal:
-                        SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40),
-                child: TextField(
-                  onSubmitted: (value) {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  },
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    labelText: "Password",
-                    prefixIcon: Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _hide ? Icons.visibility : Icons.visibility_off,
-                        color: Colors.blue,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _hide = !_hide;
-                        });
-                      },
-                    ),
-                  ),
-                  style: TextStyle(
-                      fontSize:
-                          SizerUtil.deviceType == DeviceType.tablet ? 18 : 14,
-                      color: Color(0xff1a0785)),
-                  obscureText: _hide,
-                ),
-              ),
-              SizedBox(height: 3.h),
-              Container(
-                alignment: Alignment.centerRight,
-                margin: EdgeInsets.symmetric(
-                    horizontal:
-                        SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40,
-                    vertical: 10),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_isDisableButton == false) {
-                      setState(() {
-                        _isDisableButton = true;
-                      });
-                      _login();
-                    }
-                  },
-                  style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                    padding: MaterialStateProperty.all<EdgeInsets>(
-                        EdgeInsets.all(0)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                      // side: BorderSide(color: Colors.red)
-                    )),
-                  ),
-                  // shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(15.0)),
-                  // textColor: Colors.white,
-                  // padding: const EdgeInsets.all(0),
-                  child: Container(
-                    alignment: Alignment.center,
-                    height:
-                        SizerUtil.deviceType == DeviceType.tablet ? 60.0 : 50.0,
-                    width: 100.w,
-                    decoration: new BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.0),
-                        gradient: new LinearGradient(
-                          colors: [Color(0xff1a237e), Colors.lightBlueAccent],
-                        )),
-                    padding: const EdgeInsets.all(0),
-                    child: Text(
-                      "LOGIN",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: SizerUtil.deviceType == DeviceType.tablet
-                              ? 18
-                              : 14),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  
 
-  void _login() {
-    EasyLoading.show(status: 'Loading');
-    _profileController
-        .userLogin(emailController.text.trim(), passwordController.text.trim(),
-            storage.read('device_token'))
-        .then((value) {
-      try {
-        print('Success=${value.status}');
-        EasyLoading.showSuccess('Logged in successfully!');
-        EasyLoading.dismiss();
-        setState(() {
-          //storage.write('isUsername', emailController.text.trim());
-          storage.write('isPassword', passwordController.text.trim());
-          storage.write('user_token', value.data.token);
-          _fetchProfile(apiKey: value.data.token);
-          isLoading = true;
-        });
-      } catch (err) {
-        EasyLoading.dismiss();
-        setState(() {
-          _isDisableButton = false;
-        });
-        value =
-            value == 'Unauthorized' ? 'Username/Password is incorrect!' : value;
-          CatchDialog(messageError: "$value", title: "Error");
-      }
-    });
-  }
 
   void _changePassword() {
     EasyLoading.show(status: 'Loading');
     _profileController
-        .userChangePassword(currentPasswordController.text.trim(),
-            newPasswordController.text.trim())
+        .userChangePassword(_profileController.currentPasswordController.value.text.trim(),
+            _profileController.newPasswordController.value.text.trim())
         .then((value) {
       try {
         print('Success=${value.status}');
 
         if (value.status) {
-          setState(() {
-            // _mapUser[storage.read('isActive')]['password'] =
-            //     newPasswordController.text.trim();
-                  storage.write('isPassword', newPasswordController.text.trim());
-            // for (dynamic type in _mapAllUser.keys) {
-            //   if (type == storage.read('isActive')) {
-              
-            //     break;
-            //   }
-            // }
-            currentPasswordController.clear();
-            newPasswordController.clear();
-            confirmPasswordController.clear();
+        
+                  storage.write('isPassword', _profileController.newPasswordController.value.text.trim());
+          
+            _profileController.currentPasswordController.value.clear();
+            _profileController.newPasswordController.value.clear();
+            _profileController.confirmPasswordController.value.clear();
             Get.back();
             EasyLoading.showSuccess('Password Changed!');
             EasyLoading.dismiss();
-            isLoading = true;
+            _profileController .isLoading.value = true;
             _isDisableButton = false;
-          });
+        
         } else {
           EasyLoading.dismiss();
         }
@@ -496,7 +298,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     horizontal:
                         SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40),
                 child: TextFormField(
-                  controller: currentPasswordController,
+                  controller: _profileController.currentPasswordController.value,
                   validator: (value) {
                     if (value!.isEmpty ||
                         value.trim() != storage.read('isPassword'))
@@ -532,13 +334,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     horizontal:
                         SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40),
                 child: TextFormField(
-                  controller: newPasswordController,
+                  controller: _profileController.newPasswordController.value,
                   validator: (value) {
                     if (value!.isEmpty || value.trim().length <= 5)
                       return 'Password must be at least 6 characters';
-                    else if (value.trim() == currentPasswordController.text)
+                    else if (value.trim() == _profileController.currentPasswordController.value.text)
                       return "New password cannot be the same as current password";
-                    else if (value.trim() != confirmPasswordController.text)
+                    else if (value.trim() != _profileController.confirmPasswordController.value.text)
                       return 'New password and confirm new password do not match';
                     else
                       return null;
@@ -571,7 +373,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     horizontal:
                         SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40),
                 child: TextFormField(
-                  controller: confirmPasswordController,
+                  controller: _profileController.confirmPasswordController.value,
                   validator: (value) {
                     if (value!.isEmpty || value.trim().length <= 5)
                       return 'Password must be at least 6 characters';
@@ -629,13 +431,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
-                      // side: BorderSide(color: Colors.red)
                     )),
                   ),
-                  // shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(15.0)),
-                  // textColor: Colors.white,
-                  // padding: const EdgeInsets.all(0),
                   child: Container(
                     alignment: Alignment.center,
                     height:
@@ -665,47 +462,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }),
     ));
   }
-
-  Widget reloadBtn(String message) {
-    return ElevatedButton(
-        onPressed: () {
-          if (message == 'Unauthenticated.') {
-            _removeUser;
-            // Get.offAll(() => SwitchAccountPage(), arguments: 'Unauthenticated.');
-          } else {
-            Get.back();
-          }
-        },
-        child: Text("OK"));
-  }
-
-  get _removeUser {
-    _mapUser = storage.read('mapUser');
-    // print("_mapUser.length=${_mapUser.length}");
-    if (_mapUser.length >= 1) {
-      for (dynamic type in _mapUser.keys) {
-        if (type == storage.read('isActive')) {
-          setState(() {
-            _mapUser.remove(type);
-            storage.write('mapUser', _mapUser);
-          });
-          break;
-        }
-      }
-    }
-    storage.remove('exam_schedule_badge');
-    storage.remove('notification_badge');
-    storage.remove('user_token');
-    storage.remove('isActive');
-    storage.remove('isName');
-    storage.remove('isClassId');
-    storage.remove('isUserId');
-    storage.remove('isGradeLevel');
-    storage.remove('isPassword');
-    storage.remove('user_token');
-    storage.remove('isActive');
-    storage.remove('assignment_badge');
-    storage.remove('isPhoto');
-    // print("_mapUser.length=${_mapUser.length}");
-  }
+ 
 }

@@ -6,11 +6,14 @@ class CustomButtom extends StatelessWidget {
   final GestureTapCallback ontap;
   final String title;
   final bool isDisable;
+  final double radius;
   const CustomButtom(
       {super.key,
       required this.ontap,
       required this.title,
-      required this.isDisable});
+      required this.isDisable,
+      this.radius=0
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class CustomButtom extends StatelessWidget {
               MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(0)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(radius),
             // side: BorderSide(color: Colors.red)
           )),
         ),
@@ -37,8 +40,8 @@ class CustomButtom extends StatelessWidget {
           height: SizerUtil.deviceType == DeviceType.tablet ? 60.0 : 50.0,
           width: 100.w,
           decoration: BoxDecoration(
-            color: isDisable==true?Colors.grey: AppColor.primaryColor
-           
+            color: isDisable==true?Colors.grey: AppColor.primaryColor,
+            borderRadius: BorderRadius.circular(radius)
           ),
           padding: const EdgeInsets.all(0),
           child: Text(
