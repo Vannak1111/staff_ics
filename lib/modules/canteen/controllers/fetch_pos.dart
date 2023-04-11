@@ -42,11 +42,10 @@ Future fetchPos({String route = "products"}) async {
     })).post(baseUrl_odoo, data: data);
    
     if (route == "products") {
+      // debugPrint("")
       posDb = PosDb.fromMap(response.data);
       return posDb;
     } else if (route == "user") {
-      debugPrint("KSKSKSKKSKSKS");
-      // debugPrint("data response : ${posUserDb}");
       posUserDb = PosUserDb.fromMap(response.data);
       return posUserDb;
     } else if (route == "order_history") {

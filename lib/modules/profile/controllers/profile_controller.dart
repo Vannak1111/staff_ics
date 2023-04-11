@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:staff_ics/modules/profile/models/datum_model.dart';
 
 import 'dart:io';
 
@@ -19,7 +20,11 @@ import '../models/profile_model.dart';
 class ProfileController extends GetxController {
   final storage = GetStorage();
     final isLoading = false.obs;
-
+  final isDisableButton= false.obs;
+  final hideOldPWD =true.obs;
+  final hideNewPWD=true.obs;
+  final hideConfirmPWD=true.obs;
+  final profile =<Datum1>[].obs;
   final emailController = TextEditingController().obs;
     final passwordController = TextEditingController().obs;
 

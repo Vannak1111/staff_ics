@@ -20,21 +20,15 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final _profileController = Get.put(ProfileController());
   double _fontSize = SizerUtil.deviceType == DeviceType.tablet ? 18 : 14;
-  bool _hideOldPWD = true,
-      _hideNewPWD = true,
-      _hideConfirmPWD = true;
   final storage = GetStorage();
-  late List<Datum1> _profile = [];
-  late bool _isDisableButton;
   final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _isDisableButton = false;
-    if (storage.read('user_token') != null) {
+
       _fetchProfile(apiKey: storage.read('user_token'));
-    }
+    
   }
 
   @override
@@ -43,16 +37,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       onTap: (){
         Focus.of(context).unfocus();
       },
-      child: Scaffold(
-        body: _buildBody,
-      ),
+      child:Scaffold(
+        body: Obx(()=>_buildBody,
+      )),
     );
   }
-
-  // void openPDF(BuildContext context, File file) => Navigator.of(context).push(
-  //       MaterialPageRoute(builder: (context) =>Container()),
-  //     );
-
   get _buildBody {
     return Container(
       child: Column(
@@ -66,11 +55,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _fetchProfile({required String apiKey}) {
     _profileController.fetchProfile(apiKey: apiKey).then((value) {
-      setState(() {
+    
         try {
           print("value.data.list=${value.data}");
           for (int i = 0; i < value.data.data.length; ++i) {
-            _profile.add(Datum1(
+            _profileController.profile.add(Datum1(
                 id: value.data.data[0].id,
                 name: value.data.data[0].name,
                 email: value.data.data[0].email,
@@ -89,11 +78,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         
         }
       });
-    });
   }
 
   get _headerImage {
-    if (_profile.isEmpty) {
+    if ( _profileController.profile.isEmpty) {
       _profileController .isLoading.value = false;
     } else {
       _profileController .isLoading.value = true;
@@ -130,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: NetworkImage(_profile[0].fullImage),
+                          image: NetworkImage( _profileController.profile[0].fullImage),
                         ),
                       ),
                     ),
@@ -141,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
   get _studentProfile {
-    if (_profile.isEmpty) {
+    if ( _profileController.profile.isEmpty) {
       _profileController .isLoading.value = false;
     } else {
       _profileController .isLoading.value = true;
@@ -167,22 +155,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     TableRow(children: [
                       _tableCell('Student ID:', FontWeight.bold, _fontSize),
                       _tableCell(
-                          '${_profile[0].email}', FontWeight.normal, _fontSize),
+                          '${ _profileController.profile[0].email}', FontWeight.normal, _fontSize),
                     ]),
                     TableRow(children: [
                       _tableCell('Full name:', FontWeight.bold, _fontSize),
                       _tableCell(
-                          '${_profile[0].name}', FontWeight.normal, _fontSize),
+                          '${ _profileController.profile[0].name}', FontWeight.normal, _fontSize),
                     ]),
                     TableRow(children: [
                       _tableCell('Class:', FontWeight.bold, _fontSize),
-                      _tableCell('${_profile[0].className}', FontWeight.normal,
+                      _tableCell('${ _profileController.profile[0].className}', FontWeight.normal,
                           _fontSize),
                     ]),
                     TableRow(children: [
                       _tableCell('Phone Number:', FontWeight.bold, _fontSize),
                       _tableCell(
-                          '${_profile[0].phone}', FontWeight.normal, _fontSize),
+                          '${ _profileController.profile[0].phone}', FontWeight.normal, _fontSize),
                     ]),
                     TableRow(children: [
                       _tableCell('Password:', FontWeight.bold, _fontSize),
@@ -262,16 +250,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             EasyLoading.showSuccess('Password Changed!');
             EasyLoading.dismiss();
             _profileController .isLoading.value = true;
-            _isDisableButton = false;
+            _profileController.isDisableButton.value = false;
         
         } else {
           EasyLoading.dismiss();
         }
       } catch (err) {
         EasyLoading.dismiss();
-        setState(() {
-          _isDisableButton = false;
-        });
+      
+          _profileController.isDisableButton.value = false;
+      
         value =
             value == 'Unauthorized' ? 'Username/Password is incorrect!' : value;
           CatchDialog(messageError: "$value", title: "Error");
@@ -280,7 +268,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   get _showChangePasswordActionSheet {
-    Get.bottomSheet(Container(
+    Get.bottomSheet(
+      Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: const BorderRadius.only(
@@ -292,7 +281,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           key: formKey,
           child: Wrap(
             children: [
-              Container(
+                Obx(()=>  Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(
                     horizontal:
@@ -311,13 +300,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _hideOldPWD ? Icons.visibility : Icons.visibility_off,
+                       _profileController.hideOldPWD.value ? Icons.visibility : Icons.visibility_off,
                         color: Colors.blue,
                       ),
                       onPressed: () {
-                        setState(() {
-                          _hideOldPWD = !_hideOldPWD;
-                        });
+                   
+                          _profileController.hideOldPWD.value = !_profileController.hideOldPWD.value;
+                   
                       },
                     ),
                   ),
@@ -325,9 +314,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontSize:
                           SizerUtil.deviceType == DeviceType.tablet ? 18 : 14,
                       color: Color(0xff1a0785)),
-                  obscureText: _hideOldPWD,
+                  obscureText: _profileController.hideOldPWD.value,
                 ),
-              ),
+              )),
+                  Obx(()=>
               Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(
@@ -350,13 +340,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _hideNewPWD ? Icons.visibility : Icons.visibility_off,
+                        _profileController.hideNewPWD.value ? Icons.visibility : Icons.visibility_off,
                         color: Colors.blue,
                       ),
                       onPressed: () {
-                        setState(() {
-                          _hideNewPWD = !_hideNewPWD;
-                        });
+                       
+                          _profileController.hideNewPWD.value = !_profileController.hideNewPWD.value;
+                      
                       },
                     ),
                   ),
@@ -364,10 +354,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontSize:
                           SizerUtil.deviceType == DeviceType.tablet ? 18 : 14,
                       color: Color(0xff1a0785)),
-                  obscureText: _hideNewPWD,
+                  obscureText: _profileController.hideNewPWD.value,
                 ),
               ),
-              Container(
+              ) ,   Obx(()=>Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(
                     horizontal:
@@ -385,15 +375,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _hideConfirmPWD
+                        _profileController.hideConfirmPWD.value
                             ? Icons.visibility
                             : Icons.visibility_off,
                         color: Colors.blue,
                       ),
                       onPressed: () {
-                        setState(() {
-                          _hideConfirmPWD = !_hideConfirmPWD;
-                        });
+                      
+                          _profileController.hideConfirmPWD.value = !_profileController.hideConfirmPWD.value;
+                    
                       },
                     ),
                   ),
@@ -401,11 +391,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontSize:
                           SizerUtil.deviceType == DeviceType.tablet ? 18 : 14,
                       color: Color(0xff1a0785)),
-                  obscureText: _hideConfirmPWD,
+                  obscureText: _profileController.hideConfirmPWD.value,
                 ),
-              ),
+              )),
               SizedBox(height: 3.h),
-              Container(
+                Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(
                     horizontal:
@@ -415,10 +405,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       print("Validation");
-                      if (_isDisableButton == false) {
-                        setState(() {
-                          _isDisableButton = true;
-                        });
+                      if (_profileController.isDisableButton.value == false) {
+            
+                          _profileController.isDisableButton.value = true;
+                        
                         _changePassword();
                       }
                     }
