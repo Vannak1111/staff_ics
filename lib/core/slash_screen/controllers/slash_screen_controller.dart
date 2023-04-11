@@ -23,12 +23,13 @@ class SlashScreenController extends GetxController{
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
     static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  late final FirebaseMessaging _messaging;
 
   Map<String, dynamic> _deviceData = <String, dynamic>{};
 
-  // Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // print("Handling a background message: ${message.messageId}");
-  // } 
+  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+  } 
 
   void registerNotification() async {
     await initPlatformState();

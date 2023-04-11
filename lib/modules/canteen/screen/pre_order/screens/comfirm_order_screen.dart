@@ -248,7 +248,6 @@ class _PosCartState extends State<PosCart> {
           return AlertDialog(
             insetPadding: EdgeInsets.zero,
             contentPadding: EdgeInsets.zero,
-            // clipBehavior: Clip.antiAliasWithSaveLayer,
             content: InteractiveViewer(
               child: Container(
                 padding: EdgeInsets.all(8.0),
@@ -259,7 +258,7 @@ class _PosCartState extends State<PosCart> {
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text('$body',
+                        child: Text('$body',style: Theme.of(context).textTheme.titleSmall,
                           ),
                       ),
                     ),
