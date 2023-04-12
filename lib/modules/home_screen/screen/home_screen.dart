@@ -61,26 +61,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: homeController.currentIndex.value,
-          type: BottomNavigationBarType.fixed,
-          onTap: (int index) {
-            homeController.currentIndex.value = index;
-          },
-          unselectedItemColor: Colors.grey,
-          selectedItemColor: Color(0xff1d1a56),
-          items: [
-           
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home,size: 28,),
-              label: 'home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person,size: 28,),
-              label: 'profile',
-            ),
-          ],
-        ),
+        bottomNavigationBar: 
+        Container(
+         
+          child: Row(children: [
+          Expanded(child: GestureDetector(
+            onTap: (){
+              homeController.currentIndex.value=0;
+            },
+            child: Container(
+           color: Colors.transparent,
+              height: 60,
+              child: Icon(Icons.home_filled)),
+          )),
+           Expanded(child: GestureDetector(
+              onTap: (){
+              homeController.currentIndex.value=1;
+            },
+             child: Container(
+              color: Colors.transparent,
+              height: 60,
+              child: Icon(Icons.person_rounded)),
+           ))
+        ]),)
+       
       ),
     );
   }
