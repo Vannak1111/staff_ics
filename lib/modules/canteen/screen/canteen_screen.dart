@@ -114,7 +114,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
   _buildItem(int index) {
     return GestureDetector(
       child: Container(
-      
+          color: Colors.transparent,
           alignment: Alignment.centerLeft,
           margin: const EdgeInsets.only(left: 25, right: 25),
           height: 8.h,
@@ -162,6 +162,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
             ],
           )),
       onTap: () {
+        debugPrint  ("nice to meet you ");
         if ((_controller.recPosUserData[0].cardId != "" &&
             _controller.posSessionOrderId.value != 0 &&
             index == 0)) {

@@ -19,6 +19,7 @@ import '../models/profile_model.dart';
 
 class ProfileController extends GetxController {
   final storage = GetStorage();
+  final countNotification =0.obs;
     final isLoading = false.obs;
   final isDisableButton= false.obs;
   final hideOldPWD =true.obs;

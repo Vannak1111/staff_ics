@@ -1,3 +1,5 @@
+import 'package:staff_ics/core/notification/screens/notification.dart';
+
 import '../../core/login/screen/login_screen.dart';
 import '../../modules/canteen/screen/canteen_screen.dart';
 import '../../modules/canteen/screen/iWallet/screens/iwallet_screen.dart';
@@ -14,10 +16,9 @@ var route = {
   'profile': (context) => const ProfileScreen(),
   'canteen': (context) => const CanteenScreen(),
   'top-up': (context) => const TopUpScreen(),
-  'iwallet': (context) => const IWalletScreen(
-        index: 0,
-      ),
+  'iwallet': (context) => const IWalletScreen( index: 0, ),
   'pre-order': (context) => const PreOrderScreen(),
   'purchase-limit': (context) => const PurchaseLimitScreen(),
   'terms-conditlions': (context) => const TermsAndConditionsScreen(),
+  'notification': (context) => const NotificationScreen(),
 };

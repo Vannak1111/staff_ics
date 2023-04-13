@@ -44,6 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
   get _buildBody {
     return Container(
+      color: AppColor.backgroundColor,
       child: Column(
         children: [
           _headerImage,
