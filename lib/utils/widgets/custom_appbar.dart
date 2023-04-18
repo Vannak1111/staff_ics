@@ -41,7 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ? Icons.arrow_back_ios_rounded
                           : Icons.arrow_back_rounded,
                       color: AppColor.backgroundColor,
-                      size: 30,
+                      size: 22,
                     ),
                   ),
                   SizedBox(width: 10,),

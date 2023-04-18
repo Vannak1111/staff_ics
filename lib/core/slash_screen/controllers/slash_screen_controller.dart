@@ -27,22 +27,12 @@ class SlashScreenController extends GetxController{
 
   Map<String, dynamic> _deviceData = <String, dynamic>{};
 
-  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
-  } 
 
   void registerNotification() async {
+    debugPrint("vannak vannak ");
     await initPlatformState();
     await Firebase.initializeApp();
-    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    // NotificationSettings settings = await _messaging.requestPermission(
-    //   alert: true,
-    //   badge: true,
-    //   provisional: false,
-    //   sound: true,
-    // );
-    String? token = await FirebaseMessaging.instance.getToken();
-    // print("token= $token");
+      String? token = await FirebaseMessaging.instance.getToken();
     storage.write('device_token', token);
     debugPrint(" your get token ${storage.read('device_token')}");
     fetchRegisterDeviceToken(token!, _deviceData['id'] ?? _deviceData['utsname.machine:'], _deviceData['brand'] ?? _deviceData['systemName']).then((value) {

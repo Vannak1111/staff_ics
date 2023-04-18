@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "679279116066",
-    "project_id": "com-kh-ics-staff",
-    "storage_bucket": "com-kh-ics-staff.appspot.com"
+    "project_number": "186112102433",
+    "project_id": "ics-group-9fa15",
+    "storage_bucket": "ics-group-9fa15.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:679279116066:android:63b4455a6b65ca7daeaf7b",
+        "mobilesdk_app_id": "1:186112102433:android:de7f8805c352c1adb45360",
         "android_client_info": {
-          "package_name": "com.kh.ics.staff"
+          "package_name": "com.kh.ics.group"
         }
       },
       "oauth_client": [
         {
-          "client_id": "679279116066-6npu0uvsf1h8nqh19oo2bvg2nn603htc.apps.googleusercontent.com",
+          "client_id": "186112102433-s922evkjvo1bcenqr15i9qn2m5jn3pch.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCrTXQnrAMgyH69O4UtzqsJu2ogcLoRfH4"
+          "current_key": "AIzaSyCjV46SGD8BkeJRIrMfDML90UFvX-pUCmU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "679279116066-6npu0uvsf1h8nqh19oo2bvg2nn603htc.apps.googleusercontent.com",
+              "client_id": "186112102433-s922evkjvo1bcenqr15i9qn2m5jn3pch.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
