@@ -53,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
+  
   void _fetchProfile({required String apiKey}) {
     _profileController.fetchProfile(apiKey: apiKey).then((value) {
     
@@ -154,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                   children: [
                     TableRow(children: [
-                      _tableCell('Student ID:', FontWeight.bold, _fontSize),
+                      _tableCell('ID:', FontWeight.bold, _fontSize),
                       _tableCell(
                           '${ _profileController.profile[0].email}', FontWeight.normal, _fontSize),
                     ]),
@@ -164,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           '${ _profileController.profile[0].name}', FontWeight.normal, _fontSize),
                     ]),
                     TableRow(children: [
-                      _tableCell('Class:', FontWeight.bold, _fontSize),
+                      _tableCell('Level:', FontWeight.bold, _fontSize),
                       _tableCell('${ _profileController.profile[0].className}', FontWeight.normal,
                           _fontSize),
                     ]),
@@ -227,10 +227,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
-  
-
-
   void _changePassword() {
     EasyLoading.show(status: 'Loading');
     _profileController

@@ -12,7 +12,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../modules/canteen/controllers/fetch_pos.dart';
-import '../models/notification_list_db.dart';
 import '../models/register_device_token_db_model.dart';
 
 class SlashScreenController extends GetxController{
@@ -23,7 +22,6 @@ class SlashScreenController extends GetxController{
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
     static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  late final FirebaseMessaging _messaging;
 
   Map<String, dynamic> _deviceData = <String, dynamic>{};
 
@@ -44,54 +42,10 @@ class SlashScreenController extends GetxController{
       }
     });
 
-  //   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-  //     print('User granted permission');
-  //     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  //       print('Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}');
-  //       // Parse the message received
-  //       if(message.data['route'] != null) {
-  //         notificationRoute.value = message.data['route'];
-  //         notificationId.value = message.data['id'];
-  //         notificationUserId.value = message.data['user_id'];
-  //       }
-  //       PushNotification notification = PushNotification(
-  //         title: message.notification?.title,
-  //         body: message.notification?.body,
-  //         dataTitle: message.data['title'],
-  //         dataBody: message.data['body'],
-  //       );
-
-      
-  //         print("notification=$notification");
-  //         _notificationInfo = notification;
-      
-
-  //       if (_notificationInfo != null) {
-  //         _fetchNotificationCount();
-  //         // _fetchAssignment();
-  //         print("For displaying the notification as an overlay");
-  //         showOngoingNotification(flutterLocalNotificationsPlugin,
-  //             title: _notificationInfo!.title!, body: _notificationInfo!.body!);
-  //       }
-  //     });
-  //   } else {
-  //     print('User declined or has not accepted permission');
-  //   }
-
-  //   final settingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-  //   final settingsIOS = DarwinInitializationSettings(
-  //       onDidReceiveLocalNotification: (id, title, body, payload) =>
-  //           onSelectNotification(payload!));
-
-  //   flutterLocalNotificationsPlugin.initialize(
-  //       InitializationSettings(android: settingsAndroid, iOS: settingsIOS),
-  //       // onSelectNotification: onSelectNotification,
-  //       );
+  
   }
 
- Future onSelectNotification(String? payload) async {
-    // 5_routes(route: _notificationRoute, page: _notificationId, userId: _notificationUserId);
-  }
+
  String registerFirebase = 'api/register_firebasetoken';
  String baseUrl_school = 'http://schooldemo.ics.edu.kh:88/';
 
@@ -145,65 +99,9 @@ Future fetchRegisterDeviceToken(String firebaseToken, String model,String osType
       'utsname.machine:': data.utsname.machine,
     };
   }
-  // void _fetchNotificationCount() {
-  //   fetchNotification(read: '2').then((value) {
-  //     try {
-       
-  //         storage.write('notification_badge', value.data.total);
-        
-  //     } catch (err) {
-  //       print("err=$err");
-  //     }
-  //   });
-  // }
   final storage = GetStorage();
  String getNotificationList = 'api/getnotificationlist';
 
-Future fetchNotification({String pageNo = '1', String read = '1'}) async {
-  Map<String, String> parameters = {
-    'read': read,
-    'page': pageNo,
-    'firebasekey': storage.read('device_token'),
-  };
 
-  try{
-    String fullUrl = baseUrl_school + getNotificationList;
-    var response = await Dio(BaseOptions(headers: {"Accept":
-    "application/json", "Authorization" : "Bearer ${storage.read('user_token')}"}))
-        .get(fullUrl, queryParameters: parameters);
-    NotificationListDb notificationListDb = NotificationListDb.fromMap(response.data);
-    return notificationListDb;
-  } on DioError catch (e) {
-    final errorMessage = DioExceptions.fromDioError(e).toString();
-    return errorMessage;
-  }
-}
-NotificationDetails get _ongoing {
-  final androidChannelSpecifics = AndroidNotificationDetails(
-    'your channel id',
-    'your channel name',
-    importance: Importance.max,
-    priority: Priority.high,
-    ongoing: false,
-    autoCancel: true,
-  );
-  var iOSChannelSpecifics = DarwinNotificationDetails();
-  return NotificationDetails(android: androidChannelSpecifics, iOS: iOSChannelSpecifics);
-}
-Future showOngoingNotification(
-  FlutterLocalNotificationsPlugin notifications, {
-  required String title,
-  required String body,
-  int id = 0,
-}) =>
-    _showNotification(notifications,
-        title: title, body: body, id: id, type: _ongoing);
-Future _showNotification(
-  FlutterLocalNotificationsPlugin notifications, {
-  required String title,
-  required String body,
-  required NotificationDetails type,
-  int id = 0,
-}) =>
-    notifications.show(id, title, body, type);
+
 }

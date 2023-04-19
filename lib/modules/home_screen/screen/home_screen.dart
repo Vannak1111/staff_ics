@@ -88,7 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           body: homeController.currentIndex.value == 1
               ? ProfileScreen()
-              : GestureDetector(
+              :  
+              GestureDetector(
                   onTap: () {
                     Get.toNamed('canteen');
                   },

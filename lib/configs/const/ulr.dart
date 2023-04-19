@@ -23,7 +23,6 @@ const String getCourseList = 'api/getcourselist';
 const String getVideoCourseList = 'api/getelearninglist';
 const String getTimetableList = 'api/gettimetablelist';
 const String changePassword = 'api/change-password';
-
 const String assignmentList = 'api/assignment_list';
 const String assignmentDetail = 'api/assignment_detail';
 const String assignmentText = 'api/student_submit_assignment';

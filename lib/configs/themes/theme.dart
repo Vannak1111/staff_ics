@@ -4,7 +4,7 @@ import 'package:staff_ics/configs/const/app_colors.dart';
 
 ThemeData theme() {
   return ThemeData(
-    
+    useMaterial3: true,
     primaryColor: AppColor.primaryColor,
     textTheme: TextTheme(
       titleLarge: const TextStyle(
@@ -12,7 +12,6 @@ ThemeData theme() {
           fontFamily: 'preahvihear',
           fontSize: 26,
           fontWeight: FontWeight.w500),
-        
        titleMedium: TextStyle(
           fontSize: SizerUtil.deviceType == DeviceType.tablet ? 14.sp : 18.sp,
           fontWeight: FontWeight.bold,
