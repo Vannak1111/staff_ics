@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:get/get.dart';
+import 'package:staff_ics/modules/canteen/screen/canteen_screen.dart';
 import 'package:staff_ics/modules/home_screen/controllers/home_screen_controller.dart';
 import 'package:staff_ics/modules/profile/controllers/profile_controller.dart';
 import 'package:staff_ics/modules/profile/screens/profile_screen.dart';
@@ -38,77 +39,62 @@ class _HomeScreenState extends State<HomeScreen> {
     return Obx(
       () => Scaffold(
           appBar: homeController.currentIndex.value == 1?CustomAppBar(title: "Profile",isBack: false,): AppBar(
+            toolbarHeight: 50,
             backgroundColor: AppColor.primaryColor,
             automaticallyImplyLeading: false,
+            centerTitle: true,
             title: Text(
-              "ICS",
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    fontSize: 19,
-                  ),
+                  "Canteen",
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        fontSize: 19,
+                      ),
             ),
-            actions: [
-              
-              GestureDetector(
-                onTap: (){
+            //! this code will user later (notification)
+            // actions: [
+            //   GestureDetector(
+            //     onTap: (){
                 
-                  Get.toNamed('notification');
-                },
-                child: Container(
-                  width: 40,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                          left: 5,
-                          top: 20,
-                          child: Icon(
-                            Icons.notifications,
-                            color: AppColor.backgroundColor,
-                            size: 25,
-                          )),
-                      if(homeController.notification.value!=0)
-                      Positioned(
-                          top: 20,
-                          left: 20,
-                          child: Container(
-                            height: 15,
-                            width: 15,
-                            decoration: BoxDecoration(
-                                color: Colors.red, shape: BoxShape.circle),
-                            child: Center(
-                                child: Text(
-                              "${homeController.notification.value}",
-                              style: TextStyle(color: Colors.white, fontSize: 13),
-                            )),
-                          ))
-                    ],
-                  ),
-                ),
-              )
-            ],
+            //       Get.toNamed('notification');
+            //     },
+            //     child: Container(
+            //       width: 40,
+            //       child: Stack(
+            //         children: [
+            //           Positioned(
+            //               left: 5,
+            //               top: 15,
+            //               child: Icon(
+            //                 Icons.notifications,
+            //                 color: AppColor.backgroundColor,
+            //                 size: 25,
+            //               )),
+            //           if(homeController.notification.value!=0)
+            //           Positioned(
+            //               top: 15,
+            //               left: 20,
+            //               child: Container(
+            //                 height: 15,
+            //                 width: 15,
+            //                 decoration: BoxDecoration(
+            //                     color: Colors.red, shape: BoxShape.circle),
+            //                 child: Center(
+            //                     child: Text(
+            //                   "${homeController.notification.value}",
+            //                   style: TextStyle(color: Colors.white, fontSize: 13),
+            //                 )),
+            //               ))
+            //         ],
+            //       ),
+            //     ),
+            //   )
+            // ],
           ),
           body: homeController.currentIndex.value == 1
               ? ProfileScreen()
-              :  
-              GestureDetector(
-                  onTap: () {
-                    Get.toNamed('canteen');
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    color: AppColor.backgroundColor,
-                    child: Center(
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    "assets/image/canteen/canteen.png"))),
-                      ),
-                    ),
-                  ),
-                ),
+              :  CanteenScreen()
+             ,
           bottomNavigationBar: Container(
+            color: AppColor.primaryColor,
             child: Row(children: [
               Expanded(
                   child: GestureDetector(
@@ -118,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Container(
                     color: Colors.transparent,
                     height: 60,
-                    child: Icon(Icons.home_filled,color: homeController.currentIndex.value ==0?AppColor.primaryColor: Colors.grey,)),
+                    child: Icon(Icons.home_filled,color: homeController.currentIndex.value ==0?AppColor.backgroundColor: Colors.grey.withOpacity(0.6),)),
               )),
               Expanded(
                   child: GestureDetector(
@@ -128,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Container(
                     color: Colors.transparent,
                     height: 60,
-                    child: Icon(Icons.person_rounded,color: homeController.currentIndex.value ==1?AppColor.primaryColor: Colors.grey,)),
+                    child: Icon(Icons.person_rounded,color: homeController.currentIndex.value ==1?AppColor.backgroundColor: Colors.grey.withOpacity(0.6),)),
               ))
             ]),
           )),

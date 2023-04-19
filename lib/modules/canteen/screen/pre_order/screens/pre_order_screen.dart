@@ -65,31 +65,40 @@ class _PreOrderScreenState extends State<PreOrderScreen>
     return Obx(
           () => Scaffold(
         appBar:  AppBar(
+          
           backgroundColor: AppColor.primaryColor,
+          leadingWidth: 200,
           leading: IconButton(
             onPressed: () {
               Get.back();
             },
-            icon: Icon(
-              Platform.isIOS
-                  ? Icons.arrow_back_ios_rounded
-                  : Icons.arrow_back_rounded,
-              color: AppColor.backgroundColor,
-              size: 30,
-            ),
-          ),
-          title: Text(
+            icon: Row(
+              children: [
+                Icon(
+                  Platform.isIOS
+                      ? Icons.arrow_back_ios_rounded
+                      : Icons.arrow_back_rounded,
+                  color: AppColor.backgroundColor,
+                  size: 22,
+                ),
+                SizedBox(width: 20,),
+                Text(
             "Order",
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   fontSize: 19,
                 ),
           ),
+              ],
+            ),
+          ),
+        
+         
           actions: <Widget>[
             IconButton(
                 onPressed: () {
                   info();
                 },
-                icon: Icon(Icons.info_outline)),
+                icon: Icon(Icons.info_outline,color: AppColor.backgroundColor,)),
           ],
         ),
         body: !_proOrderController.isLoading.value
@@ -97,7 +106,7 @@ class _PreOrderScreenState extends State<PreOrderScreen>
               : Column(
                   children: <Widget>[
                     Container(
-                      constraints: BoxConstraints.expand(height: 6.h),
+                      constraints: BoxConstraints.expand(height: 5.h),
                       child: TabBar(
                         onTap: (index) async {
                           scrollTo(index);

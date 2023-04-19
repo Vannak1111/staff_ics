@@ -1,6 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api
 
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,7 +9,6 @@ import 'package:sizer/sizer.dart';
 import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:staff_ics/modules/canteen/controllers/canteen_controller.dart';
 import 'package:staff_ics/modules/canteen/screen/pre_order/controllers/pre_order_controller.dart';
-import 'package:staff_ics/utils/widgets/custom_appbar.dart';
 
 class CanteenScreen extends StatefulWidget {
   const CanteenScreen({Key? key}) : super(key: key);
@@ -28,31 +26,25 @@ class _CanteenScreenState extends State<CanteenScreen> {
   void initState() {
     super.initState();
     _controller.fetchPosUser().then((value) {
-          debugPrint("data from api ${_controller.recPosUserData[0].cardId}");
-
+      debugPrint("data from api ${_controller.recPosUserData[0].cardId}");
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-        appBar: CustomAppBar(
-          title: "Canteen",
-          onTap: () {
-            Get.back();
-          },
-        ),
-        body:  !_controller.isLoading.value
+        body: !_controller.isLoading.value
             ? _loading()
             : Container(
-              
-              child: Column(
-                children: [
-                   _buildMainBalance,
-                   _buildBodyListExtend,
-                   ],
-              ),
-            )));
+                color: Color(0xff219ebc).withOpacity(0.06),
+                height: double.infinity,
+                child: Column(
+                  children: [
+                    _buildMainBalance,
+                    _buildBodyListExtend,
+                  ],
+                ),
+              )));
   }
 
   _loading() {
@@ -62,7 +54,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
           children: [
             Container(
               height: 15.h,
-              color: const Color(0xff001845),
+              color: AppColor.primaryColor.withOpacity(0.9),
               margin: EdgeInsets.only(bottom: 2.h),
             ),
             Center(
@@ -71,41 +63,28 @@ class _CanteenScreenState extends State<CanteenScreen> {
             )),
           ],
         ),
-       
       ],
     );
   }
+
   get _buildBodyListExtend {
     return _controller.recPosUserData[0].cardId != ""
-        ? Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 2.h,
+        ? Container(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _controller.menuCanteenList.length,
+                  itemBuilder: (context, index) => Column(
+                    children: [
+                      _buildItem(index),
+                    ],
                   ),
-                  ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: _controller.menuCanteenList.length,
-                    itemBuilder: (context, index) => Column(
-                      children: [
-                        index == 0
-                            ? Divider(
-                                color: AppColor.primaryColor,
-                                height: 2,
-                              )
-                            : const SizedBox(),
-                        _buildItem(index),
-                        Divider(
-                          color: AppColor.primaryColor,
-                          height: 2,
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           )
         : const SizedBox();
@@ -114,9 +93,13 @@ class _CanteenScreenState extends State<CanteenScreen> {
   _buildItem(int index) {
     return GestureDetector(
       child: Container(
-          color: Colors.transparent,
-          alignment: Alignment.centerLeft,
-          margin: const EdgeInsets.only(left: 25, right: 25),
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: AppColor.backgroundColor,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.grey.withOpacity(0.8))),
+          margin: const EdgeInsets.only(left: 7, right: 7, bottom: 9),
+          padding: EdgeInsets.only(left: 15),
           height: 8.h,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,11 +107,11 @@ class _CanteenScreenState extends State<CanteenScreen> {
               Row(
                 children: [
                   SizedBox(
-                    height: 10.w,
+                    height: 9.w,
                     child: Image.asset(_controller.menuCanteenList[index].img),
                   ),
                   SizedBox(
-                    width: 5.w,
+                    width: 15,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,11 +127,10 @@ class _CanteenScreenState extends State<CanteenScreen> {
                         width: 70.w,
                         child: AutoSizeText(
                           _controller.menuCanteenList[index].subtitle,
-                          style: TextStyle(
-                              fontSize:
-                                  SizerUtil.deviceType == DeviceType.tablet
-                                      ? 15
-                                      : 12),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(color: Colors.grey),
                           minFontSize: 10,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -158,30 +140,29 @@ class _CanteenScreenState extends State<CanteenScreen> {
                   )
                 ],
               ),
-              // Icon(Icons.arrow_forward_ios, color: AppColor.primaryColor),
             ],
           )),
       onTap: () {
-        debugPrint  ("nice to meet you ");
+        debugPrint("nice to meet you ");
         if ((_controller.recPosUserData[0].cardId != "" &&
             _controller.posSessionOrderId.value != 0 &&
             index == 0)) {
-              _proOrderController.item.value=0;
-              _proOrderController.isLoading.value=false;
-             _proOrderController.recPosData.value=[];
-             _proOrderController.subTotal.value=0;
-              Get.toNamed('pre-order',arguments: _controller.productCount.value);
+          _proOrderController.item.value = 0;
+          _proOrderController.isLoading.value = false;
+          _proOrderController.recPosData.value = [];
+          _proOrderController.subTotal.value = 0;
+          Get.toNamed('pre-order', arguments: _controller.productCount.value);
         } else if ((_controller.recPosUserData[0].cardId != "" &&
             _controller.posSessionTopUpId.value != 0 &&
             index == 1)) {
           Get.toNamed('top-up');
         } else if ((_controller.recPosUserData[0].cardId != "" &&
-            (index == 2 ))) {
-          Get.toNamed('iwallet',arguments: 0);
+            (index == 2))) {
+          Get.toNamed('iwallet', arguments: 0);
         } else if ((_controller.recPosUserData[0].cardId != "" &&
-            (index == 3 ))) {
+            (index == 3))) {
           Get.toNamed('purchase-limit');
-        }else if (_controller.recPosUserData[0].cardId == "") {
+        } else if (_controller.recPosUserData[0].cardId == "") {
           title = 'CARD';
           body = 'UNREGISTER';
           message(title: title, body: body);
@@ -204,39 +185,34 @@ class _CanteenScreenState extends State<CanteenScreen> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-     color: Color(0xff001845),
-        border: Border.all(color: AppColor.primaryColor,width: 0.8)
-       
-      ),
+          color: AppColor.primaryColor.withOpacity(0.9),
+          border: Border.all(color: AppColor.primaryColor, width: 0.8)),
       height: 15.h,
       child: _controller.recPosUserData[0].cardId != ""
           ? Column(
-            
-            children: [
-              Spacer(),
-              Text("Available Balance",
-                  style: TextStyle(
-                      // fontWeight: FontWeight.bold,
-                      color: Colors.grey.withOpacity(0.6),
-                      fontSize:
-                          SizerUtil.deviceType == DeviceType.tablet
-                              ? 10.sp
-                              : 12.sp)),
-              SizedBox(height: 5,),
-              Text(
-                  "\$${_controller.f.format(_controller.balance.value)}",
-                  style: TextStyle(
-                      color:Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize:
-                          SizerUtil.deviceType == DeviceType.tablet
-                              ? 16.sp
-                              : 18.sp)),
-                                Spacer(),
-            ],
-          )
-          : 
-          Container(
+              children: [
+                Spacer(),
+                Text("Available Balance",
+                    style: TextStyle(
+                        // fontWeight: FontWeight.bold,
+                        color: Colors.grey.withOpacity(0.6),
+                        fontSize: SizerUtil.deviceType == DeviceType.tablet
+                            ? 10.sp
+                            : 12.sp)),
+                SizedBox(
+                  height: 5,
+                ),
+                Text("\$${_controller.f.format(_controller.balance.value)}",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: SizerUtil.deviceType == DeviceType.tablet
+                            ? 16.sp
+                            : 18.sp)),
+                Spacer(),
+              ],
+            )
+          : Container(
               alignment: Alignment.center,
               child: AutoSizeText("${storage.read("unregistered")}",
                   style: TextStyle(
@@ -261,7 +237,6 @@ class _CanteenScreenState extends State<CanteenScreen> {
       });
     }
   }
-
 
   bool timeCheck() {
     bool diff = true;

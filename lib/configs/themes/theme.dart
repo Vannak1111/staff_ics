@@ -4,7 +4,7 @@ import 'package:staff_ics/configs/const/app_colors.dart';
 
 ThemeData theme() {
   return ThemeData(
-    useMaterial3: true,
+    // useMaterial3: true,
     primaryColor: AppColor.primaryColor,
     textTheme: TextTheme(
       titleLarge: const TextStyle(
@@ -31,7 +31,7 @@ ThemeData theme() {
                 
       bodySmall:  TextStyle(
                   fontSize: SizerUtil.deviceType == DeviceType.tablet ? 18 : 14,
-                  color: const Color(0xff1a0785),
+                  color: Colors.black,
     ),
     ),);
 }

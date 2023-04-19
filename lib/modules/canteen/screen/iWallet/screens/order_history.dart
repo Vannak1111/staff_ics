@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:staff_ics/configs/const/app_colors.dart';
 
 import '../../../controllers/fetch_pos.dart';
 import '../../../models/pos_order_history_db.dart';
@@ -26,15 +27,13 @@ class _PosHistoryState extends State<PosHistory> {
     return Scaffold(
       // appBar: AppBar(title: Text("History")),
       body:
-          !isLoading ? Center(child: CircularProgressIndicator()) : _buildBody,
+          !isLoading ? Center(child: CircularProgressIndicator(color: AppColor.primaryColor,)) : _buildBody,
     );
   }
 
   get _buildBody {
     return Container(
-      // height: 50,
       child: ListView.builder(
-          // physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: _recPosOrderHistoryData.length,
           itemBuilder: (context, index) => Column(
@@ -91,18 +90,11 @@ class _PosHistoryState extends State<PosHistory> {
         // height: 120,
         child: Row(
           children: [
-            // SizedBox(
-            //   child: _buildUrlImages(
-            //       "https://media.istockphoto.com/id/1190330112/photo/fried-pork-and-vegetables-on-white-background.jpg?s=612x612&w=0&k=20&c=TzvLLGGvPAmxhKJ6fz91UGek-zLNNCh4iq7MVWLnFwo="),
-            //   // child: _buildUrlImages("http://202.62.45.129:8069/web/image?model=product.product&id=6878&field=image_512"),
-            // ),
             SizedBox(
               width: 8,
             ),
             Expanded(
               child: Container(
-                // width: 300,
-                // color: Colors.red,
                 height: 7.h,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,14 +105,12 @@ class _PosHistoryState extends State<PosHistory> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
-                      // style: myTextStyleHeader[phoneSize],
                     ),
                     Text(
                       "X ${item.qty}",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
-                      // style: myTextStyleBody[phoneSize],
                     )
                   ],
                 ),
@@ -132,7 +122,6 @@ class _PosHistoryState extends State<PosHistory> {
                     alignment: Alignment.centerRight,
                     child: Text(
                       "\$${item.priceSubtotal}",
-                      // style: myTextStyleBody[phoneSize],
                     )))
           ],
         ),

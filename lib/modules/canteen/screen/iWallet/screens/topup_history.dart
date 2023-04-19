@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';import 'package:sizer/sizer.dart';
+import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:staff_ics/utils/widgets/catch_dialog.dart';
 
 import '../../../controllers/fetch_pos.dart';
@@ -25,7 +26,7 @@ class _TopUpHistoryState extends State<TopUpHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
         // appBar: AppBar(title: Text("History")),
-      body: !isLoading ? Center(child: CircularProgressIndicator()) : _buildBody,
+      body: !isLoading ? Center(child: CircularProgressIndicator(color: AppColor.primaryColor,)) : _buildBody,
     );
   }
 
@@ -45,10 +46,10 @@ class _TopUpHistoryState extends State<TopUpHistory> {
   _buildItem(item) {
     return InkWell(
       child: Card(
-        elevation: 3,
+        elevation: 2,
         child: Container(
-          padding: EdgeInsets.all(8),
-          // height: 10.h,
+          padding: EdgeInsets.only(left: 8,right: 8,top: 10,bottom: 10),
+         
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -57,8 +58,7 @@ class _TopUpHistoryState extends State<TopUpHistory> {
                   SizedBox(height: 5.h, child: Image.asset('assets/image/canteen/iwallet_card.png')),
                   SizedBox(width: 3.w,),
                   Container(
-                    // width: 300,
-                    // color: Colors.red,
+                   
                     height: 7.h,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,6 +77,7 @@ class _TopUpHistoryState extends State<TopUpHistory> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.left,
+                           style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.black.withOpacity(0.8)),
                         
                         )
                       ],
