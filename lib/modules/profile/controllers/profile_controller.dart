@@ -39,7 +39,6 @@ class ProfileController extends GetxController {
       "Accept": "application/json",
       "Authorization": "Bearer $apiKey"
     })).get(fullUrl);
-    print("response.data=  ${response.data}");
     ProfileDb profileDb = ProfileDb.fromMap(response.data);
     return profileDb;
   } on DioError catch (e) {

@@ -21,90 +21,93 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        body: Obx(
-          () => SingleChildScrollView(
-            child: Column(
-              children: [
-                Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    CustomPaint(
-                      size: Size(
-                          100.w,
-                          (100.h * 0.5)
-                              .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
-                      painter: RPSCustomPainter(),
-                    ),
-                    Positioned(
-                      child: Container(
-                        height: 45.h,
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          body: Obx(
+            () => SingleChildScrollView(
+              child: Column(
+                children: [
+                  Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      CustomPaint(
+                        size: Size(
+                            100.w,
+                            (100.h * 0.5)
+                                .toDouble()), //You can Replace [WIDTH] with your desired width for Custom Paint and height will be calculated automatically
+                        painter: RPSCustomPainter(),
+                      ),
+                      Positioned(
+                        child: Container(
+                          height: 45.h,
+                          alignment: Alignment.center,
+                          child: Image.asset(
+                              "assets/image/login/ics_International_school.png",
+                              width: SizerUtil.deviceType == DeviceType.tablet
+                                  ? 45.w
+                                  : 60.w,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 20, right: 20),
+                    child: Column(children: [
+                      Container(
                         alignment: Alignment.center,
-                        child: Image.asset(
-                            "assets/image/login/ics_International_school.png",
-                            width: SizerUtil.deviceType == DeviceType.tablet
-                                ? 45.w
-                                : 60.w,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 20, right: 20),
-                  child: Column(children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: TextField(
-                        autocorrect: false,
-                        textInputAction: TextInputAction.next,
-                        controller: loginController.emailController.value,
-                        decoration: const InputDecoration(
-                          labelText: "Username",
-                          prefixIcon: Icon(Icons.person),
-                        ),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: TextField(
-                        onSubmitted: (value) {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                        },
-                        controller: loginController.passwordController.value,
-                        decoration: InputDecoration(
-                          labelText: "Password",
-                          prefixIcon: const Icon(Icons.lock),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              loginController.hidePasswork.value
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.blue,
-                            ),
-                            onPressed: () {
-                              loginController.hidePasswork.value =
-                                  !loginController.hidePasswork.value;
-                            },
+                        child: TextField(
+                          autocorrect: false,
+                          textInputAction: TextInputAction.next,
+                          controller: loginController.emailController.value,
+                          decoration: const InputDecoration(
+                            labelText: "Username",
+                            prefixIcon: Icon(Icons.person),
                           ),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
-                        style: Theme.of(context).textTheme.bodySmall,
-                        obscureText: loginController.hidePasswork.value,
                       ),
-                    ),
-                    SizedBox(height: 3.h),
-                    CustomButtom(
-                      ontap: () {
-                        loginController.login();
-                      },
-                      title: "LOGIN",
-                      isDisable: loginController.isDisableButton.value,
-                      radius: 30,
-                    ),
-                  ]),
-                ),
-              ],
+                      Container(
+                        alignment: Alignment.center,
+                        child: TextField(
+                          onSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                          },
+                          controller: loginController.passwordController.value,
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            prefixIcon: const Icon(Icons.lock),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                loginController.hidePasswork.value
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.blue,
+                              ),
+                              onPressed: () {
+                                loginController.hidePasswork.value =
+                                    !loginController.hidePasswork.value;
+                              },
+                            ),
+                          ),
+                          style: Theme.of(context).textTheme.bodySmall,
+                          obscureText: loginController.hidePasswork.value,
+                        ),
+                      ),
+                      SizedBox(height: 3.h),
+                      CustomButtom(
+                        ontap: () {
+                          loginController.login();
+                        },
+                        title: "LOGIN",
+                        isDisable: loginController.isDisableButton.value,
+                        radius: 30,
+                      ),
+                    ]),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

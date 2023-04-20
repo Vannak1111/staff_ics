@@ -65,9 +65,14 @@ class _PreOrderScreenState extends State<PreOrderScreen>
     return Obx(
           () => Scaffold(
         appBar:  AppBar(
-          
+        title:  Text(
+            "Order",
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  fontSize: 19,
+                ),
+          ),
+          centerTitle: true,
           backgroundColor: AppColor.primaryColor,
-          leadingWidth: 200,
           leading: IconButton(
             onPressed: () {
               Get.back();
@@ -81,18 +86,11 @@ class _PreOrderScreenState extends State<PreOrderScreen>
                   color: AppColor.backgroundColor,
                   size: 22,
                 ),
-                SizedBox(width: 20,),
-                Text(
-            "Order",
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  fontSize: 19,
-                ),
-          ),
+              
+               
               ],
             ),
           ),
-        
-         
           actions: <Widget>[
             IconButton(
                 onPressed: () {

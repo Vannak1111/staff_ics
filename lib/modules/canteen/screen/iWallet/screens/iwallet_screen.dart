@@ -10,15 +10,15 @@ import 'package:staff_ics/modules/canteen/screen/iWallet/screens/topup_history.d
 
 import 'order_history.dart';
 
-
 class IWalletScreen extends StatefulWidget {
   final int index;
-  const IWalletScreen({Key? key,  this.index=0}) : super(key: key);
+  const IWalletScreen({Key? key, this.index = 0}) : super(key: key);
   @override
   _IWalletScreenState createState() => _IWalletScreenState();
 }
 
-class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateMixin {
+class _IWalletScreenState extends State<IWalletScreen>
+    with TickerProviderStateMixin {
   final _canteenController = Get.put(CanteenController());
   final storage = GetStorage();
   double _fontSize = 0;
@@ -35,11 +35,9 @@ class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
-          
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
               SliverAppBar(
@@ -47,44 +45,46 @@ class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateM
                 backgroundColor: AppColor.primaryColor,
                 expandedHeight: 30.h,
                 leading: Row(
-                children: [
-                  SizedBox(width: 10,),
-                  IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(
-                      Platform.isIOS
-                          ? Icons.arrow_back_ios_rounded
-                          : Icons.arrow_back_rounded,
-                      color: AppColor.backgroundColor,
-                      size: 30,
+                  children: [
+                    SizedBox(
+                      width: 10,
                     ),
-                  ),
-                  SizedBox(width: 10,),
-                  Text("iWallet history",
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 19,),),
-                ],
-              ),
+                    IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: Icon(
+                        Platform.isIOS
+                            ? Icons.arrow_back_ios_rounded
+                            : Icons.arrow_back_rounded,
+                        color: AppColor.backgroundColor,
+                        size: 30,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    // Text("iWallet history",
+                    //     style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 19,),),
+                  ],
+                ),
                 floating: false,
                 pinned: true,
                 flexibleSpace: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     return FlexibleSpaceBar(
-                        centerTitle: true,
-                        background: _buildBalanceCard,
-                        );
+                      centerTitle: true,
+                      background: _buildBalanceCard,
+                    );
                   },
                 ),
               ),
               SliverPersistentHeader(
                 delegate: _SliverAppBarDelegate(
-                  
                   TabBar(
                     controller: _tabController,
                     unselectedLabelColor: Color(0xff1d1a56),
                     indicatorSize: TabBarIndicatorSize.tab,
-                    
                     labelColor: Color(0xff1d1a56),
                     indicator: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -115,8 +115,9 @@ class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateM
           body: TabBarView(
             controller: _tabController,
             children: [
-              tabTopUp,  tabOrder,
-              ],
+              tabTopUp,
+              tabOrder,
+            ],
           ),
         ),
       ),
@@ -209,9 +210,7 @@ class _IWalletScreenState extends State<IWalletScreen> with TickerProviderStateM
   }
 
   get tabTopUp {
-    return    
-
-     TopUpHistory();
+    return TopUpHistory();
   }
 
   get tabOrder {

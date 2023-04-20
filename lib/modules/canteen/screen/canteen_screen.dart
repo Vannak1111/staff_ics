@@ -54,7 +54,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
           children: [
             Container(
               height: 15.h,
-              color: AppColor.primaryColor.withOpacity(0.9),
+              color: AppColor.primaryColor.withOpacity(1),
               margin: EdgeInsets.only(bottom: 2.h),
             ),
             Center(
@@ -185,7 +185,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-          color: AppColor.primaryColor.withOpacity(0.9),
+          color: AppColor.primaryColor.withOpacity(1),
           border: Border.all(color: AppColor.primaryColor, width: 0.8)),
       height: 15.h,
       child: _controller.recPosUserData[0].cardId != ""
@@ -216,7 +216,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
               alignment: Alignment.center,
               child: AutoSizeText("${storage.read("unregistered")}",
                   style: TextStyle(
-                      color: const Color(0xff001845),
+                      color: AppColor.primaryColor,
                       fontWeight: FontWeight.bold,
                       fontSize: SizerUtil.deviceType == DeviceType.tablet
                           ? 16.sp
@@ -291,6 +291,8 @@ class _CanteenScreenState extends State<CanteenScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           body,
+                          style: TextStyle(
+                              color: AppColor.errorColor, fontSize: 18),
                         ),
                       ),
                     ),

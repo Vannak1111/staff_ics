@@ -21,11 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final homeController = Get.put(HomeScreenController());
   @override
   void initState() {
-
-    if(storage.read('notification')!=null){
-  homeController.notification.value= storage.read('notification');
+    if (storage.read('notification') != null) {
+      homeController.notification.value = storage.read('notification');
     }
-    
+
     _profileController
         .fetchProfile(apiKey: storage.read('user_token'))
         .then((value) {
@@ -37,87 +36,104 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Scaffold(
-          appBar: homeController.currentIndex.value == 1?CustomAppBar(title: "Profile",isBack: false,): AppBar(
-            toolbarHeight: 50,
-            backgroundColor: AppColor.primaryColor,
-            automaticallyImplyLeading: false,
-            centerTitle: true,
-            title: Text(
-                  "Canteen",
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        fontSize: 19,
-                      ),
-            ),
-            //! this code will user later (notification)
-            // actions: [
-            //   GestureDetector(
-            //     onTap: (){
-                
-            //       Get.toNamed('notification');
-            //     },
-            //     child: Container(
-            //       width: 40,
-            //       child: Stack(
-            //         children: [
-            //           Positioned(
-            //               left: 5,
-            //               top: 15,
-            //               child: Icon(
-            //                 Icons.notifications,
-            //                 color: AppColor.backgroundColor,
-            //                 size: 25,
-            //               )),
-            //           if(homeController.notification.value!=0)
-            //           Positioned(
-            //               top: 15,
-            //               left: 20,
-            //               child: Container(
-            //                 height: 15,
-            //                 width: 15,
-            //                 decoration: BoxDecoration(
-            //                     color: Colors.red, shape: BoxShape.circle),
-            //                 child: Center(
-            //                     child: Text(
-            //                   "${homeController.notification.value}",
-            //                   style: TextStyle(color: Colors.white, fontSize: 13),
-            //                 )),
-            //               ))
-            //         ],
-            //       ),
-            //     ),
-            //   )
-            // ],
-          ),
-          body: homeController.currentIndex.value == 1
-              ? ProfileScreen()
-              :  CanteenScreen()
-             ,
-          bottomNavigationBar: Container(
-            color: AppColor.primaryColor,
-            child: Row(children: [
-              Expanded(
-                  child: GestureDetector(
-                onTap: () {
-                  homeController.currentIndex.value = 0;
-                },
-                child: Container(
-                    color: Colors.transparent,
-                    height: 60,
-                    child: Icon(Icons.home_filled,color: homeController.currentIndex.value ==0?AppColor.backgroundColor: Colors.grey.withOpacity(0.6),)),
-              )),
-              Expanded(
-                  child: GestureDetector(
-                onTap: () {
-                  homeController.currentIndex.value = 1;
-                },
-                child: Container(
-                    color: Colors.transparent,
-                    height: 60,
-                    child: Icon(Icons.person_rounded,color: homeController.currentIndex.value ==1?AppColor.backgroundColor: Colors.grey.withOpacity(0.6),)),
-              ))
-            ]),
-          )),
+      () => WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+            appBar: homeController.currentIndex.value == 1
+                ? CustomAppBar(
+                    title: "Profile",
+                    isBack: false,
+                  )
+                : AppBar(
+                    toolbarHeight: 50,
+                    backgroundColor: AppColor.primaryColor,
+                    automaticallyImplyLeading: false,
+                    centerTitle: true,
+                    title: Text(
+                      "Canteen",
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            fontSize: 19,
+                          ),
+                    ),
+                    //! this code will user later (notification)
+                    // actions: [
+                    //   GestureDetector(
+                    //     onTap: (){
+
+                    //       Get.toNamed('notification');
+                    //     },
+                    //     child: Container(
+                    //       width: 40,
+                    //       child: Stack(
+                    //         children: [
+                    //           Positioned(
+                    //               left: 5,
+                    //               top: 15,
+                    //               child: Icon(
+                    //                 Icons.notifications,
+                    //                 color: AppColor.backgroundColor,
+                    //                 size: 25,
+                    //               )),
+                    //           if(homeController.notification.value!=0)
+                    //           Positioned(
+                    //               top: 15,
+                    //               left: 20,
+                    //               child: Container(
+                    //                 height: 15,
+                    //                 width: 15,
+                    //                 decoration: BoxDecoration(
+                    //                     color: Colors.red, shape: BoxShape.circle),
+                    //                 child: Center(
+                    //                     child: Text(
+                    //                   "${homeController.notification.value}",
+                    //                   style: TextStyle(color: Colors.white, fontSize: 13),
+                    //                 )),
+                    //               ))
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   )
+                    // ],
+                  ),
+            body: homeController.currentIndex.value == 1
+                ? ProfileScreen()
+                : CanteenScreen(),
+            bottomNavigationBar: Container(
+              color: AppColor.primaryColor,
+              child: Row(children: [
+                Expanded(
+                    child: GestureDetector(
+                  onTap: () {
+                    homeController.currentIndex.value = 0;
+                  },
+                  child: Container(
+                      color: Colors.transparent,
+                      height: 60,
+                      child: Icon(
+                        Icons.home_filled,
+                        color: homeController.currentIndex.value == 0
+                            ? AppColor.backgroundColor
+                            : Colors.grey.withOpacity(0.6),
+                      )),
+                )),
+                Expanded(
+                    child: GestureDetector(
+                  onTap: () {
+                    homeController.currentIndex.value = 1;
+                  },
+                  child: Container(
+                      color: Colors.transparent,
+                      height: 60,
+                      child: Icon(
+                        Icons.person_rounded,
+                        color: homeController.currentIndex.value == 1
+                            ? AppColor.backgroundColor
+                            : Colors.grey.withOpacity(0.6),
+                      )),
+                ))
+              ]),
+            )),
+      ),
     );
   }
 }

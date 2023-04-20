@@ -3,10 +3,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:html/dom.dart' as dom;
-import 'package:staff_ics/utils/widgets/custom_appbar.dart';
+import 'package:staff_ics/utils/widgets/custom_appbar_asset.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../controllers/fetch_pos.dart';
@@ -16,21 +15,18 @@ class TermsAndConditionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: CustomAppBar(title: "Terms & Conditions",onTap: (){
-      Get.back();
-     },),
+     
       body: Container(
         child: Column(
           children: [
             Container(
       padding: EdgeInsets.all(8.0),
       width: 100.w,
-      height: 30.h,
       color: Color(0xff1d1a56),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/image/canteen/term_condition.png', height: 15.h, color: Colors.white,),
+          CustomAppBarAssets(title: 'Terms & Conditions', assets: 'assets/image/canteen/term_condition.png')
          ],
       ),
     ),

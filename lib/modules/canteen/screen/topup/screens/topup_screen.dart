@@ -10,9 +10,10 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
+import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:staff_ics/modules/canteen/screen/topup/controllers/topup_controller.dart';
 import 'package:staff_ics/utils/helpers/get_image_network.dart';
-import 'package:staff_ics/utils/widgets/custom_appbar.dart';
+import 'package:staff_ics/utils/widgets/custom_appbar_asset.dart';
 import 'package:staff_ics/utils/widgets/custom_buttom.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:html/dom.dart' as dom;
@@ -47,28 +48,22 @@ class _TopUpScreenState extends State<TopUpScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Top Up',
-        onTap: () {
-          Get.back();
-        },
-      ),
       body:  Obx(() => Container(
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
             Column(
               children: [
+                
                 Container(
                   width: 100.w,
-                  height: 20.h,
-                  color: Color(0xff1d1a56),
-                  child: Center(
-                    child: Image.asset(
-                      'assets/image/canteen/top_up.png',
-                      height: 15.h,
-                      color: Colors.white,
-                    ),
+                  // height: 20.h,
+                  color: AppColor.primaryColor,
+                  child: Column(
+                    children: [
+                      CustomAppBarAssets(title: 'Top Up', assets: 'assets/image/canteen/top_up.png')
+                    
+                    ],
                   ),
                 ),
                    _buildBodyExtend,
@@ -93,12 +88,12 @@ class _TopUpScreenState extends State<TopUpScreen>
               color: Colors.white,
               child: TabBar(
                 controller: controller.tabController,
-                unselectedLabelColor: Color(0xff1d1a56),
+                unselectedLabelColor: AppColor.primaryColor,
                 indicatorSize: TabBarIndicatorSize.tab,
-                labelColor: Color(0xff1d1a56),
+                labelColor:AppColor.primaryColor,
                 indicator: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Color(0xff1d1a56))),
+                    border: Border.all(color:AppColor.primaryColor,)),
                 tabs: [
                   Tab(
                     child: Text(
@@ -431,7 +426,9 @@ class _TopUpScreenState extends State<TopUpScreen>
             ),
             onTap: () async {
               Get.back();
-              File? file =
+             
+           
+              File? file = 
                   await getImageNetwork(imageSource: ImageSource.camera);
               if (file != null) {
                 setState(() {

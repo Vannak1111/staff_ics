@@ -17,13 +17,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
 ;  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Notification',onTap: (){
-            homeController.notification.value=0;
-                  storage.write('notification', 0);
-        Get.back();
-      },
-     ), 
+    //   appBar: CustomAppBar(
+    //     title: 'Notification',onTap: (){
+    //         homeController.notification.value=0;
+    //               storage.write('notification', 0);
+    //     Get.back();
+    //   },
+    //  ), 
     );
   }
 }

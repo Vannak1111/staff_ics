@@ -3,12 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:sizer/sizer.dart';
 import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:staff_ics/modules/canteen/controllers/canteen_controller.dart';
 import 'package:staff_ics/modules/canteen/screen/purchase_limit/controllers/purchase_controller.dart';
 import 'package:staff_ics/utils/widgets/catch_dialog.dart';
-import 'package:staff_ics/utils/widgets/custom_appbar.dart';
+import 'package:staff_ics/utils/widgets/custom_appbar_asset.dart';
 import 'package:staff_ics/utils/widgets/custom_buttom.dart';
 
 class PurchaseLimitScreen extends StatefulWidget {
@@ -25,6 +24,7 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint("limit purchase ${_canteenController.purchaseLimit.value }");
     if (_canteenController.purchaseLimit.value == 0.0)
       _purchaseController.textEditingController.value.text = "";
     else
@@ -41,37 +41,19 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
     return Obx(() => GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
-            appBar: CustomAppBar(
-              title: 'Daily Purchase Limit',
-              onTap: () {
-                Get.back();
-              },
-            ),
+            // appBar: CustomAppBar(
+            //   title: 'Daily Purchase Limit',
+            //   onTap: () {
+            //     Get.back();
+            //   },
+            // ),
             body: Container(
-              child: Stack(
-                alignment: Alignment.topCenter,
+              child: Column(
                 children: [
-                  Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(8),
-                        width: 100.w,
-                        height: 30.h,
-                        color: Color(0xff1d1a56),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/image/canteen/limit_purchase.png',
-                              height: 15.h,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
-                      _buildBodyExtend,
-                    ],
-                  ),
+                  CustomAppBarAssets(
+                      title: 'Daily Purchase Limit',
+                      assets: 'assets/image/canteen/limit_purchase.png'),
+                  _buildBodyExtend,
                 ],
               ),
             ),
@@ -94,7 +76,7 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
                   _purchaseController.isDisableButton.value = true;
                 } else {
                   if (_purchaseController.newLimitPurchase.value ==
-                          double.parse(value)) {
+                      double.parse(value)) {
                     _purchaseController.isDisableButton.value = true;
                   } else {
                     _purchaseController.isDisableButton.value = false;
@@ -143,8 +125,12 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
                     ? double.parse(
                         _purchaseController.textEditingController.value.text)
                     : 0.0;
-                if (!_purchaseController.isDisableButton.value)
-                  _setPurchaseLimit(purchaseLimit: value);
+                if (!_purchaseController.isDisableButton.value){
+                   _canteenController.purchaseLimit.value=double.parse(_purchaseController
+                        .textEditingController.value.text);
+                                     _setPurchaseLimit(purchaseLimit: value);
+
+                }
               },
               title: 'SAVE',
               isDisable: _purchaseController.isDisableButton.value),
@@ -160,6 +146,7 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
         .posPurchaseLimit(purchaseLimit: purchaseLimit)
         .then((value) {
       try {
+       
         print('value-message=${value.message}');
         if (value.message == true) {
           EasyLoading.showSuccess('Saved');
@@ -172,10 +159,7 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
 
         EasyLoading.dismiss();
         CatchDialog(messageError: "${value}", title: "Error");
-     
       }
     });
   }
-
-
 }

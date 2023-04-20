@@ -14,9 +14,11 @@ import 'package:staff_ics/modules/canteen/controllers/fetch_pos.dart';
 import 'package:staff_ics/modules/home_screen/controllers/home_screen_controller.dart';
 import 'configs/route/route.dart';
 import 'configs/themes/theme.dart';
+import 'modules/canteen/controllers/canteen_controller.dart';
 
 final controller = Get.put(SlashScreenController());
 final homeController = Get.put(HomeScreenController());
+final canteenController = Get.put(CanteenController());
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.notification!.title}");
@@ -52,10 +54,16 @@ void main() async {
   if (messaging.isAutoInitEnabled) {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       debugPrint("you have been get notification from firebase ");
+   
+      if(message.notification!.title=="Top up Notification"){
+        debugPrint("fetch new blance ");
+       canteenController.fetchPosUser();
+      }
+       
       RemoteNotification? notification = message.notification;
       if (message.notification != null) {
         if (storage.read('notification') != null) {
-          storage.write('notification', storage.read('notification') + 1);
+          storage.write('notification', storage.read('no tification') + 1);
           homeController.notification.value = storage.read('notification');
         } else {
           storage.write('notification', 1);
