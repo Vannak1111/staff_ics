@@ -1,4 +1,4 @@
-package com.kh.ics.group
+package com.kh.ics.staff
 
 import io.flutter.embedding.android.FlutterActivity
 

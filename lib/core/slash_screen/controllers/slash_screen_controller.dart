@@ -81,8 +81,8 @@ Future fetchRegisterDeviceToken(String firebaseToken, String model,String osType
       };
     }
       _deviceData = deviceData;
-  }
-
+  } 
+                      
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
     return <String, dynamic>{
       'brand': build.brand,
