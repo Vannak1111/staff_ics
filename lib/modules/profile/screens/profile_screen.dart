@@ -27,21 +27,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
 
-      _fetchProfile(apiKey: storage.read('user_token'));
-    
+    _fetchProfile(apiKey: storage.read('user_token'));
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Focus.of(context).unfocus();
       },
-      child:Scaffold(
-        body: Obx(()=>_buildBody,
+      child: Scaffold(
+          body: Obx(
+        () => _buildBody,
       )),
     );
   }
+
   get _buildBody {
     return Container(
       color: AppColor.backgroundColor,
@@ -53,46 +54,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-  
+
   void _fetchProfile({required String apiKey}) {
     _profileController.fetchProfile(apiKey: apiKey).then((value) {
-    
-        try {
-          print("value.data.list=${value.data}");
-          for (int i = 0; i < value.data.data.length; ++i) {
-            _profileController.profile.add(Datum1(
-                id: value.data.data[0].id,
-                name: value.data.data[0].name,
-                email: value.data.data[0].email,
-                phone: value.data.data[0].phone,
-                classId: value.data.data[0].classId,
-                className: value.data.data[0].className,
-                campus: value.data.data[0].campus,
-                fullImage: value.data.data[0].fullImage,
-                version: value.data.data[0].version));
-          }
-          storage.write('isPhoto', value.data.data[0].fullImage);
-           storage.write('isActive', value.data.data[0].email);
-        } catch (err) {
-          print("value=$value");
-          CatchDialog(messageError: "$value", title: "Error");
-        
+      try {
+        print("value.data.list=${value.data}");
+        for (int i = 0; i < value.data.data.length; ++i) {
+          _profileController.profile.add(Datum1(
+              id: value.data.data[0].id,
+              name: value.data.data[0].name,
+              email: value.data.data[0].email,
+              phone: value.data.data[0].phone,
+              classId: value.data.data[0].classId,
+              className: value.data.data[0].className,
+              campus: value.data.data[0].campus,
+              fullImage: value.data.data[0].fullImage,
+              version: value.data.data[0].version));
         }
-      });
+        storage.write('isPhoto', value.data.data[0].fullImage);
+        storage.write('isActive', value.data.data[0].email);
+      } catch (err) {
+        print("value=$value");
+        CatchDialog(messageError: "$value", title: "Error");
+      }
+    });
   }
 
   get _headerImage {
-    if ( _profileController.profile.isEmpty) {
-      _profileController .isLoading.value = false;
+    if (_profileController.profile.isEmpty) {
+      _profileController.isLoading.value = false;
     } else {
-      _profileController .isLoading.value = true;
+      _profileController.isLoading.value = true;
     }
 
     return Container(
       color: AppColor.primaryColor,
       width: 100.w,
       height: 180,
-      child: !_profileController .isLoading.value
+      child: !_profileController.isLoading.value
           ? Center(
               child: Container(
                 height: 120,
@@ -119,7 +118,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: NetworkImage( _profileController.profile[0].fullImage),
+                          image: NetworkImage(
+                              _profileController.profile[0].fullImage),
                         ),
                       ),
                     ),
@@ -129,14 +129,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
     );
   }
+
   get _studentProfile {
-    if ( _profileController.profile.isEmpty) {
-      _profileController .isLoading.value = false;
+    if (_profileController.profile.isEmpty) {
+      _profileController.isLoading.value = false;
     } else {
-      _profileController .isLoading.value = true;
+      _profileController.isLoading.value = true;
     }
-    return !_profileController .isLoading.value
-        ? Center(child: CircularProgressIndicator(color: AppColor.primaryColor,))
+    return !_profileController.isLoading.value
+        ? Center(
+            child: CircularProgressIndicator(
+            color: AppColor.primaryColor,
+          ))
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -155,23 +159,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     TableRow(children: [
                       _tableCell('ID:', FontWeight.bold, _fontSize),
-                      _tableCell(
-                          '${ _profileController.profile[0].email}', FontWeight.normal, _fontSize),
+                      _tableCell('${_profileController.profile[0].email}',
+                          FontWeight.normal, _fontSize),
                     ]),
                     TableRow(children: [
                       _tableCell('Full name:', FontWeight.bold, _fontSize),
-                      _tableCell(
-                          '${ _profileController.profile[0].name}', FontWeight.normal, _fontSize),
+                      _tableCell('${_profileController.profile[0].name}',
+                          FontWeight.normal, _fontSize),
                     ]),
                     TableRow(children: [
-                      _tableCell('Level:', FontWeight.bold, _fontSize),
-                      _tableCell('${ _profileController.profile[0].className}', FontWeight.normal,
-                          _fontSize),
-                    ]),
-                    TableRow(children: [
-                      _tableCell('Phone Number:', FontWeight.bold, _fontSize),
-                      _tableCell(
-                          '${ _profileController.profile[0].phone}', FontWeight.normal, _fontSize),
+                      _tableCell('Phone:', FontWeight.bold, _fontSize),
+                      _tableCell('${_profileController.profile[0].phone}',
+                          FontWeight.normal, _fontSize),
                     ]),
                     TableRow(children: [
                       _tableCell('Password:', FontWeight.bold, _fontSize),
@@ -207,11 +206,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: Colors.grey,
                 margin: EdgeInsets.only(left: 8, right: 8),
               ),
-             SizedBox(height: 20,),
-                  CustomButtom(ontap: (){
-              storage.remove('user_token');
-              Get.toNamed("login");
-            }, title: "logout", isDisable: false)
+              SizedBox(
+                height: 20,
+              ),
+              CustomButtom(
+                  ontap: () {
+                    storage.remove('user_token');
+                    Get.toNamed("login");
+                  },
+                  title: "logout",
+                  isDisable: false)
             ],
           );
   }
@@ -227,46 +231,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
   void _changePassword() {
     EasyLoading.show(status: 'Loading');
     _profileController
-        .userChangePassword(_profileController.currentPasswordController.value.text.trim(),
+        .userChangePassword(
+            _profileController.currentPasswordController.value.text.trim(),
             _profileController.newPasswordController.value.text.trim())
         .then((value) {
       try {
         print('Success=${value.status}');
 
         if (value.status) {
-        
-                  storage.write('isPassword', _profileController.newPasswordController.value.text.trim());
-          
-            _profileController.currentPasswordController.value.clear();
-            _profileController.newPasswordController.value.clear();
-            _profileController.confirmPasswordController.value.clear();
-            Get.back();
-            EasyLoading.showSuccess('Password Changed!');
-            EasyLoading.dismiss();
-            _profileController .isLoading.value = true;
-            _profileController.isDisableButton.value = false;
-        
+          storage.write('isPassword',
+              _profileController.newPasswordController.value.text.trim());
+
+          _profileController.currentPasswordController.value.clear();
+          _profileController.newPasswordController.value.clear();
+          _profileController.confirmPasswordController.value.clear();
+          Get.back();
+          EasyLoading.showSuccess('Password Changed!');
+          EasyLoading.dismiss();
+          _profileController.isLoading.value = true;
+          _profileController.isDisableButton.value = false;
         } else {
           EasyLoading.dismiss();
         }
       } catch (err) {
         EasyLoading.dismiss();
-      
-          _profileController.isDisableButton.value = false;
-      
+
+        _profileController.isDisableButton.value = false;
+
         value =
             value == 'Unauthorized' ? 'Username/Password is incorrect!' : value;
-          CatchDialog(messageError: "$value", title: "Error");
+        CatchDialog(messageError: "$value", title: "Error");
       }
     });
   }
 
   get _showChangePasswordActionSheet {
-    Get.bottomSheet(
-      Container(
+    Get.bottomSheet(Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: const BorderRadius.only(
@@ -278,121 +282,134 @@ class _ProfileScreenState extends State<ProfileScreen> {
           key: formKey,
           child: Wrap(
             children: [
-                Obx(()=>  Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(
-                    horizontal:
-                        SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40),
-                child: TextFormField(
-                  controller: _profileController.currentPasswordController.value,
-                  validator: (value) {
-                    if (value!.isEmpty ||
-                        value.trim() != storage.read('isPassword'))
-                      return 'Password is incorrect';
-                    else
-                      return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: "Current password",
-                    prefixIcon: Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                       _profileController.hideOldPWD.value ? Icons.visibility : Icons.visibility_off,
-                        color: Colors.blue,
-                      ),
-                      onPressed: () {
-                   
-                          _profileController.hideOldPWD.value = !_profileController.hideOldPWD.value;
-                   
+              Obx(() => Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(
+                        horizontal: SizerUtil.deviceType == DeviceType.tablet
+                            ? 30.sp
+                            : 40),
+                    child: TextFormField(
+                      controller:
+                          _profileController.currentPasswordController.value,
+                      validator: (value) {
+                        if (value!.isEmpty ||
+                            value.trim() != storage.read('isPassword'))
+                          return 'Password is incorrect';
+                        else
+                          return null;
                       },
-                    ),
-                  ),
-                  style: TextStyle(
-                      fontSize:
-                          SizerUtil.deviceType == DeviceType.tablet ? 18 : 14,
-                      color: Color(0xff1a0785)),
-                  obscureText: _profileController.hideOldPWD.value,
-                ),
-              )),
-                  Obx(()=>
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(
-                    horizontal:
-                        SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40),
-                child: TextFormField(
-                  controller: _profileController.newPasswordController.value,
-                  validator: (value) {
-                    if (value!.isEmpty || value.trim().length <= 5)
-                      return 'Password must be at least 6 characters';
-                    else if (value.trim() == _profileController.currentPasswordController.value.text)
-                      return "New password cannot be the same as current password";
-                    else if (value.trim() != _profileController.confirmPasswordController.value.text)
-                      return 'New password and confirm new password do not match';
-                    else
-                      return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: "New password",
-                    prefixIcon: Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _profileController.hideNewPWD.value ? Icons.visibility : Icons.visibility_off,
-                        color: Colors.blue,
+                      decoration: InputDecoration(
+                        labelText: "Current password",
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _profileController.hideOldPWD.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.blue,
+                          ),
+                          onPressed: () {
+                            _profileController.hideOldPWD.value =
+                                !_profileController.hideOldPWD.value;
+                          },
+                        ),
                       ),
-                      onPressed: () {
-                       
-                          _profileController.hideNewPWD.value = !_profileController.hideNewPWD.value;
-                      
-                      },
+                      style: TextStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.tablet
+                              ? 18
+                              : 14,
+                          color: Color(0xff1a0785)),
+                      obscureText: _profileController.hideOldPWD.value,
                     ),
+                  )),
+              Obx(
+                () => Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(
+                      horizontal: SizerUtil.deviceType == DeviceType.tablet
+                          ? 30.sp
+                          : 40),
+                  child: TextFormField(
+                    controller: _profileController.newPasswordController.value,
+                    validator: (value) {
+                      if (value!.isEmpty || value.trim().length <= 5)
+                        return 'Password must be at least 6 characters';
+                      else if (value.trim() ==
+                          _profileController
+                              .currentPasswordController.value.text)
+                        return "New password cannot be the same as current password";
+                      else if (value.trim() !=
+                          _profileController
+                              .confirmPasswordController.value.text)
+                        return 'New password and confirm new password do not match';
+                      else
+                        return null;
+                    },
+                    decoration: InputDecoration(
+                      labelText: "New password",
+                      prefixIcon: Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _profileController.hideNewPWD.value
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.blue,
+                        ),
+                        onPressed: () {
+                          _profileController.hideNewPWD.value =
+                              !_profileController.hideNewPWD.value;
+                        },
+                      ),
+                    ),
+                    style: TextStyle(
+                        fontSize:
+                            SizerUtil.deviceType == DeviceType.tablet ? 18 : 14,
+                        color: Color(0xff1a0785)),
+                    obscureText: _profileController.hideNewPWD.value,
                   ),
-                  style: TextStyle(
-                      fontSize:
-                          SizerUtil.deviceType == DeviceType.tablet ? 18 : 14,
-                      color: Color(0xff1a0785)),
-                  obscureText: _profileController.hideNewPWD.value,
                 ),
               ),
-              ) ,   Obx(()=>Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(
-                    horizontal:
-                        SizerUtil.deviceType == DeviceType.tablet ? 30.sp : 40),
-                child: TextFormField(
-                  controller: _profileController.confirmPasswordController.value,
-                  validator: (value) {
-                    if (value!.isEmpty || value.trim().length <= 5)
-                      return 'Password must be at least 6 characters';
-                    else
-                      return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: "Confirm new password",
-                    prefixIcon: Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _profileController.hideConfirmPWD.value
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Colors.blue,
-                      ),
-                      onPressed: () {
-                      
-                          _profileController.hideConfirmPWD.value = !_profileController.hideConfirmPWD.value;
-                    
+              Obx(() => Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(
+                        horizontal: SizerUtil.deviceType == DeviceType.tablet
+                            ? 30.sp
+                            : 40),
+                    child: TextFormField(
+                      controller:
+                          _profileController.confirmPasswordController.value,
+                      validator: (value) {
+                        if (value!.isEmpty || value.trim().length <= 5)
+                          return 'Password must be at least 6 characters';
+                        else
+                          return null;
                       },
+                      decoration: InputDecoration(
+                        labelText: "Confirm new password",
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _profileController.hideConfirmPWD.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.blue,
+                          ),
+                          onPressed: () {
+                            _profileController.hideConfirmPWD.value =
+                                !_profileController.hideConfirmPWD.value;
+                          },
+                        ),
+                      ),
+                      style: TextStyle(
+                          fontSize: SizerUtil.deviceType == DeviceType.tablet
+                              ? 18
+                              : 14,
+                          color: Color(0xff1a0785)),
+                      obscureText: _profileController.hideConfirmPWD.value,
                     ),
-                  ),
-                  style: TextStyle(
-                      fontSize:
-                          SizerUtil.deviceType == DeviceType.tablet ? 18 : 14,
-                      color: Color(0xff1a0785)),
-                  obscureText: _profileController.hideConfirmPWD.value,
-                ),
-              )),
+                  )),
               SizedBox(height: 3.h),
-                Container(
+              Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.symmetric(
                     horizontal:
@@ -403,9 +420,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     if (formKey.currentState!.validate()) {
                       print("Validation");
                       if (_profileController.isDisableButton.value == false) {
-            
-                          _profileController.isDisableButton.value = true;
-                        
+                        _profileController.isDisableButton.value = true;
+
                         _changePassword();
                       }
                     }
@@ -449,5 +465,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }),
     ));
   }
- 
 }

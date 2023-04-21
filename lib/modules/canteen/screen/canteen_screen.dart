@@ -21,6 +21,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
   final storage = GetStorage();
   final _controller = Get.put(CanteenController());
   final _proOrderController = Get.put(PreOrderController());
+
   late String title, body;
   @override
   void initState() {
@@ -41,7 +42,37 @@ class _CanteenScreenState extends State<CanteenScreen> {
                 child: Column(
                   children: [
                     _buildMainBalance,
-                    _buildBodyListExtend,
+                    _controller.recPosUserData[0].cardId != ""
+                        ? Container(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                // Container(
+                                //     child: Column(
+                                //         children: _controller.menuCanteenList
+                                //             .asMap()
+                                //             .entries
+                                //             .map((e) {
+                                //   return Container(
+                                //     child: _buildItem(e.key),
+                                //   );
+                                // }).toList())
+                                ListView.builder(
+                                  // physics: const Neve  rScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: _controller.menuCanteenList.length,
+                                  itemBuilder: (context, index) => Column(
+                                    children: [
+                                      _buildItem(index),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               )));
@@ -65,29 +96,6 @@ class _CanteenScreenState extends State<CanteenScreen> {
         ),
       ],
     );
-  }
-
-  get _buildBodyListExtend {
-    return _controller.recPosUserData[0].cardId != ""
-        ? Container(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 10,
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _controller.menuCanteenList.length,
-                  itemBuilder: (context, index) => Column(
-                    children: [
-                      _buildItem(index),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          )
-        : const SizedBox();
   }
 
   _buildItem(int index) {

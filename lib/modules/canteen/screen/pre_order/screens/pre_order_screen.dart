@@ -39,7 +39,8 @@ class _PreOrderScreenState extends State<PreOrderScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: int.parse('${Get.arguments}'), vsync: this);
+    _tabController =
+        TabController(length: int.parse('${Get.arguments}'), vsync: this);
     _fetchPos();
     _fontSize = SizerUtil.deviceType == DeviceType.tablet ? 9.sp : 11.sp;
     _itemPositionsListener.itemPositions.addListener(() {
@@ -62,45 +63,48 @@ class _PreOrderScreenState extends State<PreOrderScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-          () => Scaffold(
-        appBar:  AppBar(
-        title:  Text(
-            "Order",
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  fontSize: 19,
-                ),
-          ),
-          centerTitle: true,
-          backgroundColor: AppColor.primaryColor,
-          leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: Row(
-              children: [
-                Icon(
-                  Platform.isIOS
-                      ? Icons.arrow_back_ios_rounded
-                      : Icons.arrow_back_rounded,
-                  color: AppColor.backgroundColor,
-                  size: 22,
-                ),
-              
-               
-              ],
+    return Obx(() => Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "Order",
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    fontSize: 19,
+                  ),
             ),
+            centerTitle: true,
+            backgroundColor: AppColor.primaryColor,
+            leading: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Row(
+                children: [
+                  Icon(
+                    Platform.isIOS
+                        ? Icons.arrow_back_ios_rounded
+                        : Icons.arrow_back_rounded,
+                    color: AppColor.backgroundColor,
+                    size: 22,
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              IconButton(
+                  onPressed: () {
+                    info();
+                  },
+                  icon: Icon(
+                    Icons.info_outline,
+                    color: AppColor.backgroundColor,
+                  )),
+            ],
           ),
-          actions: <Widget>[
-            IconButton(
-                onPressed: () {
-                  info();
-                },
-                icon: Icon(Icons.info_outline,color: AppColor.backgroundColor,)),
-          ],
-        ),
-        body: !_proOrderController.isLoading.value
-              ? Center(child: CircularProgressIndicator(color: AppColor.primaryColor,))
+          body: !_proOrderController.isLoading.value
+              ? Center(
+                  child: CircularProgressIndicator(
+                  color: AppColor.primaryColor,
+                ))
               : Column(
                   children: <Widget>[
                     Container(
@@ -220,105 +224,103 @@ class _PreOrderScreenState extends State<PreOrderScreen>
                                                                   ),
                                                                 ),
                                                               ),
-                                                             _proOrderController
-                                                                            .recPosData[
-                                                                                index]
-                                                                            .list[
-                                                                                index2]
-                                                                            .amount !=
-                                                                        0
-                                                                    ? Container(
-                                                                        height:
-                                                                            5.h,
-                                                                        width:
-                                                                            22.w,
-                                                                        decoration: BoxDecoration(
-                                                                            boxShadow: [
-                                                                              BoxShadow(
-                                                                                color: Colors.grey.withOpacity(0.5),
-                                                                                spreadRadius: 1,
-                                                                                blurRadius: 7,
-                                                                                offset: Offset(0, 3), // changes position of shadow
-                                                                              ),
-                                                                            ],
-                                                                            color:
-                                                                                Colors.white,
-                                                                            borderRadius: BorderRadius.circular(5)),
+                                                              _proOrderController
+                                                                          .recPosData[
+                                                                              index]
+                                                                          .list[
+                                                                              index2]
+                                                                          .amount !=
+                                                                      0
+                                                                  ? Container(
+                                                                      height:
+                                                                          5.h,
+                                                                      width:
+                                                                          22.w,
+                                                                      decoration: BoxDecoration(
+                                                                          boxShadow: [
+                                                                            BoxShadow(
+                                                                              color: Colors.grey.withOpacity(0.5),
+                                                                              spreadRadius: 1,
+                                                                              blurRadius: 7,
+                                                                              offset: Offset(0, 3), // changes position of shadow
+                                                                            ),
+                                                                          ],
+                                                                          color: Colors
+                                                                              .white,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(5)),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.all(4.0),
                                                                         child:
-                                                                            Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.all(4.0),
-                                                                          child:
-                                                                              Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceBetween,
-                                                                            children: [
-                                                                              InkWell(
-                                                                                child: Icon(
-                                                                                  Icons.remove,
-                                                                                  color: Colors.black,
-                                                                                ),
-                                                                                onTap: () {
-                                                                                  _proOrderController.recPosData[index].list[index2].amount = _proOrderController.recPosData[index].list[index2].amount - 1;
-                                                                                  _proOrderController.subTotal.value = _proOrderController.subTotal.value - _proOrderController.recPosData[index].list[index2].lstPrice;
-                                                                                  _proOrderController.item.value--;
-                                                                                },
+                                                                            Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            InkWell(
+                                                                              child: Icon(
+                                                                                Icons.remove,
+                                                                                color: Colors.black,
                                                                               ),
-                                                                              Text('${_proOrderController.recPosData[index].list[index2].amount}'),
-                                                                              InkWell(
-                                                                                child: Icon(
-                                                                                  Icons.add,
-                                                                                  color: Colors.blue,
-                                                                                ),
-                                                                                onTap: () {
-                                                                                  _proOrderController.recPosData[index].list[index2].amount = _proOrderController.recPosData[index].list[index2].amount + 1;
-                                                                                  _proOrderController.item.value++;
-                                                                                  _proOrderController.subTotal.value = _proOrderController.subTotal.value + _proOrderController.recPosData[index].list[index2].lstPrice;
-                                                                                },
+                                                                              onTap: () {
+                                                                                _proOrderController.recPosData[index].list[index2].amount = _proOrderController.recPosData[index].list[index2].amount - 1;
+                                                                                _proOrderController.subTotal.value = _proOrderController.subTotal.value - _proOrderController.recPosData[index].list[index2].lstPrice;
+                                                                                _proOrderController.item.value--;
+                                                                              },
+                                                                            ),
+                                                                            Text('${_proOrderController.recPosData[index].list[index2].amount}'),
+                                                                            InkWell(
+                                                                              child: Icon(
+                                                                                Icons.add,
+                                                                                color: Colors.blue,
                                                                               ),
-                                                                            ],
-                                                                          ),
+                                                                              onTap: () {
+                                                                                _proOrderController.recPosData[index].list[index2].amount = _proOrderController.recPosData[index].list[index2].amount + 1;
+                                                                                _proOrderController.item.value++;
+                                                                                _proOrderController.subTotal.value = _proOrderController.subTotal.value + _proOrderController.recPosData[index].list[index2].lstPrice;
+                                                                              },
+                                                                            ),
+                                                                          ],
                                                                         ),
-                                                                      )
-                                                                    : ElevatedButton(
-                                                                        style: ElevatedButton
-                                                                            .styleFrom(
-                                                                          elevation:
-                                                                              8.0,
-                                                                          backgroundColor:
-                                                                              Colors.white,
-                                                                          shape:
-                                                                              CircleBorder(),
-                                                                        ),
-                                                                        onPressed:
-                                                                            () {
-                                                                          // debugPrint(
-                                                                          //     "khmer sl khmer ");
-                                                                          _proOrderController
-                                                                              .recPosData[index]
-                                                                              .list[index2]
-                                                                              .amount = 1;
-                                                                          debugPrint("amount ${index} ${index2} ${_proOrderController
-                                                                              .recPosData[index]
-                                                                              .list[index2]
-                                                                              .amount}");
-                                                                          _proOrderController
-                                                                              .item
-                                                                              .value++;
-                                                                          _proOrderController
-                                                                              .subTotal
-                                                                              .value = _proOrderController
-                                                                                  .subTotal.value +
-                                                                              _proOrderController.recPosData[index].list[index2].lstPrice;
-                                                                        },
-                                                                        child:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .add,
-                                                                          color:
-                                                                              Color(0xff1d1a56),
-                                                                        )),
-                                                              
+                                                                      ),
+                                                                    )
+                                                                  : ElevatedButton(
+                                                                      style: ElevatedButton
+                                                                          .styleFrom(
+                                                                        elevation:
+                                                                            8.0,
+                                                                        backgroundColor:
+                                                                            Colors.white,
+                                                                        shape:
+                                                                            CircleBorder(),
+                                                                      ),
+                                                                      onPressed:
+                                                                          () {
+                                                                        // debugPrint(
+                                                                        //     "khmer sl khmer ");
+                                                                        _proOrderController
+                                                                            .recPosData[index]
+                                                                            .list[index2]
+                                                                            .amount = 1;
+                                                                        debugPrint(
+                                                                            "amount ${index} ${index2} ${_proOrderController.recPosData[index].list[index2].amount}");
+                                                                        _proOrderController
+                                                                            .item
+                                                                            .value++;
+                                                                        _proOrderController
+                                                                            .subTotal
+                                                                            .value = _proOrderController
+                                                                                .subTotal.value +
+                                                                            _proOrderController.recPosData[index].list[index2].lstPrice;
+                                                                      },
+                                                                      child:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .add,
+                                                                        color: Color(
+                                                                            0xff1d1a56),
+                                                                      )),
                                                             ],
                                                           ),
                                                         ),
@@ -334,8 +336,7 @@ class _PreOrderScreenState extends State<PreOrderScreen>
                     )
                   ],
                 ),
-      
-        bottomNavigationBar:  _proOrderController.item.value != 0
+          bottomNavigationBar: _proOrderController.item.value != 0
               ? _buildButtonAddToCard()
               : SizedBox(),
         ));
@@ -425,8 +426,6 @@ class _PreOrderScreenState extends State<PreOrderScreen>
     return tabs;
   }
 
- 
-
   void scrollTo(int index) {
     itemScrollController.scrollTo(
         index: index,
@@ -446,6 +445,7 @@ class _PreOrderScreenState extends State<PreOrderScreen>
       }
     });
   }
+
   void info() {
     showDialog(
         context: context,
@@ -470,7 +470,8 @@ class _PreOrderScreenState extends State<PreOrderScreen>
                             children: [
                               Center(
                                   child: Text(
-                                'Instructions',style: Theme.of(context).textTheme.bodyMedium,
+                                'Instructions',
+                                style: Theme.of(context).textTheme.bodyMedium,
                               )),
                               GestureDetector(
                                 onTap: () {

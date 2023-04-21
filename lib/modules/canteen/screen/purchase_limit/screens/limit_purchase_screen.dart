@@ -24,7 +24,7 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
   @override
   void initState() {
     super.initState();
-    debugPrint("limit purchase ${_canteenController.purchaseLimit.value }");
+    debugPrint("limit purchase ${_canteenController.purchaseLimit.value}");
     if (_canteenController.purchaseLimit.value == 0.0)
       _purchaseController.textEditingController.value.text = "";
     else
@@ -41,12 +41,6 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
     return Obx(() => GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
-            // appBar: CustomAppBar(
-            //   title: 'Daily Purchase Limit',
-            //   onTap: () {
-            //     Get.back();
-            //   },
-            // ),
             body: Container(
               child: Column(
                 children: [
@@ -68,7 +62,8 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
         children: [
           Container(
             padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 20.0),
-            color: Colors.white,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(10)),
             child: TextFormField(
               onChanged: (value) {
                 debugPrint("value of bottom   ${value}");
@@ -103,10 +98,16 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
                 fillColor: Colors.grey.shade100,
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
+                  borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
                     color: AppColor.primaryColor,
                   ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                      // color: AppColor.primaryColor,
+                      ),
                 ),
                 labelText:
                     _purchaseController.textEditingController.value.text.isEmpty
@@ -125,11 +126,10 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
                     ? double.parse(
                         _purchaseController.textEditingController.value.text)
                     : 0.0;
-                if (!_purchaseController.isDisableButton.value){
-                   _canteenController.purchaseLimit.value=double.parse(_purchaseController
-                        .textEditingController.value.text);
-                                     _setPurchaseLimit(purchaseLimit: value);
-
+                if (!_purchaseController.isDisableButton.value) {
+                  _canteenController.purchaseLimit.value = double.parse(
+                      _purchaseController.textEditingController.value.text);
+                  _setPurchaseLimit(purchaseLimit: value);
                 }
               },
               title: 'SAVE',
@@ -146,7 +146,6 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
         .posPurchaseLimit(purchaseLimit: purchaseLimit)
         .then((value) {
       try {
-       
         print('value-message=${value.message}');
         if (value.message == true) {
           EasyLoading.showSuccess('Saved');

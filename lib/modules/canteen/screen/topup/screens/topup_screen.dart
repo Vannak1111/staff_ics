@@ -40,6 +40,8 @@ class _TopUpScreenState extends State<TopUpScreen>
   @override
   void initState() {
     super.initState();
+    controller.file = null;
+    controller.textEditingController.value.text = '';
     controller.fetchABA();
     controller.tabController = TabController(length: 2, vsync: this);
     manager.emptyCache();
@@ -48,29 +50,28 @@ class _TopUpScreenState extends State<TopUpScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:  Obx(() => Container(
+        body: Obx(
+      () => Container(
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
             Column(
               children: [
-                
                 Container(
                   width: 100.w,
                   // height: 20.h,
                   color: AppColor.primaryColor,
                   child: Column(
                     children: [
-                      CustomAppBarAssets(title: 'Top Up', assets: 'assets/image/canteen/top_up.png')
-                    
+                      CustomAppBarAssets(
+                          title: 'Top Up',
+                          assets: 'assets/image/canteen/top_up.png')
                     ],
                   ),
                 ),
-                   _buildBodyExtend,
-
+                _buildBodyExtend,
               ],
             ),
-            
           ],
         ),
       ),
@@ -90,10 +91,12 @@ class _TopUpScreenState extends State<TopUpScreen>
                 controller: controller.tabController,
                 unselectedLabelColor: AppColor.primaryColor,
                 indicatorSize: TabBarIndicatorSize.tab,
-                labelColor:AppColor.primaryColor,
+                labelColor: AppColor.primaryColor,
                 indicator: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color:AppColor.primaryColor,)),
+                    border: Border.all(
+                      color: AppColor.primaryColor,
+                    )),
                 tabs: [
                   Tab(
                     child: Text(
@@ -111,12 +114,12 @@ class _TopUpScreenState extends State<TopUpScreen>
               ),
             ),
           ),
-            
           Expanded(
             child: TabBarView(
               controller: controller.tabController,
               children: [tabTopUp, tabInfo],
-          ),),
+            ),
+          ),
         ],
       ),
     );
@@ -164,28 +167,26 @@ class _TopUpScreenState extends State<TopUpScreen>
   }
 
   get tabTopUp {
-    return    Container(
+    return Container(
       color: Colors.transparent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-     
-         Expanded(
-            child:     ListView.builder(
-                controller: _scrollController,
-                physics: PageScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: controller.recAbaData.length,
-                itemBuilder: (context, index) => Container(
-                  // child: Container(height: 30,color: Colors.red,),
-                      child: _buildItem(
-                        ABA(
-                            amount: controller.recAbaData[index].amount,
-                            image: controller.recAbaData[index].image,
-                            link: controller.recAbaData[index].link),
-                      ),
-                    
-          ))),
+          Expanded(
+              child: ListView.builder(
+                  controller: _scrollController,
+                  physics: PageScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: controller.recAbaData.length,
+                  itemBuilder: (context, index) => Container(
+                        // child: Container(height: 30,color: Colors.red,),
+                        child: _buildItem(
+                          ABA(
+                              amount: controller.recAbaData[index].amount,
+                              image: controller.recAbaData[index].image,
+                              link: controller.recAbaData[index].link),
+                        ),
+                      ))),
           controller.file != null
               ? _buildButtonSubmit()
               : CustomButtom(
@@ -269,14 +270,10 @@ class _TopUpScreenState extends State<TopUpScreen>
                     ),
                   ),
                   onTap: () {
-                    debugPrint("nice to meet sister ");
-                    setState(() {
-                      controller.file = null;
-                    });
                     if (controller.file != null) viewImage();
                   },
                 ),
-                 Expanded(
+                Expanded(
                     child: InkWell(
                   child: Container(
                     child: Icon(Icons.close),
@@ -284,10 +281,8 @@ class _TopUpScreenState extends State<TopUpScreen>
                   ),
                   onTap: () {
                     setState(() {
-                         controller.file = null;
+                      controller.file = null;
                     });
-                 
-                  
                     controller.isSelect.value = false;
                   },
                 )),
@@ -295,7 +290,7 @@ class _TopUpScreenState extends State<TopUpScreen>
             ),
           ),
         ),
-      CustomButtom(
+        CustomButtom(
           ontap: () async {
             controller.textEditingController.value.text.isEmpty
                 ? controller.validate.value = true
@@ -306,17 +301,20 @@ class _TopUpScreenState extends State<TopUpScreen>
                 "qty": 1,
                 "price_unit": controller.textEditingController.value.text,
                 "price_subtotal": controller.textEditingController.value.text,
-                "price_subtotal_incl": controller.textEditingController.value.text,
+                "price_subtotal_incl":
+                    controller.textEditingController.value.text,
                 "product_id": storage.read("product_id"),
                 "line_id": 1
               });
               String image = await compressAndGetFile(controller.file!);
               controller.createOrder(
                   lines: lines,
-                  amountPaid: double.parse(controller.textEditingController.value.text),
+                  amountPaid:
+                      double.parse(controller.textEditingController.value.text),
                   pickUp: "",
                   comment: "Top Up",
-                  topUpAmount: double.parse(controller.textEditingController.value.text),
+                  topUpAmount:
+                      double.parse(controller.textEditingController.value.text),
                   statePreOrder: "draft",
                   imageEncode: image);
             } else {
@@ -426,9 +424,8 @@ class _TopUpScreenState extends State<TopUpScreen>
             ),
             onTap: () async {
               Get.back();
-             
-           
-              File? file = 
+
+              File? file =
                   await getImageNetwork(imageSource: ImageSource.camera);
               if (file != null) {
                 setState(() {
@@ -449,11 +446,9 @@ class _TopUpScreenState extends State<TopUpScreen>
               File? file = await getImageNetwork();
               if (file != null) {
                 setState(() {
-                    controller.file = file;
-              
+                  controller.file = file;
                 });
-                  controller.isSelect.value = true;
-              
+                controller.isSelect.value = true;
               }
             },
           ),
@@ -502,7 +497,6 @@ class _TopUpScreenState extends State<TopUpScreen>
       ),
     );
   }
-
 
   void message({required String title, required String body}) {
     showDialog(

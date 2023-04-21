@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:staff_ics/utils/widgets/catch_dialog.dart';
 import '../../../../../configs/const/ulr.dart';
 import '../../../controllers/fetch_pos.dart';
+import '../../../models/topup_history_db.dart';
 import '../models/aba_qr_db.dart';
 import '../models/pos_create_order_db.dart';
 
@@ -18,10 +19,27 @@ class TopUpController extends GetxController {
   final validate = false.obs;
   File? file;
   TabController? tabController;
-  final lines =[].obs;
+  final lines = [].obs;
   final textEditingController = TextEditingController().obs;
   final storage = GetStorage();
   late PosCreateOrderDb posCreateOrderDb;
+  final isLoadingHistoty = false.obs;
+  final recTopUpHistoryData = <TopUpHistoryData>[].obs;
+
+  Future<void> fetchTopUpHistory() async {
+    fetchPos(route: "top_up_history").then((value) {
+      try {
+        recTopUpHistoryData.addAll(value.response);
+        isLoadingHistoty.value = true;
+      } catch (err) {
+        print("err=$err");
+        CatchDialog(
+            messageError: "Something went wrong.\nPlease try again later.",
+            title: 'Oops!');
+      }
+    });
+  }
+
   Future<void> fetchABA() async {
     await fetchDataToPayABA().then((value) {
       debugPrint("value respone ${value}");
@@ -36,8 +54,9 @@ class TopUpController extends GetxController {
         }
       } catch (err) {
         print("err=$err");
-        CatchDialog(messageError: "Something went wrong.\nPlease try again later.", title: "Oops!");
-       
+        CatchDialog(
+            messageError: "Something went wrong.\nPlease try again later.",
+            title: "Oops!");
       }
     });
   }
@@ -128,7 +147,6 @@ class TopUpController extends GetxController {
 
           EasyLoading.dismiss();
           CatchDialog(messageError: "$value", title: "Error");
-         
         }
       });
     }

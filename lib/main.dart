@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -12,6 +11,7 @@ import 'package:sizer/sizer.dart';
 import 'package:staff_ics/core/slash_screen/controllers/slash_screen_controller.dart';
 import 'package:staff_ics/core/slash_screen/screens/slash_screen.dart';
 import 'package:staff_ics/modules/canteen/controllers/fetch_pos.dart';
+import 'package:staff_ics/modules/canteen/screen/topup/controllers/topup_controller.dart';
 import 'package:staff_ics/modules/home_screen/controllers/home_screen_controller.dart';
 import 'configs/route/route.dart';
 import 'configs/themes/theme.dart';
@@ -20,6 +20,7 @@ import 'modules/canteen/controllers/canteen_controller.dart';
 final controller = Get.put(SlashScreenController());
 final homeController = Get.put(HomeScreenController());
 final canteenController = Get.put(CanteenController());
+final topupController = Get.put(TopUpController());
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.notification!.title}");
@@ -56,10 +57,10 @@ void main() async {
   if (messaging.isAutoInitEnabled) {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       debugPrint("you have been get notification from firebase ");
-
       if (message.notification!.title == "Top up Notification") {
         debugPrint("fetch new blance ");
         canteenController.fetchPosUser();
+        topupController.fetchTopUpHistory();
       }
 
       RemoteNotification? notification = message.notification;
@@ -95,7 +96,6 @@ void main() async {
     debugPrint('User declined or has not accepted permission');
   }
   await GetStorage.init();
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown]);
   runApp(const MyApp());
 }
 

@@ -193,13 +193,14 @@ class _IWalletScreenState extends State<IWalletScreen>
                           fontSize: SizerUtil.deviceType == DeviceType.tablet
                               ? 12.sp
                               : 13.sp)),
-                  Text("\$${_canteenController.availableBalance.value}",
+                  Obx(() => Text(
+                      "\$${_canteenController.availableBalance.value}",
                       style: TextStyle(
                           color: Colors.deepOrangeAccent,
                           fontWeight: FontWeight.w900,
                           fontSize: SizerUtil.deviceType == DeviceType.tablet
                               ? 15.sp
-                              : 16.sp)),
+                              : 16.sp))),
                 ],
               )
             ],
