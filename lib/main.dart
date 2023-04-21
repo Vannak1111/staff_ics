@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,7 @@ final canteenController = Get.put(CanteenController());
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.notification!.title}");
 }
+
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_cannel', 'high Importance Notification',
     importance: Importance.high, playSound: true);
@@ -54,12 +56,12 @@ void main() async {
   if (messaging.isAutoInitEnabled) {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       debugPrint("you have been get notification from firebase ");
-   
-      if(message.notification!.title=="Top up Notification"){
+
+      if (message.notification!.title == "Top up Notification") {
         debugPrint("fetch new blance ");
-       canteenController.fetchPosUser();
+        canteenController.fetchPosUser();
       }
-       
+
       RemoteNotification? notification = message.notification;
       if (message.notification != null) {
         if (storage.read('notification') != null) {
@@ -93,8 +95,10 @@ void main() async {
     debugPrint('User declined or has not accepted permission');
   }
   await GetStorage.init();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown]);
   runApp(const MyApp());
 }
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
   @override
