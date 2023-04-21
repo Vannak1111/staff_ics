@@ -32,8 +32,11 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
           "${NumberFormat("##0.00", "en_US").format(_canteenController.purchaseLimit.value)}";
     debugPrint(
         "old value ${_purchaseController.textEditingController.value.text}/");
-    _purchaseController.newLimitPurchase.value =
-        double.parse(_purchaseController.textEditingController.value.text);
+    if (double.parse(_purchaseController.textEditingController.value.text) >
+        -1) {
+      _purchaseController.newLimitPurchase.value =
+          double.parse(_purchaseController.textEditingController.value.text);
+    }
   }
 
   @override
@@ -67,8 +70,9 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
             child: TextFormField(
               onChanged: (value) {
                 debugPrint("value of bottom   ${value}");
+
                 if (value == '') {
-                  _purchaseController.isDisableButton.value = true;
+                  _purchaseController.isDisableButton.value = false;
                 } else {
                   if (_purchaseController.newLimitPurchase.value ==
                       double.parse(value)) {
@@ -121,6 +125,8 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
           ),
           CustomButtom(
               ontap: () {
+                debugPrint(
+                    "value ${_purchaseController.textEditingController.value.text}");
                 var value = _purchaseController
                         .textEditingController.value.text.isNotEmpty
                     ? double.parse(
@@ -131,6 +137,7 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
                       _purchaseController.textEditingController.value.text);
                   _setPurchaseLimit(purchaseLimit: value);
                 }
+                _setPurchaseLimit(purchaseLimit: value);
               },
               title: 'SAVE',
               isDisable: _purchaseController.isDisableButton.value),

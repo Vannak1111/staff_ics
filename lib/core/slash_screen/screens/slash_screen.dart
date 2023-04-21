@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:staff_ics/core/slash_screen/controllers/slash_screen_controller.dart';
+
 class SlashScreen extends StatefulWidget {
   const SlashScreen({super.key});
 
@@ -23,7 +24,6 @@ class _SlashScreenState extends State<SlashScreen> {
         Get.toNamed('login');
       });
     } else {
-      
       Future.delayed(const Duration(milliseconds: 1000), () {
         Get.toNamed('home');
       });
@@ -33,11 +33,16 @@ class _SlashScreenState extends State<SlashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.backgroundColor,
       body: Container(
-        color: AppColor.primaryColor,
+        color: AppColor.backgroundColor,
         child: Center(
-          child: Image.asset("assets/image/utils/adaptive_icon_foreground.png"),
-        ),
+            child: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(
+                      "assets/image/utils/adaptive_icon_foreground.png"))),
+        )),
       ),
     );
   }

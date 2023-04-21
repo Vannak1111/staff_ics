@@ -117,10 +117,10 @@ class _TopUpHistoryState extends State<TopUpHistory> {
                         Text(
                           'On Hold',
                           textAlign: TextAlign.right,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(color: Colors.black),
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    color: Colors.green,
+                                  ),
                         )
                       ],
                     )
