@@ -15,6 +15,7 @@ late TopUpHistoryDb topUpHistoryDb;
 
 Future fetchPos({String route = "products"}) async {
   Map<String, dynamic> data = {};
+  debugPrint("dfdfdf${route}");
   if (route == "products") {
     data = {
       "params": {"route": "products", "campus": storage.read("campus")}
@@ -26,21 +27,26 @@ Future fetchPos({String route = "products"}) async {
     };
   } else if (route == "order_history") {
     data = {
-      "params": {"route": "order_history", "student_id": storage.read('isActive')}
+      "params": {
+        "route": "order_history",
+        "student_id": storage.read('isActive')
+      }
     };
   } else if (route == "top_up_history") {
     data = {
-      "params": {"route": "top_up_history", "student_id": storage.read('isActive')}
+      "params": {
+        "route": "top_up_history",
+        "student_id": storage.read('isActive')
+      }
     };
   }
 
   try {
-  
     var response = await Dio(BaseOptions(headers: {
       "Accept": "application/json",
       "Content-Type": "application/json"
     })).post(baseUrl_odoo, data: data);
-   
+
     if (route == "products") {
       // debugPrint("")
       posDb = PosDb.fromMap(response.data);
@@ -51,8 +57,7 @@ Future fetchPos({String route = "products"}) async {
     } else if (route == "order_history") {
       posOrderHistoryDb = PosOrderHistoryDb.fromMap(response.data);
       return posOrderHistoryDb;
-    }
-    else if (route == "top_up_history") {
+    } else if (route == "top_up_history") {
       topUpHistoryDb = TopUpHistoryDb.fromMap(response.data);
       return topUpHistoryDb;
     }
@@ -63,13 +68,11 @@ Future fetchPos({String route = "products"}) async {
   }
 }
 
-
 class DioExceptions implements Exception {
   DioExceptions.fromDioError(DioError dioError) {
     // print("dioError.type=${dioError.type}");
     switch (dioError.type) {
       case DioErrorType.cancel:
-      
         message = "Request to API server was cancelled";
         break;
       case DioErrorType.connectTimeout:
@@ -82,8 +85,8 @@ class DioExceptions implements Exception {
         message = "Receive timeout in connection with API server";
         break;
       case DioErrorType.response:
-        message =
-            _handleError(dioError.response!.statusCode, dioError.response!.data);
+        message = _handleError(
+            dioError.response!.statusCode, dioError.response!.data);
         break;
       case DioErrorType.sendTimeout:
         message = "Send timeout in connection with API server";
@@ -114,4 +117,3 @@ class DioExceptions implements Exception {
   @override
   String toString() => message!;
 }
-

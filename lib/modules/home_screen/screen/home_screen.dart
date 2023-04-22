@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:staff_ics/configs/const/app_colors.dart';
 import 'package:get/get.dart';
+import 'package:staff_ics/modules/canteen/controllers/canteen_controller.dart';
 import 'package:staff_ics/modules/canteen/screen/canteen_screen.dart';
 import 'package:staff_ics/modules/home_screen/controllers/home_screen_controller.dart';
 import 'package:staff_ics/modules/profile/controllers/profile_controller.dart';
@@ -19,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _profileController = Get.put(ProfileController());
   final homeController = Get.put(HomeScreenController());
+  final _canteenController = Get.put(CanteenController());
   @override
   void initState() {
     if (storage.read('notification') != null) {
@@ -55,6 +57,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontSize: 19,
                           ),
                     ),
+                    actions: [
+                      IconButton(
+                          onPressed: () {
+                            _canteenController.fetchPosUser();
+                          },
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Colors.white,
+                          ))
+                    ],
                     //! this code will user later (notification)
                     // actions: [
                     //   GestureDetector(

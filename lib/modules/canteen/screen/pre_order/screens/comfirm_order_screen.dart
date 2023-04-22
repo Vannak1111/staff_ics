@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
+import 'package:staff_ics/modules/canteen/controllers/canteen_controller.dart';
 import 'package:staff_ics/modules/canteen/screen/pre_order/controllers/comfirm_order.screen.dart';
 import 'package:staff_ics/utils/widgets/custom_appbar.dart';
 import '../controllers/pre_order_controller.dart';
@@ -24,6 +25,7 @@ class PosCart extends StatefulWidget {
 class _PosCartState extends State<PosCart> {
   final preOderController = Get.put(PreOrderController());
   final _confirmOrderController = Get.put(ComfirmController());
+  final _canteenController = Get.put(CanteenController());
   final storage = GetStorage();
   DefaultCacheManager manager = new DefaultCacheManager();
   var f = NumberFormat("##0.00", "en_US");
@@ -47,8 +49,9 @@ class _PosCartState extends State<PosCart> {
         "product_id": element['id'],
         "line_id": i
       };
-      _confirmOrderController.amountPaid.value = _confirmOrderController.amountPaid.value +
-          double.parse(f.format(element['amount'] * element['lst_price']));
+      _confirmOrderController.amountPaid.value =
+          _confirmOrderController.amountPaid.value +
+              double.parse(f.format(element['amount'] * element['lst_price']));
       lines.add(value);
     });
   }
@@ -56,12 +59,15 @@ class _PosCartState extends State<PosCart> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-      appBar: CustomAppBar(title: "Order Comfirmation",onTap: (){
-        Get.back();
-      },),
-      body: _buildBody,
-      bottomNavigationBar: _buildBottomNavigationBar,
-    ));
+          appBar: CustomAppBar(
+            title: "Order Comfirmation",
+            onTap: () {
+              Get.back();
+            },
+          ),
+          body: _buildBody,
+          bottomNavigationBar: _buildBottomNavigationBar,
+        ));
   }
 
   get _buildBottomNavigationBar {
@@ -83,33 +89,52 @@ class _PosCartState extends State<PosCart> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Total",),
-                  Text("\$${f.format(widget.total)}",
-                      ),
+                  Text(
+                    "Total",
+                  ),
+                  Text(
+                    "\$${f.format(widget.total)}",
+                  ),
                 ],
               ),
               SizedBox(
                 height: 6.h,
                 width: 100.w,
                 child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 8.0,
-                      backgroundColor: Color(0xff1d1a56),
-                    ),
-                    onPressed: () {
-                      if(!_confirmOrderController.timeCheck())
-                        message(title: '', body: storage.read("message_pre_order_time_closed"));
-                      else{
-                        if (_confirmOrderController.isDisableButton.value == false) {
-                  
-                            _confirmOrderController.isDisableButton.value = true;
-                     
-                         _confirmOrderController.createOrder(lines: lines, amountPaid: _confirmOrderController.amountPaid.value, pickUp: _confirmOrderController.pickUpTime.value, comment: _confirmOrderController.textEditingController.value.text, topUpAmount: 0.0, statePreOrder: 'draft');
-                        }
+                  style: ElevatedButton.styleFrom(
+                    elevation: 8.0,
+                    backgroundColor: Color(0xff1d1a56),
+                  ),
+                  onPressed: () {
+                    if (!_confirmOrderController.timeCheck())
+                      message(
+                          title: '',
+                          body: storage.read("message_pre_order_time_closed"));
+                    else {
+                      if (_confirmOrderController.isDisableButton.value ==
+                          false) {
+                        _confirmOrderController.isDisableButton.value = true;
+
+                        _confirmOrderController
+                            .createOrder(
+                                lines: lines,
+                                amountPaid:
+                                    _confirmOrderController.amountPaid.value,
+                                pickUp:
+                                    _confirmOrderController.pickUpTime.value,
+                                comment: _confirmOrderController
+                                    .textEditingController.value.text,
+                                topUpAmount: 0.0,
+                                statePreOrder: 'draft')
+                            .then(
+                                (value) => {_canteenController.fetchPosUser()});
                       }
-                    },
-                    child: Text("ORDER NOW",
-                       ),),
+                    }
+                  },
+                  child: Text(
+                    "ORDER NOW",
+                  ),
+                ),
               ),
             ],
           ),
@@ -131,17 +156,24 @@ class _PosCartState extends State<PosCart> {
                 shrinkWrap: true,
                 itemCount: _confirmOrderController.elements.length,
                 itemBuilder: (context, index) => Container(
-                      child: _buildItem(_confirmOrderController.elements[index], index),
+                      child: _buildItem(
+                          _confirmOrderController.elements[index], index),
                     )),
-            
             Padding(
-                padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-                child: Text('Remark',style: Theme.of(context).textTheme.bodyLarge,),),
+              padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+              child: Text(
+                'Remark',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
             Padding(
               padding:
                   EdgeInsets.only(left: 8.0, right: 8.0, top: 2.0, bottom: 2.0),
               child: TextFormField(
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.black),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(color: Colors.black),
                 minLines: 1,
                 maxLines: 5,
                 controller: _confirmOrderController.textEditingController.value,
@@ -149,7 +181,10 @@ class _PosCartState extends State<PosCart> {
                 keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
                   hintText: 'Please leave a message, if there is.',
-                  hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.grey),
+                  hintStyle: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                   ),
@@ -179,7 +214,8 @@ class _PosCartState extends State<PosCart> {
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         image: DecorationImage(
-                          image: imageFromBase64String(jsonDecode(item['image'])),
+                          image:
+                              imageFromBase64String(jsonDecode(item['image'])),
                           fit: BoxFit.cover,
                         )),
                   ),
@@ -199,13 +235,11 @@ class _PosCartState extends State<PosCart> {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.left,
-                               
                               )),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               "X ${item['amount']}",
-                             
                             ),
                           ),
                         ],
@@ -220,8 +254,8 @@ class _PosCartState extends State<PosCart> {
                       child: Container(
                           alignment: Alignment.centerRight,
                           child: Text(
-                              "\$${f.format(item['lst_price'] * item['amount'])}",
-                             )))
+                            "\$${f.format(item['lst_price'] * item['amount'])}",
+                          )))
                 ],
               ),
             ),
@@ -230,6 +264,7 @@ class _PosCartState extends State<PosCart> {
       ),
     );
   }
+
   Widget reloadBtn() {
     return ElevatedButton(
         onPressed: () {
@@ -238,8 +273,6 @@ class _PosCartState extends State<PosCart> {
         },
         child: Text("OK"));
   }
-
-
 
   void message({required String title, required String body}) {
     showDialog(
@@ -258,8 +291,10 @@ class _PosCartState extends State<PosCart> {
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text('$body',style: Theme.of(context).textTheme.titleSmall,
-                          ),
+                        child: Text(
+                          '$body',
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
                       ),
                     ),
                     Positioned(

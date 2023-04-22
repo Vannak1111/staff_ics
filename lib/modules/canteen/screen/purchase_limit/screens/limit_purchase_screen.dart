@@ -10,6 +10,8 @@ import 'package:staff_ics/utils/widgets/catch_dialog.dart';
 import 'package:staff_ics/utils/widgets/custom_appbar_asset.dart';
 import 'package:staff_ics/utils/widgets/custom_buttom.dart';
 
+import '../../../controllers/fetch_pos.dart';
+
 class PurchaseLimitScreen extends StatefulWidget {
   const PurchaseLimitScreen({Key? key}) : super(key: key);
 
@@ -20,23 +22,20 @@ class PurchaseLimitScreen extends StatefulWidget {
 class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
   final _purchaseController = Get.put(PurchaseContrller());
   final _canteenController = Get.put(CanteenController());
-
+  var f = NumberFormat("##0.00", "en_US");
   @override
   void initState() {
     super.initState();
+    _purchaseController.isDisableButton.value = true;
     debugPrint("limit purchase ${_canteenController.purchaseLimit.value}");
-    if (_canteenController.purchaseLimit.value == 0.0)
+    if (storage.read("purchase_limit") == 0.0)
       _purchaseController.textEditingController.value.text = "";
     else
       _purchaseController.textEditingController.value.text =
-          "${NumberFormat("##0.00", "en_US").format(_canteenController.purchaseLimit.value)}";
+          "${f.format(storage.read("purchase_limit"))}";
+    ;
     debugPrint(
-        "old value ${_purchaseController.textEditingController.value.text}/");
-    if (double.parse(_purchaseController.textEditingController.value.text) >
-        -1) {
-      _purchaseController.newLimitPurchase.value =
-          double.parse(_purchaseController.textEditingController.value.text);
-    }
+        "vannakrrrr ${_purchaseController.textEditingController.value.text}");
   }
 
   @override
@@ -50,100 +49,87 @@ class _PurchaseLimitScreenState extends State<PurchaseLimitScreen> {
                   CustomAppBarAssets(
                       title: 'Daily Purchase Limit',
                       assets: 'assets/image/canteen/limit_purchase.png'),
-                  _buildBodyExtend,
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding:
+                              EdgeInsets.only(left: 8.0, right: 8.0, top: 20.0),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: TextFormField(
+                            style: Theme.of(context).textTheme.bodyLarge!,
+                            controller:
+                                _purchaseController.textEditingController.value,
+                            enableInteractiveSelection: false,
+                            textInputAction: TextInputAction.done,
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'[0-9]+[,.]{0,1}[0-9]*')),
+                              TextInputFormatter.withFunction(
+                                (oldValue, newValue) => newValue.copyWith(
+                                  text: newValue.text.replaceAll(',', '.'),
+                                ),
+                              ),
+                            ],
+                            decoration: InputDecoration(
+                              isDense: true,
+                              filled: true,
+                              fillColor: Colors.grey.shade100,
+                              border: OutlineInputBorder(),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  color: AppColor.primaryColor,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                    // color: AppColor.primaryColor,
+                                    ),
+                              ),
+                              labelText: _purchaseController
+                                      .textEditingController.value.text.isEmpty
+                                  ? 'Unlimited'
+                                  : 'Maximum purchase amount limit',
+                              hintText: '',
+                              focusColor: Color(0xff1d1a56),
+                              prefixIcon: Icon(Icons.currency_exchange_sharp),
+                            ),
+                          ),
+                        ),
+                        CustomButtom(
+                            ontap: () {
+                              debugPrint(
+                                  "value ${_purchaseController.textEditingController.value.text}");
+                              var value = _purchaseController
+                                      .textEditingController
+                                      .value
+                                      .text
+                                      .isNotEmpty
+                                  ? double.parse(_purchaseController
+                                      .textEditingController.value.text)
+                                  : 0.0;
+                              storage.write("purchase_limit", value);
+
+                              _setPurchaseLimit(purchaseLimit: value);
+                            },
+                            title: 'SAVE',
+                            isDisable:
+                                !_purchaseController.isDisableButton.value),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
           ),
         ));
-  }
-
-  get _buildBodyExtend {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 20.0),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
-            child: TextFormField(
-              onChanged: (value) {
-                debugPrint("value of bottom   ${value}");
-
-                if (value == '') {
-                  _purchaseController.isDisableButton.value = false;
-                } else {
-                  if (_purchaseController.newLimitPurchase.value ==
-                      double.parse(value)) {
-                    _purchaseController.isDisableButton.value = true;
-                  } else {
-                    _purchaseController.isDisableButton.value = false;
-                  }
-                }
-              },
-              style: Theme.of(context).textTheme.bodyLarge!,
-              controller: _purchaseController.textEditingController.value,
-              enableInteractiveSelection: false,
-              textInputAction: TextInputAction.done,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(
-                    RegExp(r'[0-9]+[,.]{0,1}[0-9]*')),
-                TextInputFormatter.withFunction(
-                  (oldValue, newValue) => newValue.copyWith(
-                    text: newValue.text.replaceAll(',', '.'),
-                  ),
-                ),
-              ],
-              decoration: InputDecoration(
-                isDense: true,
-                filled: true,
-                fillColor: Colors.grey.shade100,
-                border: OutlineInputBorder(),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: AppColor.primaryColor,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                      // color: AppColor.primaryColor,
-                      ),
-                ),
-                labelText:
-                    _purchaseController.textEditingController.value.text.isEmpty
-                        ? 'Unlimited'
-                        : 'Maximum purchase amount limit',
-                hintText: '',
-                focusColor: Color(0xff1d1a56),
-                prefixIcon: Icon(Icons.currency_exchange_sharp),
-              ),
-            ),
-          ),
-          CustomButtom(
-              ontap: () {
-                debugPrint(
-                    "value ${_purchaseController.textEditingController.value.text}");
-                var value = _purchaseController
-                        .textEditingController.value.text.isNotEmpty
-                    ? double.parse(
-                        _purchaseController.textEditingController.value.text)
-                    : 0.0;
-                if (!_purchaseController.isDisableButton.value) {
-                  _canteenController.purchaseLimit.value = double.parse(
-                      _purchaseController.textEditingController.value.text);
-                  _setPurchaseLimit(purchaseLimit: value);
-                }
-                _setPurchaseLimit(purchaseLimit: value);
-              },
-              title: 'SAVE',
-              isDisable: _purchaseController.isDisableButton.value),
-        ],
-      ),
-    );
   }
 
   void _setPurchaseLimit({required double purchaseLimit}) async {

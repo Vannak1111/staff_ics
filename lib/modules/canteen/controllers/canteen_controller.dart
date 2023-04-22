@@ -89,6 +89,7 @@ class CanteenController extends GetxController {
         storage.write("instruction", value.instruction);
         storage.write("pre_order_instruction", value.preOrderInstruction);
         purchaseLimit.value = value.response[0].purchaseLimit;
+        storage.write("purchase_limit", value.response[0].purchaseLimit);
         cardNo.value = value.response[0].cardNo;
         storage.write("pick_up", value.pickUp);
         storage.write("product_id", value.productId);

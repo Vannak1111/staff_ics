@@ -24,6 +24,10 @@ final topupController = Get.put(TopUpController());
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.notification!.title}");
+  if (message.notification!.title == "Top up Notification") {
+    debugPrint("fetch new blance ");
+    // canteenController.fetchPosUser();
+  }
 }
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -60,7 +64,6 @@ void main() async {
       if (message.notification!.title == "Top up Notification") {
         debugPrint("fetch new blance ");
         canteenController.fetchPosUser();
-        topupController.fetchTopUpHistory();
       }
 
       RemoteNotification? notification = message.notification;
