@@ -40,14 +40,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       Positioned(
                         child: Container(
-                          height: 45.h,
+                          height: 50.h,
                           alignment: Alignment.center,
                           child: Image.asset(
-                              "assets/image/login/ics_International_school.png",
-                              width: SizerUtil.deviceType == DeviceType.tablet
-                                  ? 45.w
-                                  : 60.w,
-                              color: Colors.white),
+                            "assets/image/utils/adaptive_icon_foreground.png",
+                            width: SizerUtil.deviceType == DeviceType.tablet
+                                ? 70.w
+                                : 70.w,
+                            height: 60.h,
+                          ),
                         ),
                       ),
                     ],

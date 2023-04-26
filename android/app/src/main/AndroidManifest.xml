@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kh.ics.staff">
    <application
-        android:label="ics_group"
+        android:label="ICS App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
