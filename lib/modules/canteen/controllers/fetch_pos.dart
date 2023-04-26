@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_storage/get_storage.dart';
-import '../../../configs/const/ulr.dart';
 import '../models/pos_db_model.dart';
 import '../models/pos_order_history_db.dart';
 import '../models/pos_user_db_model.dart';
@@ -45,7 +45,7 @@ Future fetchPos({String route = "products"}) async {
     var response = await Dio(BaseOptions(headers: {
       "Accept": "application/json",
       "Content-Type": "application/json"
-    })).post(baseUrl_odoo, data: data);
+    })).post(dotenv.get('baslurl_odoo'), data: data);
 
     if (route == "products") {
       // debugPrint("")

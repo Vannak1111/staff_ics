@@ -107,7 +107,7 @@ class CanteenController extends GetxController {
           title: 'Oops!',
         );
         debugPrint("you have been catched ");
-      }
+      } finally {}
     });
   }
 }

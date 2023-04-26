@@ -25,6 +25,7 @@ class _CanteenScreenState extends State<CanteenScreen> {
   @override
   void initState() {
     super.initState();
+
     _controller.fetchPosUser().then((value) {
       debugPrint("data from api ${_controller.recPosUserData[0].cardId}");
     });

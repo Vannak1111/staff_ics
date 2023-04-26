@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -90,7 +91,7 @@ class TopUpController extends GetxController {
       var response = await Dio(BaseOptions(headers: {
         "Accept": "application/json",
         "Content-Type": "application/json"
-      })).post(baseUrl_odoo, data: data);
+      })).post(dotenv.get('baslurl_odoo'), data: data);
       print("response.data=${response.data}");
       posCreateOrderDb = PosCreateOrderDb.fromMap(response.data);
       return posCreateOrderDb;
@@ -155,7 +156,7 @@ class TopUpController extends GetxController {
   Future fetchDataToPayABA() async {
     debugPrint("nice to meet you ");
     try {
-      String fullUrl = baseUrl_school + getAbaList;
+      String fullUrl = dotenv.get('baslurl_school') + getAbaList;
       debugPrint("token ${storage.read('user_token')}");
       var response = await Dio(BaseOptions(headers: {
         "Accept": "application/json",
