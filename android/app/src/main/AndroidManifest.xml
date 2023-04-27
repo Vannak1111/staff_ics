@@ -3,7 +3,7 @@
    <application
         android:label="ICS App"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:showWhenLocked="true"
             android:turnScreenOn="true"
